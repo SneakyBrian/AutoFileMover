@@ -115,8 +115,23 @@ namespace AutoFileMover.Core
 
                         foreach (string groupName in regex.GetGroupNames())
                         {
-                            outputPath = Path.Combine(outputPath, string.Format("{0} {1}", groupName, match.Groups[groupName].Value));
+                            string prefix = string.Empty;
+                            int index;
+                            if (int.TryParse(groupName, out index))
+                            {
+                                if (index == 0)
+                                    continue;
+                            }
+                            else
+                            {
+                                prefix = groupName + " ";
+                            }
+
+                            outputPath = Path.Combine(outputPath, string.Format("{0}{1}", prefix, match.Groups[groupName].Value.Replace(".", " ")));
                         }
+
+                        //ensure the directory has been created
+                        Directory.CreateDirectory(outputPath);
 
                         outputPath = Path.Combine(outputPath, fileName);
 
