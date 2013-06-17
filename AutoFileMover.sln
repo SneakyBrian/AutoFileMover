@@ -7,6 +7,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoFileMover.Tests", "Auto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoFileMover.Console", "AutoFileMover.Console\AutoFileMover.Console.csproj", "{E4748525-477C-4810-93CA-9851BB711788}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoFileMover.Desktop", "AutoFileMover.Desktop\AutoFileMover.Desktop.csproj", "{6AEFCE9B-9F43-45CA-A724-2AE2431B72E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2069343F-7541-4524-B776-9A9AC1199648}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +34,10 @@ Global
 		{E4748525-477C-4810-93CA-9851BB711788}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4748525-477C-4810-93CA-9851BB711788}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4748525-477C-4810-93CA-9851BB711788}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AEFCE9B-9F43-45CA-A724-2AE2431B72E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AEFCE9B-9F43-45CA-A724-2AE2431B72E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AEFCE9B-9F43-45CA-A724-2AE2431B72E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AEFCE9B-9F43-45CA-A724-2AE2431B72E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
