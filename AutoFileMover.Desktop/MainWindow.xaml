@@ -1,8 +1,21 @@
 ﻿<Window x:Class="AutoFileMover.Desktop.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:AutoFileMover.Desktop.ViewModels"
+        xmlns:v="clr-namespace:AutoFileMover.Desktop.Views"
         Title="MainWindow" Height="350" Width="525">
+    
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:EngineViewModel}">
+            <v:EngineView/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <vm:EngineViewModel/>
+    </Window.DataContext>
+
     <Grid>
-        
+        <ContentControl Content="{Binding }"/>
     </Grid>
 </Window>
