@@ -18,14 +18,9 @@ namespace AutoFileMover.Desktop.ViewModels
     {
         private readonly IEngine _engine = null;
 
-        public IObservable<FileEventArgs> FileDetected { get; private set; }
-        public IObservable<FileEventArgs> FileMoveStarted { get; private set; }
-        public IObservable<FileEventArgs> FileMoveCompleted { get; private set; }
-        public IObservable<FileMoveEventArgs> FileMoveProgress { get; private set; }
-        public IObservable<FileErrorEventArgs> FileMoveError { get; private set; }
-
-        public IObservable<EngineState> State { get; private set; }
-        public IObservable<ErrorEventArgs> Error { get; private set; }
+        public EngineState State { get; private set; }
+        public ReactiveCollection<Exception> Errors { get; private set; }
+        public ReactiveCollection<FileOperationViewModel> FileOperations { get; private set; }
 
         public ReactiveCommand Start { get; protected set; }
         public ReactiveCommand Stop { get; protected set; }
@@ -40,63 +35,57 @@ namespace AutoFileMover.Desktop.ViewModels
                 });
 
                 _engine = container.Resolve<IEngine>();
+                //_engine.Config = container.Resolve<IConfig>();
+                
+                //temp code to inject simple config
+                _engine.Config = new Config
+                {
+                    DestinationPath = @"D:\Temp\AFMTEST\Output",
+                    FileMoveRetries = 3,
+                    IncludeSubdirectories = false,
+                    SourcePaths = new[] { @"D:\Temp\AFMTEST\Input" },
+                    SourceRegex = new[] { @"^(\b.*\b(?=[.])).*(?<Season>(?:(?<=s)[1-9][0-9]|(?<=s0)[1-9])).*\.(?:avi|mkv|mp4)$" }
+                };
             }
 
             Initialise(_engine);
         }
 
-        public EngineViewModel(IEngine engine)
+        public EngineViewModel(IEngine engine, IConfig config)
         {
             _engine = engine;
+            _engine.Config = config;
 
             Initialise(_engine);
         }
 
         private void Initialise(IEngine engine)
         {
-            FileDetected = Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileDetected += h, h => engine.FileDetected -= h)
-                                        .Select(e => e.EventArgs);
-            FileDetected.Subscribe(e => this.RaisePropertyChanged("FileDetected"));
-
-
-            FileMoveStarted = Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveStarted += h, h => engine.FileMoveStarted -= h)
-                                        .Select(e => e.EventArgs);
-            FileMoveStarted.Subscribe(e => this.RaisePropertyChanged("FileMoveStarted"));
-
-
-            FileMoveCompleted = Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveCompleted += h, h => engine.FileMoveCompleted -= h)
-                                        .Select(e => e.EventArgs);
-            FileMoveCompleted.Subscribe(e => this.RaisePropertyChanged("FileMoveCompleted"));
-
-
-            FileMoveProgress = Observable.FromEventPattern<EventHandler<FileMoveEventArgs>, FileMoveEventArgs>(h => engine.FileMoveProgress += h, h => engine.FileMoveProgress -= h)
-                                        .Select(e => e.EventArgs);
-            FileMoveProgress.Subscribe(e => this.RaisePropertyChanged("FileMoveProgress"));
-
-
-            FileMoveError = Observable.FromEventPattern<EventHandler<FileErrorEventArgs>, FileErrorEventArgs>(h => engine.FileMoveError += h, h => engine.FileMoveError -= h)
-                                        .Select(e => e.EventArgs);
-            FileMoveError.Subscribe(e => this.RaisePropertyChanged("FileMoveError"));
-
-
-            State = Observable.Merge(Observable.FromEventPattern(h => engine.Starting += h, h => engine.Starting -= h).Select(e => EngineState.Starting),
+            var stateObservable = Observable.Merge(Observable.FromEventPattern(h => engine.Starting += h, h => engine.Starting -= h).Select(e => EngineState.Starting),
                                         Observable.FromEventPattern(h => engine.Started += h, h => engine.Started -= h).Select(e => EngineState.Started),
                                         Observable.FromEventPattern(h => engine.Stopping += h, h => engine.Stopping -= h).Select(e => EngineState.Stopping),
                                         Observable.FromEventPattern(h => engine.Stopped += h, h => engine.Stopped -= h).Select(e => EngineState.Stopped))
                                         .StartWith(EngineState.Stopped);
-            State.Subscribe(e => this.RaisePropertyChanged("State"));
 
+            stateObservable.ToProperty(this, vm => vm.State);
 
-            Error = Observable.FromEventPattern<EventHandler<ErrorEventArgs>, ErrorEventArgs>(h => engine.Error += h, h => engine.Error -= h)
-                                        .Select(e => e.EventArgs);
-            Error.Subscribe(e => this.RaisePropertyChanged("Error"));
-
-
-            Start = new ReactiveCommand(State.Select(e => e == EngineState.Stopped));
+                                        
+            Start = new ReactiveCommand(stateObservable.Select(e => e == EngineState.Stopped));
             Start.Subscribe(x => engine.Start());
-            
-            Stop = new ReactiveCommand(State.Select(e => e == EngineState.Started));
+
+            Stop = new ReactiveCommand(stateObservable.Select(e => e == EngineState.Started));
             Stop.Subscribe(x => engine.Stop());
+
+
+            Errors = Observable.FromEventPattern<EventHandler<ErrorEventArgs>, ErrorEventArgs>(h => engine.Error += h, h => engine.Error -= h)
+                                 .Select(e => e.EventArgs.GetException())
+                                 .CreateCollection();
+
+
+            FileOperations = Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileDetected += h, h => engine.FileDetected -= h)
+                                .Select(e => new FileOperationViewModel(e.EventArgs.FilePath, e.EventArgs.OldFilePath, engine))
+                                .CreateCollection();
+ 
         }
 
     }

@@ -11,16 +11,8 @@ namespace AutoFileMover.Core
 {
     public class Engine : IEngine
     {
-        private readonly IConfig _config;
-
-        private Task _engineTask;
-        private CancellationTokenSource _cts;
+        private IEnumerable<FileSystemWatcher> _watchers;
         private IEnumerable<Regex> _regexList;
-
-        public Engine(IConfig config)
-        {
-            _config = config;
-        }
         
         public void Start()
         {
@@ -31,53 +23,26 @@ namespace AutoFileMover.Core
             //build the regex list
             _regexList = Config.SourceRegex.Select(sr => new Regex(sr, RegexOptions.Compiled | RegexOptions.IgnoreCase));
 
-            _cts = new CancellationTokenSource();
-
-            _engineTask = Task.Factory.StartNew(() => 
+            _watchers = Config.SourcePaths.Select(sp =>
             {
-                var watchers = Config.SourcePaths.Select(sp => 
-                {
-                    var fsw = new FileSystemWatcher(sp);
+                var fsw = new FileSystemWatcher(sp);
 
-                    fsw.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.Attributes | NotifyFilters.Security | NotifyFilters.Size;
+                fsw.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.Attributes | NotifyFilters.Security | NotifyFilters.Size;
 
-                    fsw.IncludeSubdirectories = Config.IncludeSubdirectories;
+                fsw.IncludeSubdirectories = Config.IncludeSubdirectories;
 
-                    fsw.Created += fsw_Changed;
-                    fsw.Renamed += fsw_Renamed;
-                    fsw.Error += fsw_Error;
-                    fsw.Changed += fsw_Changed;
+                fsw.Created += fsw_Changed;
+                fsw.Renamed += fsw_Renamed;
+                fsw.Error += fsw_Error;
+                fsw.Changed += fsw_Changed;
 
-                    fsw.EnableRaisingEvents = true;
+                fsw.EnableRaisingEvents = true;
 
-                    return fsw;
-                });
+                return fsw;
+            }).ToList();
 
-                OnStarted();
+            OnStarted();
 
-                //wait to be cancelled
-                _cts.Token.WaitHandle.WaitOne();
-
-                OnStopping();
-
-                foreach (var fsw in watchers)
-                {
-                    fsw.EnableRaisingEvents = false;
-                }
-
-                foreach (var fsw in watchers)
-                {
-                    fsw.Created -= fsw_Changed;
-                    fsw.Renamed -= fsw_Renamed;
-                    fsw.Error -= fsw_Error;
-                    fsw.Changed -= fsw_Changed; 
-                    
-                    fsw.Dispose();
-                }
-
-                OnStopped();
-
-            }, _cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
         void fsw_Changed(object sender, FileSystemEventArgs e)
@@ -178,18 +143,30 @@ namespace AutoFileMover.Core
 
         public void Stop()
         {
-            if (_cts != null)
+            OnStopping();
+
+            if (_watchers != null)
             {
-                _cts.Cancel();
+                foreach (var fsw in _watchers)
+                {
+                    fsw.EnableRaisingEvents = false;
+                }
 
-                _engineTask.Wait();
+                foreach (var fsw in _watchers)
+                {
+                    fsw.Created -= fsw_Changed;
+                    fsw.Renamed -= fsw_Renamed;
+                    fsw.Error -= fsw_Error;
+                    fsw.Changed -= fsw_Changed;
+
+                    fsw.Dispose();
+                }
             }
+
+            OnStopped();
         }
 
-        public IConfig Config
-        {
-            get { return _config; }
-        }
+        public IConfig Config { get; set; }
 
         public event EventHandler<FileEventArgs> FileDetected;
 

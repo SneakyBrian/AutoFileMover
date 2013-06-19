@@ -20,8 +20,10 @@ namespace AutoFileMover.Console
                 SourceRegex = new[] { @"^(\b.*\b(?=[.])).*(?<Season>(?:(?<=s)[1-9][0-9]|(?<=s0)[1-9])).*\.(?:avi|mkv|mp4)$" }
             };
 
-            using (var engine = new Engine(config))
+            using (var engine = new Engine())
             {
+                engine.Config = config;
+
                 engine.Starting += (s, e) => System.Console.WriteLine("Engine Starting");
                 engine.Started += (s, e) => System.Console.WriteLine("Engine Started");
                 engine.Stopping += (s, e) => System.Console.WriteLine("Engine Stopping");

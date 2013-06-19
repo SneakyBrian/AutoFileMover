@@ -6,8 +6,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <TextBlock Text="{Binding State}" Margin="10,10,10,266"/>
+        <TextBlock Text="{Binding Path=State}" Margin="10,10,10,266"/>
         <Button Content="Start" HorizontalAlignment="Left" Margin="10,268,0,0" VerticalAlignment="Top" Width="75" Command="{Binding Start}"/>
         <Button Content="Stop" HorizontalAlignment="Left" Margin="90,268,0,0" VerticalAlignment="Top" Width="75" Command="{Binding Stop}"/>
+        <ListView ItemsSource="{Binding FileOperations}" Margin="0,34,0,37" />
     </Grid>
 </UserControl>

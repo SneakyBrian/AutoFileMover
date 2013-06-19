@@ -20,7 +20,7 @@ namespace AutoFileMover.Desktop.IoC
                 scan.With<FirstInterfaceConvention>();
             });
 
-            //configure the data storage as a singleton
+            //configure the engine as a singleton
             Configure<IEngine>().AsSingleton();
         }
     }

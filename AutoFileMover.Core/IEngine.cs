@@ -12,7 +12,7 @@ namespace AutoFileMover.Core
         void Start();
         void Stop();
 
-        IConfig Config { get; }
+        IConfig Config { get; set; }
 
         event EventHandler<FileEventArgs> FileDetected;
         event EventHandler<FileEventArgs> FileMoveStarted;
