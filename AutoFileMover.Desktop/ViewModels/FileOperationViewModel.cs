@@ -16,42 +16,67 @@ namespace AutoFileMover.Desktop.ViewModels
 {
     public class FileOperationViewModel : ReactiveObject
     {
-        public string FilePath { get; private set; }
         public string OldFilePath { get; private set; }
-        public FileOperationState State { get; private set; }
-        public int Percentage { get; private set; }
-        public Exception Error { get; private set; }
 
-        public FileOperationViewModel(string fileName, string oldFileName, IEngine engine)
+        private ObservableAsPropertyHelper<string> _filePath;
+        public string FilePath
         {
-            //these properties don't change
-            FilePath = fileName;
-            OldFilePath = oldFileName;
+            get { return _filePath.Value; }
+        }
+
+        private ObservableAsPropertyHelper<FileOperationState> _state;
+        public FileOperationState State
+        {
+            get { return _state.Value; }
+        }
+
+        private ObservableAsPropertyHelper<int> _percentage;
+        public int Percentage
+        {
+            get { return _percentage.Value; }
+        }
+
+        private ObservableAsPropertyHelper<Exception> _error;
+        public Exception Error
+        {
+            get { return _error.Value; }
+        }
+
+        public FileOperationViewModel(string filePath, IEngine engine)
+        {
+            //this property doesn't change
+            OldFilePath = filePath;
+
+            //filepath property
+            _filePath = Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveStarted += h, h => engine.FileMoveStarted -= h)
+                            .Where(e => e.EventArgs.OldFilePath == OldFilePath)            
+                            .Select(e => e.EventArgs.FilePath)
+                            .ToProperty(this, vm => vm.FilePath);
 
             //state property
-            Observable.Merge(Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveStarted += h, h => engine.FileMoveStarted -= h)
-                                        .Where(e => e.EventArgs.FilePath == FilePath)
-                                        .Select(e => FileOperationState.Moving),
-                                Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveCompleted += h, h => engine.FileMoveCompleted -= h)
-                                        .Where(e => e.EventArgs.FilePath == FilePath)
-                                        .Select(e => FileOperationState.Completed),
-                                Observable.FromEventPattern<EventHandler<FileErrorEventArgs>, FileErrorEventArgs>(h => engine.FileMoveError += h, h => engine.FileMoveError -= h)
-                                        .Where(e => e.EventArgs.FilePath == FilePath)
-                                        .Select(e => FileOperationState.Error))
-                                .StartWith(FileOperationState.Detected)
-                                .ToProperty(this, vm => vm.State);
+            _state =  Observable.Merge(Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveStarted += h, h => engine.FileMoveStarted -= h)
+                                                .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                                                .Select(e => FileOperationState.Moving),
+                                        Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveCompleted += h, h => engine.FileMoveCompleted -= h)
+                                                .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                                                .Select(e => FileOperationState.Completed),
+                                        Observable.FromEventPattern<EventHandler<FileErrorEventArgs>, FileErrorEventArgs>(h => engine.FileMoveError += h, h => engine.FileMoveError -= h)
+                                                .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                                                .Select(e => FileOperationState.Error))
+                                        .StartWith(FileOperationState.Detected)
+                                        .ToProperty(this, vm => vm.State);
 
             //percentage
-            Observable.FromEventPattern<EventHandler<FileMoveEventArgs>, FileMoveEventArgs>(h => engine.FileMoveProgress += h, h => engine.FileMoveProgress -= h)
-                        .Where(e => e.EventArgs.FilePath == FilePath)
-                        .Select(e => e.EventArgs.Percentage)
-                        .ToProperty(this, vm => vm.Percentage);
+            _percentage = Observable.FromEventPattern<EventHandler<FileMoveEventArgs>, FileMoveEventArgs>(h => engine.FileMoveProgress += h, h => engine.FileMoveProgress -= h)
+                            .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                            .Select(e => e.EventArgs.Percentage)
+                            .ToProperty(this, vm => vm.Percentage);
 
             //error
-            Observable.FromEventPattern<EventHandler<FileErrorEventArgs>, FileErrorEventArgs>(h => engine.FileMoveError += h, h => engine.FileMoveError -= h)
-                .Where(e => e.EventArgs.FilePath == FilePath)
-                .Select(e => e.EventArgs.Exception)
-                .ToProperty(this, vm => vm.Error);
+            _error = Observable.FromEventPattern<EventHandler<FileErrorEventArgs>, FileErrorEventArgs>(h => engine.FileMoveError += h, h => engine.FileMoveError -= h)
+                            .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                            .Select(e => e.EventArgs.Exception)
+                            .ToProperty(this, vm => vm.Error);
         }
     }
 

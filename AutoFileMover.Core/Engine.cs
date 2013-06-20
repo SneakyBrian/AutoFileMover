@@ -27,7 +27,7 @@ namespace AutoFileMover.Core
             {
                 var fsw = new FileSystemWatcher(sp);
 
-                fsw.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.Attributes | NotifyFilters.Security | NotifyFilters.Size;
+                fsw.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName;
 
                 fsw.IncludeSubdirectories = Config.IncludeSubdirectories;
 
@@ -164,6 +164,14 @@ namespace AutoFileMover.Core
             }
 
             OnStopped();
+        }
+
+        public void Scan()
+        {
+            Config.SourcePaths
+                .SelectMany(p => Directory.GetFiles(p, "*.*", Config.IncludeSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+                .ToList()
+                .ForEach(ProcessFile);
         }
 
         public IConfig Config { get; set; }

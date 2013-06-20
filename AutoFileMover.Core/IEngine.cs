@@ -11,6 +11,7 @@ namespace AutoFileMover.Core
     {
         void Start();
         void Stop();
+        void Scan();
 
         IConfig Config { get; set; }
 

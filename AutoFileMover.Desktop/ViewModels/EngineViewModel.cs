@@ -18,12 +18,18 @@ namespace AutoFileMover.Desktop.ViewModels
     {
         private readonly IEngine _engine = null;
 
-        public EngineState State { get; private set; }
-        public ReactiveCollection<Exception> Errors { get; private set; }
-        public ReactiveCollection<FileOperationViewModel> FileOperations { get; private set; }
+        private ObservableAsPropertyHelper<EngineState> _state;
+        public EngineState State 
+        {
+            get { return _state.Value; } 
+        }
+        
+        public ReactiveCollection<Exception> Errors { get; set; }
+        public ReactiveCollection<FileOperationViewModel> FileOperations { get; set; }
 
-        public ReactiveCommand Start { get; protected set; }
-        public ReactiveCommand Stop { get; protected set; }
+        public ReactiveCommand Start { get; set; }
+        public ReactiveCommand Stop { get; set; }
+        public ReactiveCommand Scan { get; set; }
 
         public EngineViewModel()
         {
@@ -62,12 +68,12 @@ namespace AutoFileMover.Desktop.ViewModels
         private void Initialise(IEngine engine)
         {
             var stateObservable = Observable.Merge(Observable.FromEventPattern(h => engine.Starting += h, h => engine.Starting -= h).Select(e => EngineState.Starting),
-                                        Observable.FromEventPattern(h => engine.Started += h, h => engine.Started -= h).Select(e => EngineState.Started),
-                                        Observable.FromEventPattern(h => engine.Stopping += h, h => engine.Stopping -= h).Select(e => EngineState.Stopping),
-                                        Observable.FromEventPattern(h => engine.Stopped += h, h => engine.Stopped -= h).Select(e => EngineState.Stopped))
-                                        .StartWith(EngineState.Stopped);
+                                                    Observable.FromEventPattern(h => engine.Started += h, h => engine.Started -= h).Select(e => EngineState.Started),
+                                                    Observable.FromEventPattern(h => engine.Stopping += h, h => engine.Stopping -= h).Select(e => EngineState.Stopping),
+                                                    Observable.FromEventPattern(h => engine.Stopped += h, h => engine.Stopped -= h).Select(e => EngineState.Stopped))
+                                                    .StartWith(EngineState.Stopped);
 
-            stateObservable.ToProperty(this, vm => vm.State);
+            _state = stateObservable.ToProperty(this, vm => vm.State);
 
                                         
             Start = new ReactiveCommand(stateObservable.Select(e => e == EngineState.Stopped));
@@ -76,6 +82,8 @@ namespace AutoFileMover.Desktop.ViewModels
             Stop = new ReactiveCommand(stateObservable.Select(e => e == EngineState.Started));
             Stop.Subscribe(x => engine.Stop());
 
+            Scan = new ReactiveCommand(stateObservable.Select(e => e == EngineState.Started));
+            Scan.Subscribe(x => engine.Scan());
 
             Errors = Observable.FromEventPattern<EventHandler<ErrorEventArgs>, ErrorEventArgs>(h => engine.Error += h, h => engine.Error -= h)
                                  .Select(e => e.EventArgs.GetException())
@@ -83,11 +91,9 @@ namespace AutoFileMover.Desktop.ViewModels
 
 
             FileOperations = Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileDetected += h, h => engine.FileDetected -= h)
-                                .Select(e => new FileOperationViewModel(e.EventArgs.FilePath, e.EventArgs.OldFilePath, engine))
+                                .Select(e => new FileOperationViewModel(e.EventArgs.OldFilePath, engine))
                                 .CreateCollection();
- 
         }
-
     }
 
     public enum EngineState

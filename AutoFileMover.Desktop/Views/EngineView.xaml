@@ -6,9 +6,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <TextBlock Text="{Binding Path=State}" Margin="10,10,10,266"/>
-        <Button Content="Start" HorizontalAlignment="Left" Margin="10,268,0,0" VerticalAlignment="Top" Width="75" Command="{Binding Start}"/>
-        <Button Content="Stop" HorizontalAlignment="Left" Margin="90,268,0,0" VerticalAlignment="Top" Width="75" Command="{Binding Stop}"/>
-        <ListView ItemsSource="{Binding FileOperations}" Margin="0,34,0,37" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding State}"/>
+        <ListView ItemsSource="{Binding FileOperations}" Grid.Row="1" />
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <Button Content="Start" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Command="{Binding Start}"/>
+            <Button Content="Stop" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Command="{Binding Stop}"/>
+            <Button Content="Scan" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Command="{Binding Scan}"/>
+        </StackPanel>
     </Grid>
 </UserControl>
