@@ -6,10 +6,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
-        <TextBlock Text="{Binding OldFilePath}" />
-        <TextBlock Text="{Binding FilePath}" />
-        <TextBlock Text="{Binding State}" />
-        <ProgressBar Value="{Binding Percentage, Mode=OneWay}" Height="20" />
-        <TextBlock Text="{Binding Error}" Foreground="Red" />
+        <TextBlock Text="{Binding OldFilePath}" Margin="5,0"/>
+        <TextBlock Text="{Binding FilePath}" Margin="5,0"/>
+        <TextBlock Text="{Binding State}" Margin="5,0"/>
+        <ProgressBar Value="{Binding Percentage, Mode=OneWay}" Height="20" Margin="5,0"  IsEnabled="{Binding InProgress}" />
+        <TextBlock Text="{Binding Error}" Foreground="Red" Margin="5,0"/>
     </StackPanel>
 </UserControl>

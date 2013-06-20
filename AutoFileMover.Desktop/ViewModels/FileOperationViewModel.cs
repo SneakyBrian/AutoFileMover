@@ -36,6 +36,12 @@ namespace AutoFileMover.Desktop.ViewModels
             get { return _percentage.Value; }
         }
 
+        private ObservableAsPropertyHelper<bool> _inProgress;
+        public bool InProgress
+        {
+            get { return _inProgress.Value; }
+        }
+
         private ObservableAsPropertyHelper<Exception> _error;
         public Exception Error
         {
@@ -71,6 +77,11 @@ namespace AutoFileMover.Desktop.ViewModels
                             .Where(e => e.EventArgs.OldFilePath == OldFilePath)
                             .Select(e => e.EventArgs.Percentage)
                             .ToProperty(this, vm => vm.Percentage);
+
+            //in progress
+            _inProgress = _state.AsObservable()
+                            .Select(e => e == FileOperationState.Moving)
+                            .ToProperty(this, vm => vm.InProgress);
 
             //error
             _error = Observable.FromEventPattern<EventHandler<FileErrorEventArgs>, FileErrorEventArgs>(h => engine.FileMoveError += h, h => engine.FileMoveError -= h)

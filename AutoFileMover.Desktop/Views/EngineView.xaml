@@ -12,7 +12,13 @@
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <TextBlock Text="{Binding State}"/>
-        <ListView ItemsSource="{Binding FileOperations}" Grid.Row="1" />
+        <ListView ItemsSource="{Binding FileOperations}" Grid.Row="1" >
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <Button Content="Start" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Command="{Binding Start}"/>
             <Button Content="Stop" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Command="{Binding Stop}"/>
