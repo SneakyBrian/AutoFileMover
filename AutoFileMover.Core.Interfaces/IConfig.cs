@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoFileMover.Core
+namespace AutoFileMover.Core.Interfaces
 {
     public interface IConfig
     {

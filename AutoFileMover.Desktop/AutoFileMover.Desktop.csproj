@@ -173,6 +173,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AutoFileMover.Core.Interfaces\AutoFileMover.Core.Interfaces.csproj">
+      <Project>{311eb925-d683-43bb-9168-6053abdbcc1a}</Project>
+      <Name>AutoFileMover.Core.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AutoFileMover.Core\AutoFileMover.Core.csproj">
       <Project>{d34e0663-8fad-4a29-8f52-386a94d38eaa}</Project>
       <Name>AutoFileMover.Core</Name>

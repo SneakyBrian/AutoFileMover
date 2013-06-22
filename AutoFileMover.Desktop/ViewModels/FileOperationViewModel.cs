@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoFileMover.Core;
+using AutoFileMover.Core.Interfaces;
 using AutoFileMover.Desktop.IoC;
 using Microsoft.Practices.Unity;
 using ReactiveUI;
