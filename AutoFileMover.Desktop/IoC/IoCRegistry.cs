@@ -21,8 +21,9 @@ namespace AutoFileMover.Desktop.IoC
                 scan.With<FirstInterfaceConvention>();
             });
 
-            //configure the engine as a singleton
+            //configure the engine and config as a singleton
             Configure<IEngine>().AsSingleton();
+            Configure<IConfig>().AsSingleton();
         }
     }
 }

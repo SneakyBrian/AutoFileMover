@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoFileMover.Core.Interfaces;
 
-namespace AutoFileMover.Core
+namespace AutoFileMover.Console
 {
     public class Config : IConfig
     {

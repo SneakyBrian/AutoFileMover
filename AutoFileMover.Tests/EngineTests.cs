@@ -13,7 +13,7 @@ namespace AutoFileMover.Tests
         {
             var testFolder = Path.Combine(Path.GetTempPath(), "EngineIntegrationTest", Guid.NewGuid().ToString());
 
-            var config = new Config
+            var config = new TestConfig
             {
                 DestinationPath = Path.Combine(testFolder, "Output"),
                 FileMoveRetries = 3,

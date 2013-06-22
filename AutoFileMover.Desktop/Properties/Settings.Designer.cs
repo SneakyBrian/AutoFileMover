@@ -23,16 +23,19 @@ namespace AutoFileMover.Desktop.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("D:\\Temp\\AFMTEST\\Input")]
         public string SourcePaths {
             get {
                 return ((string)(this["SourcePaths"]));
             }
+            set {
+                this["SourcePaths"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("^(\\b.*\\b(?=[.])).*(?<Season>(?:(?<=s)[1-9][0-9]|(?<=s0)[1-9])).*\\.(?:avi|mkv|mp4)" +
             "$")]
@@ -40,32 +43,44 @@ namespace AutoFileMover.Desktop.Properties {
             get {
                 return ((string)(this["SourceRegex"]));
             }
+            set {
+                this["SourceRegex"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("D:\\Temp\\AFMTEST\\Output")]
         public string DestinationPath {
             get {
                 return ((string)(this["DestinationPath"]));
             }
+            set {
+                this["DestinationPath"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool IncludeSubdirectories {
             get {
                 return ((bool)(this["IncludeSubdirectories"]));
             }
+            set {
+                this["IncludeSubdirectories"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public int FileMoveRetries {
             get {
                 return ((int)(this["FileMoveRetries"]));
+            }
+            set {
+                this["FileMoveRetries"] = value;
             }
         }
     }

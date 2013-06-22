@@ -8,10 +8,10 @@ namespace AutoFileMover.Core.Interfaces
 {
     public interface IConfig
     {
-        IEnumerable<string> SourcePaths { get; }
-        IEnumerable<string> SourceRegex { get; }
-        string DestinationPath { get; }
-        bool IncludeSubdirectories { get; }
-        int FileMoveRetries { get; }
+        IEnumerable<string> SourcePaths { get; set; }
+        IEnumerable<string> SourceRegex { get; set; }
+        string DestinationPath { get; set; }
+        bool IncludeSubdirectories { get; set; }
+        int FileMoveRetries { get; set; }
     }
 }

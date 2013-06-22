@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoFileMover.Core;
 using AutoFileMover.Core.Interfaces;
 using AutoFileMover.Desktop.IoC;
 using Microsoft.Practices.Unity;
@@ -25,12 +20,12 @@ namespace AutoFileMover.Desktop.ViewModels
             get { return _state.Value; } 
         }
         
-        public ReactiveCollection<Exception> Errors { get; set; }
-        public ReactiveCollection<FileOperationViewModel> FileOperations { get; set; }
+        public ReactiveCollection<Exception> Errors { get; private set; }
+        public ReactiveCollection<FileOperationViewModel> FileOperations { get; private set; }
 
-        public ReactiveCommand Start { get; set; }
-        public ReactiveCommand Stop { get; set; }
-        public ReactiveCommand Scan { get; set; }
+        public ReactiveCommand Start { get; private set; }
+        public ReactiveCommand Stop { get; private set; }
+        public ReactiveCommand Scan { get; private set; }
 
         public EngineViewModel()
         {
@@ -42,17 +37,7 @@ namespace AutoFileMover.Desktop.ViewModels
                 });
 
                 _engine = container.Resolve<IEngine>();
-                //_engine.Config = container.Resolve<IConfig>();
-                
-                //temp code to inject simple config
-                _engine.Config = new Config
-                {
-                    DestinationPath = @"D:\Temp\AFMTEST\Output",
-                    FileMoveRetries = 3,
-                    IncludeSubdirectories = false,
-                    SourcePaths = new[] { @"D:\Temp\AFMTEST\Input" },
-                    SourceRegex = new[] { @"^(\b.*\b(?=[.])).*(?<Season>(?:(?<=s)[1-9][0-9]|(?<=s0)[1-9])).*\.(?:avi|mkv|mp4)$" }
-                };
+                _engine.Config = container.Resolve<IConfig>();                
             }
 
             Initialise(_engine);

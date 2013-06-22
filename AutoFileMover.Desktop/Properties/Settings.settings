@@ -2,19 +2,19 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AutoFileMover.Desktop.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="SourcePaths" Type="System.String" Scope="Application">
+    <Setting Name="SourcePaths" Type="System.String" Scope="User">
       <Value Profile="(Default)">D:\Temp\AFMTEST\Input</Value>
     </Setting>
-    <Setting Name="SourceRegex" Type="System.String" Scope="Application">
+    <Setting Name="SourceRegex" Type="System.String" Scope="User">
       <Value Profile="(Default)">^(\b.*\b(?=[.])).*(?&lt;Season&gt;(?:(?&lt;=s)[1-9][0-9]|(?&lt;=s0)[1-9])).*\.(?:avi|mkv|mp4)$</Value>
     </Setting>
-    <Setting Name="DestinationPath" Type="System.String" Scope="Application">
+    <Setting Name="DestinationPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">D:\Temp\AFMTEST\Output</Value>
     </Setting>
-    <Setting Name="IncludeSubdirectories" Type="System.Boolean" Scope="Application">
+    <Setting Name="IncludeSubdirectories" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="FileMoveRetries" Type="System.Int32" Scope="Application">
+    <Setting Name="FileMoveRetries" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
   </Settings>
