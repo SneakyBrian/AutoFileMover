@@ -19,6 +19,13 @@ namespace AutoFileMover.Desktop.ViewModels
         {
             get { return _state.Value; } 
         }
+
+        private bool _AutoStart;
+        public bool AutoStart
+        {
+            get { return _AutoStart; }
+            set { this.RaiseAndSetIfChanged(x => x.AutoStart, value); }
+        }
         
         public ReactiveCollection<Exception> Errors { get; private set; }
         public ReactiveCollection<FileOperationViewModel> FileOperations { get; private set; }
@@ -83,6 +90,11 @@ namespace AutoFileMover.Desktop.ViewModels
                                 .CreateCollection();
 
             Config = new ConfigViewModel(engine.Config);
+
+            if (Config.AutoStart)
+            {
+                engine.Start();
+            }
         }
     }
 

@@ -14,6 +14,13 @@ namespace AutoFileMover.Desktop.ViewModels
     {
         private IConfig _config;
 
+        private bool _AutoStart;
+        public bool AutoStart
+        {
+            get { return _AutoStart; }
+            set { this.RaiseAndSetIfChanged(x => x.AutoStart, value); }
+        }
+
         private ReactiveCollection<string> _SourcePaths;
         public ReactiveCollection<string> SourcePaths
         {
@@ -107,6 +114,8 @@ namespace AutoFileMover.Desktop.ViewModels
 
         private void Initialise(IConfig config)
         {
+            this.AutoStart = Properties.Settings.Default.AutoStart;
+
             this.DestinationPath = config.DestinationPath;
             this.FileMoveRetries = config.FileMoveRetries;
             this.IncludeSubdirectories = config.IncludeSubdirectories;
@@ -116,6 +125,9 @@ namespace AutoFileMover.Desktop.ViewModels
             Save = new ReactiveCommand();
             Save.Subscribe(e =>
             {
+                Properties.Settings.Default.AutoStart = this.AutoStart;
+                Properties.Settings.Default.Save();
+
                 config.DestinationPath = this.DestinationPath;
                 config.FileMoveRetries = this.FileMoveRetries;
                 config.IncludeSubdirectories = this.IncludeSubdirectories;

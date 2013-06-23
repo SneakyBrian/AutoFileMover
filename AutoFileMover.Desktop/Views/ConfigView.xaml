@@ -10,6 +10,10 @@
     
     <StackPanel>
 
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <CheckBox Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutoStart}" Content="Auto Start" />
+        </StackPanel>        
+        
         <StackPanel Margin="5">
             <Label Content="Source Paths"/>
             <ListBox Height="50" Margin="5" ItemsSource="{Binding SourcePaths}" SelectedItem="{Binding SelectedSourcePath}" />
@@ -50,8 +54,7 @@
         </Grid>
         
         <StackPanel Orientation="Horizontal" Margin="5">
-            <Label Content="Include Subdirectories" />
-            <CheckBox Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding IncludeSubdirectories}" />
+            <CheckBox Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding IncludeSubdirectories}" Content="Include Subdirectories" />
         </StackPanel>
 
         <StackPanel Margin="5" Orientation="Horizontal">

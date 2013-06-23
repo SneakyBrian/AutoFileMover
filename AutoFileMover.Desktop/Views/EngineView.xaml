@@ -3,45 +3,52 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             MinWidth="340"
-             MinHeight="410"
-             d:DesignHeight="410" d:DesignWidth="530">
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="400">
+            
+    <StackPanel>
     
-    <Grid>
-    
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="0.9*"/>
-        </Grid.ColumnDefinitions>
-        
-        <Grid Grid.Column="0">
-        
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25"/>
-                <RowDefinition/>
-                <RowDefinition Height="25"/>
-            </Grid.RowDefinitions>
-        
-            <TextBlock Text="{Binding State}" Grid.Row="0"/>
-        
-            <ListView ItemsSource="{Binding FileOperations}" Grid.Row="1">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
-        
-            <StackPanel Orientation="Horizontal" Grid.Row="2">
-                <Button Content="Start" Width="75" Command="{Binding Start}"/>
-                <Button Content="Stop" Width="75" Command="{Binding Stop}"/>
-                <Button Content="Scan" Width="75" Command="{Binding Scan}"/>
-            </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Current Status:" Margin="5" />
+            <TextBlock Text="{Binding State}" VerticalAlignment="Center" Margin="5" />
+        </StackPanel>
 
-        </Grid>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Start" Width="75" Margin="5" Command="{Binding Start}"/>
+            <Button Content="Stop" Width="75" Margin="5" Command="{Binding Stop}"/>
+            <Button Content="Scan" Width="75" Margin="5" Command="{Binding Scan}"/>
+        </StackPanel>
 
-        <ContentControl Content="{Binding Config }" Grid.Column="1" />
+        <Expander Header="Operations">
+            <ScrollViewer Height="300">
+                <ListView ItemsSource="{Binding FileOperations}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>                
+                </ListView>
+            </ScrollViewer>
+        </Expander>
 
-    </Grid>
+        <Expander Header="Errors">
+            <ScrollViewer Height="300">
+                <ListView ItemsSource="{Binding Errors}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </ScrollViewer>
+        </Expander>
+
+        <Expander Header="Settings">
+            <ScrollViewer Height="300">
+                <ContentControl Content="{Binding Config }" />
+            </ScrollViewer>
+        </Expander>
+        
+    </StackPanel>
+        
 </UserControl>
