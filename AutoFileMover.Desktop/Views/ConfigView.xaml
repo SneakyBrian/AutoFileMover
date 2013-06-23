@@ -3,18 +3,66 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="300">
+             MinWidth="300" MinHeight="410"
+             d:DesignHeight="410" d:DesignWidth="300">
+    
     <StackPanel>
-        <Label Content="Source Paths"/>
-        <ListBox Height="50" />
-        <Label Content="Source Regex"/>
-        <ListBox Height="50" />
-        <Label Content="Destination Path"/>
-        <TextBox />
-        <Label Content="Include Subdirectories"/>
-        <CheckBox />
-        <Label Content="File Move Retries"/>
-        <TextBox />
+
+        <StackPanel Margin="5">
+            <Label Content="Source Paths"/>
+            <ListBox Height="50" Margin="5" ItemsSource="{Binding SourcePaths}" SelectedItem="{Binding SelectedSourcePath}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="80" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" VerticalAlignment="Center" Margin="5" Text="{Binding NewSourcePath}"/>
+                <Button Grid.Column="1" Content="Add" Margin="5" Command="{Binding AddSourcePath}"/>
+                <Button Grid.Column="2" Content="Remove" Margin="5" Command="{Binding RemoveSourcePath}"/>
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Margin="5">
+            <Label Content="Source Regex"/>
+            <ListBox Height="50" Margin="5" ItemsSource="{Binding SourceRegex}" SelectedItem="{Binding SelectedSourceRegex}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="80" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" VerticalAlignment="Center" Margin="5" Text="{Binding NewSourceRegex}"/>
+                <Button Grid.Column="1" Content="Add" Margin="5" Command="{Binding AddSourceRegex}"/>
+                <Button Grid.Column="2" Content="Remove" Margin="5" Command="{Binding RemoveSourceRegex}"/>
+            </Grid>
+        </StackPanel>
+
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Content="Destination Path" Grid.Column="0"/>
+            <TextBox Margin="5" Grid.Column="1" Text="{Binding DestinationPath}"/>
+        </Grid>
+        
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <Label Content="Include Subdirectories" />
+            <CheckBox Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding IncludeSubdirectories}" />
+        </StackPanel>
+
+        <StackPanel Margin="5" Orientation="Horizontal">
+            <Label Content="File Move Retries"/>
+            <xctk:IntegerUpDown Minimum="0" Maximum="99" FormatString="N0" Value="{Binding FileMoveRetries}" />
+        </StackPanel>
+
+        <StackPanel Margin="5">
+            <Button Content="Save" Width="75" Command="{Binding Save}" HorizontalAlignment="Right" Margin="5"/>
+        </StackPanel>
+
     </StackPanel>
+
 </UserControl>

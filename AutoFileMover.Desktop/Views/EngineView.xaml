@@ -4,25 +4,44 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             MinWidth="340"
+             MinHeight="410"
+             d:DesignHeight="410" d:DesignWidth="530">
+    
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
-            <RowDefinition/>
-            <RowDefinition Height="25"/>
-        </Grid.RowDefinitions>
-        <TextBlock Text="{Binding State}"/>
-        <ListView ItemsSource="{Binding FileOperations}" Grid.Row="1" >
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
-        <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <Button Content="Start" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Command="{Binding Start}"/>
-            <Button Content="Stop" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Command="{Binding Stop}"/>
-            <Button Content="Scan" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Command="{Binding Scan}"/>
-        </StackPanel>
+    
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="0.9*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid Grid.Column="0">
+        
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+        
+            <TextBlock Text="{Binding State}" Grid.Row="0"/>
+        
+            <ListView ItemsSource="{Binding FileOperations}" Grid.Row="1">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        
+            <StackPanel Orientation="Horizontal" Grid.Row="2">
+                <Button Content="Start" Width="75" Command="{Binding Start}"/>
+                <Button Content="Stop" Width="75" Command="{Binding Stop}"/>
+                <Button Content="Scan" Width="75" Command="{Binding Scan}"/>
+            </StackPanel>
+
+        </Grid>
+
+        <ContentControl Content="{Binding Config }" Grid.Column="1" />
+
     </Grid>
 </UserControl>

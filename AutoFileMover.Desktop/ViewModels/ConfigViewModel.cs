@@ -14,15 +14,15 @@ namespace AutoFileMover.Desktop.ViewModels
     {
         private IConfig _config;
 
-        private IEnumerable<string> _SourcePaths;
-        public IEnumerable<string> SourcePaths
+        private ReactiveCollection<string> _SourcePaths;
+        public ReactiveCollection<string> SourcePaths
         {
             get { return _SourcePaths; }
             set { this.RaiseAndSetIfChanged(x => x.SourcePaths, value); }
         }
 
-        private IEnumerable<string> _SourceRegex;
-        public IEnumerable<string> SourceRegex
+        private ReactiveCollection<string> _SourceRegex;
+        public ReactiveCollection<string> SourceRegex
         {
             get { return _SourceRegex; }
             set { this.RaiseAndSetIfChanged(x => x.SourceRegex, value); }
@@ -49,13 +49,39 @@ namespace AutoFileMover.Desktop.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.FileMoveRetries, value); }
         }
 
-        private ObservableAsPropertyHelper<bool> _dirty;
-        public bool Dirty
+        private string _NewSourcePath;
+        public string NewSourcePath
         {
-            get { return _dirty.Value; }
+            get { return _NewSourcePath; }
+            set { this.RaiseAndSetIfChanged(x => x.NewSourcePath, value); }
         }
 
+        private string _NewSourceRegex;
+        public string NewSourceRegex
+        {
+            get { return _NewSourceRegex; }
+            set { this.RaiseAndSetIfChanged(x => x.NewSourceRegex, value); }
+        }
+
+        private string _SelectedSourcePath;
+        public string SelectedSourcePath
+        {
+            get { return _SelectedSourcePath; }
+            set { this.RaiseAndSetIfChanged(x => x.SelectedSourcePath, value); }
+        }
+
+        private string _SelectedSourceRegex;
+        public string SelectedSourceRegex
+        {
+            get { return _SelectedSourceRegex; }
+            set { this.RaiseAndSetIfChanged(x => x.SelectedSourceRegex, value); }
+        }
+        
         public ReactiveCommand Save { get; set; }
+        public ReactiveCommand AddSourcePath { get; set; }
+        public ReactiveCommand RemoveSourcePath { get; set; }
+        public ReactiveCommand AddSourceRegex { get; set; }
+        public ReactiveCommand RemoveSourceRegex { get; set; }
 
         public ConfigViewModel()
         {
@@ -68,34 +94,62 @@ namespace AutoFileMover.Desktop.ViewModels
 
                 _config = container.Resolve<IConfig>();
             }
+
+            Initialise(_config);
         }
 
         public ConfigViewModel(IConfig config)
         {
             _config = config;
+            
+            Initialise(_config);
         }
 
         private void Initialise(IConfig config)
         {
+            this.DestinationPath = config.DestinationPath;
+            this.FileMoveRetries = config.FileMoveRetries;
+            this.IncludeSubdirectories = config.IncludeSubdirectories;
+            this.SourcePaths = new ReactiveCollection<string>(config.SourcePaths);
+            this.SourceRegex = new ReactiveCollection<string>(config.SourceRegex);
+
             Save = new ReactiveCommand();
             Save.Subscribe(e =>
             {
-                _config.DestinationPath = this.DestinationPath;
-                _config.FileMoveRetries = this.FileMoveRetries;
-                _config.IncludeSubdirectories = this.IncludeSubdirectories;
-                _config.SourcePaths = this.SourcePaths;
-                _config.SourceRegex = this.SourceRegex;
+                config.DestinationPath = this.DestinationPath;
+                config.FileMoveRetries = this.FileMoveRetries;
+                config.IncludeSubdirectories = this.IncludeSubdirectories;
+                config.SourcePaths = this.SourcePaths;
+                config.SourceRegex = this.SourceRegex;
             });
 
-            _dirty = Observable.Merge(this.ObservableForProperty(vm => vm.SourcePaths).Select(e => true),
-                                        this.ObservableForProperty(vm => vm.SourceRegex).Select(e => true),
-                                        this.ObservableForProperty(vm => vm.DestinationPath).Select(e => true),
-                                        this.ObservableForProperty(vm => vm.IncludeSubdirectories).Select(e => true),
-                                        this.ObservableForProperty(vm => vm.FileMoveRetries).Select(e => true),
-                                        Save.Select(e => false))
-                                        .DistinctUntilChanged()
-                                        .ToProperty(this, vm => vm.Dirty);
+            AddSourcePath = new ReactiveCommand(this.ObservableForProperty(x => x.NewSourcePath).Select(e => !string.IsNullOrWhiteSpace(e.GetValue())));
+            AddSourcePath.Subscribe(e => 
+            {
+                this.SourcePaths.Add(this.NewSourcePath);
+                this.NewSourcePath = string.Empty;
+            });
 
+            RemoveSourcePath = new ReactiveCommand(this.ObservableForProperty(x => x.SelectedSourcePath).Select(e => !string.IsNullOrWhiteSpace(e.GetValue())));
+            RemoveSourcePath.Subscribe(e => 
+            {
+                this.SourcePaths.Remove(this.SelectedSourcePath);
+                this.SelectedSourcePath = null;
+            });
+
+            AddSourceRegex = new ReactiveCommand(this.ObservableForProperty(x => x.NewSourceRegex).Select(e => !string.IsNullOrWhiteSpace(e.GetValue())));
+            AddSourceRegex.Subscribe(e =>
+            {
+                this.SourceRegex.Add(this.NewSourceRegex);
+                this.NewSourceRegex = string.Empty;
+            });
+
+            RemoveSourceRegex = new ReactiveCommand(this.ObservableForProperty(x => x.SelectedSourceRegex).Select(e => !string.IsNullOrWhiteSpace(e.GetValue())));
+            RemoveSourceRegex.Subscribe(e =>
+            {
+                this.SourceRegex.Remove(this.SelectedSourceRegex);
+                this.SelectedSourceRegex = null;
+            });
         }
     }
 }

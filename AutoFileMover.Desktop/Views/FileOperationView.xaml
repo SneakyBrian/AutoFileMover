@@ -5,11 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+    
     <StackPanel>
-        <TextBlock Text="{Binding OldFilePath}" Margin="5,0"/>
-        <TextBlock Text="{Binding FilePath}" Margin="5,0"/>
-        <TextBlock Text="{Binding State}" Margin="5,0"/>
-        <ProgressBar Value="{Binding Percentage, Mode=OneWay}" Height="20" Margin="5,0"  IsEnabled="{Binding InProgress}" />
-        <TextBlock Text="{Binding Error}" Foreground="Red" Margin="5,0"/>
+        <TextBlock Text="{Binding OldFilePath}" Margin="5"/>
+        <TextBlock Text="{Binding FilePath}" Margin="5"/>
+        <TextBlock Text="{Binding State}" Margin="5"/>
+        <ProgressBar Value="{Binding Percentage, Mode=OneWay}" Height="20" Margin="5" Visibility="{Binding Path=InProgress, Converter={StaticResource BoolToVis}}" />
+        <TextBlock Text="{Binding Error}" Foreground="Red" Margin="5"/>
     </StackPanel>
 </UserControl>

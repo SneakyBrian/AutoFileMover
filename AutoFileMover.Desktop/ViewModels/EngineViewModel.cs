@@ -23,6 +23,8 @@ namespace AutoFileMover.Desktop.ViewModels
         public ReactiveCollection<Exception> Errors { get; private set; }
         public ReactiveCollection<FileOperationViewModel> FileOperations { get; private set; }
 
+        public ConfigViewModel Config { get; private set; }
+
         public ReactiveCommand Start { get; private set; }
         public ReactiveCommand Stop { get; private set; }
         public ReactiveCommand Scan { get; private set; }
@@ -79,6 +81,8 @@ namespace AutoFileMover.Desktop.ViewModels
             FileOperations = Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileDetected += h, h => engine.FileDetected -= h)
                                 .Select(e => new FileOperationViewModel(e.EventArgs.OldFilePath, engine))
                                 .CreateCollection();
+
+            Config = new ConfigViewModel(engine.Config);
         }
     }
 
