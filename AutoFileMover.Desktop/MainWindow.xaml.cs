@@ -24,5 +24,15 @@ namespace AutoFileMover.Desktop
         {
             InitializeComponent();
         }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            this.ShowInTaskbar = this.WindowState != System.Windows.WindowState.Minimized;
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.ShowInTaskbar = this.WindowState != System.Windows.WindowState.Minimized;
+        }
     }
 }

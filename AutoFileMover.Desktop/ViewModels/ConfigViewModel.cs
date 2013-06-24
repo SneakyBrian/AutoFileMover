@@ -90,21 +90,6 @@ namespace AutoFileMover.Desktop.ViewModels
         public ReactiveCommand AddSourceRegex { get; set; }
         public ReactiveCommand RemoveSourceRegex { get; set; }
 
-        public ConfigViewModel()
-        {
-            using (var container = new UnityContainer())
-            {
-                container.Configure(x =>
-                {
-                    x.AddRegistry<IoCRegistry>();
-                });
-
-                _config = container.Resolve<IConfig>();
-            }
-
-            Initialise(_config);
-        }
-
         public ConfigViewModel(IConfig config)
         {
             _config = config;

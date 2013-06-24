@@ -32,6 +32,8 @@ namespace AutoFileMover.Desktop.ViewModels
 
         public ConfigViewModel Config { get; private set; }
 
+        public TrayIconViewModel TrayIcon { get; private set; }
+
         public ReactiveCommand Start { get; private set; }
         public ReactiveCommand Stop { get; private set; }
         public ReactiveCommand Scan { get; private set; }
@@ -95,6 +97,8 @@ namespace AutoFileMover.Desktop.ViewModels
             {
                 engine.Start();
             }
+
+            TrayIcon = new TrayIconViewModel(engine);
         }
     }
 

@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\AutoFileMover.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
@@ -142,6 +145,7 @@
     <Compile Include="ViewModels\ConfigViewModel.cs" />
     <Compile Include="ViewModels\EngineViewModel.cs" />
     <Compile Include="ViewModels\FileOperationViewModel.cs" />
+    <Compile Include="ViewModels\TrayIconViewModel.cs" />
     <Compile Include="Views\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>
@@ -150,6 +154,9 @@
     </Compile>
     <Compile Include="Views\FileOperationView.xaml.cs">
       <DependentUpon>FileOperationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TrayIconView.xaml.cs">
+      <DependentUpon>TrayIconView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -172,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FileOperationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TrayIconView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -213,6 +224,11 @@
       <Project>{d34e0663-8fad-4a29-8f52-386a94d38eaa}</Project>
       <Name>AutoFileMover.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AutoFileMover.ico" />
+    <Resource Include="Images\AutoFileMover_Error.ico" />
+    <Resource Include="Images\AutoFileMover_InProgress.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

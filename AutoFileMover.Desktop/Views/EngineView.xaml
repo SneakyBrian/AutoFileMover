@@ -48,7 +48,9 @@
                 <ContentControl Content="{Binding Config }" />
             </ScrollViewer>
         </Expander>
-        
+
+        <ContentControl Content="{Binding TrayIcon }" />
+
     </StackPanel>
         
 </UserControl>
