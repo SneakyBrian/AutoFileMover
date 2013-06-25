@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reactive.Linq;
+using System.Text.RegularExpressions;
 using AutoFileMover.Core.Interfaces;
 using AutoFileMover.Desktop.IoC;
 using Microsoft.Practices.Unity;
@@ -120,7 +122,10 @@ namespace AutoFileMover.Desktop.ViewModels
                 config.SourceRegex = this.SourceRegex;
             });
 
-            AddSourcePath = new ReactiveCommand(this.ObservableForProperty(x => x.NewSourcePath).Select(e => !string.IsNullOrWhiteSpace(e.GetValue())));
+            AddSourcePath = new ReactiveCommand(this.ObservableForProperty(x => x.NewSourcePath)
+                                                    .Select(e => e.GetValue())
+                                                    .Where(v => !string.IsNullOrWhiteSpace(v))
+                                                    .Select(v => Directory.Exists(v)));
             AddSourcePath.Subscribe(e => 
             {
                 this.SourcePaths.Add(this.NewSourcePath);
@@ -134,7 +139,9 @@ namespace AutoFileMover.Desktop.ViewModels
                 this.SelectedSourcePath = null;
             });
 
-            AddSourceRegex = new ReactiveCommand(this.ObservableForProperty(x => x.NewSourceRegex).Select(e => !string.IsNullOrWhiteSpace(e.GetValue())));
+            AddSourceRegex = new ReactiveCommand(this.ObservableForProperty(x => x.NewSourceRegex)
+                                                    .Select(e => e.GetValue())
+                                                    .Select(v => IsValidRegex(v)));
             AddSourceRegex.Subscribe(e =>
             {
                 this.SourceRegex.Add(this.NewSourceRegex);
@@ -152,6 +159,22 @@ namespace AutoFileMover.Desktop.ViewModels
             this.SelectedSourcePath = "";
             this.NewSourceRegex = "";
             this.SelectedSourceRegex = "";
+        }
+
+        private static bool IsValidRegex(string pattern)
+        {
+            if (string.IsNullOrWhiteSpace(pattern)) return false;
+
+            try
+            {
+                Regex.Match("", pattern);
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
