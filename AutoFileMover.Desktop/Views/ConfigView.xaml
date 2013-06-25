@@ -6,7 +6,7 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              MinWidth="300" MinHeight="410"
-             d:DesignHeight="410" d:DesignWidth="300">
+             d:DesignHeight="450" d:DesignWidth="300">
     
     <StackPanel>
 

@@ -6,33 +6,60 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400">
             
-    <StackPanel>
+    <Grid>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
     
-        <StackPanel Orientation="Horizontal">
-            <Label Content="Current Status:" Margin="5" />
-            <TextBlock Text="{Binding State}" VerticalAlignment="Center" Margin="5" />
-        </StackPanel>
+        <Grid Grid.Column="0">
 
-        <StackPanel Orientation="Horizontal">
-            <Button Content="Start" Width="75" Margin="5" Command="{Binding Start}"/>
-            <Button Content="Stop" Width="75" Margin="5" Command="{Binding Stop}"/>
-            <Button Content="Scan" Width="75" Margin="5" Command="{Binding Scan}"/>
-        </StackPanel>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Orientation="Horizontal" Grid.Row="0">
+                <Label Content="Current Status:" Margin="5" />
+                <TextBlock Text="{Binding State}" VerticalAlignment="Center" Margin="5" />
+            </StackPanel>
 
-        <Expander Header="Operations">
-            <ScrollViewer Height="300">
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                <Button Content="Start" Width="75" Margin="5" Command="{Binding Start}"/>
+                <Button Content="Stop" Width="75" Margin="5" Command="{Binding Stop}"/>
+                <Button Content="Scan" Width="75" Margin="5" Command="{Binding Scan}"/>
+            </StackPanel>
+
+            <ContentControl Content="{Binding Config }" Grid.Row="2" />
+
+        </Grid>
+
+        <Grid Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="7*" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="File Operations:" />
+            
+            <ScrollViewer Grid.Row="1">
                 <ListView ItemsSource="{Binding FileOperations}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         </Style>
-                    </ListView.ItemContainerStyle>                
+                    </ListView.ItemContainerStyle>
                 </ListView>
             </ScrollViewer>
-        </Expander>
 
-        <Expander Header="Errors">
-            <ScrollViewer Height="300">
+            <TextBlock Grid.Row="2" Text="Errors:" />
+
+            <ScrollViewer Grid.Row="3">
                 <ListView ItemsSource="{Binding Errors}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -41,16 +68,11 @@
                     </ListView.ItemContainerStyle>
                 </ListView>
             </ScrollViewer>
-        </Expander>
 
-        <Expander Header="Settings">
-            <ScrollViewer Height="300">
-                <ContentControl Content="{Binding Config }" />
-            </ScrollViewer>
-        </Expander>
+        </Grid>
 
         <ContentControl Content="{Binding TrayIcon }" />
 
-    </StackPanel>
+    </Grid>
         
 </UserControl>
