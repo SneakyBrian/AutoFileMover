@@ -147,6 +147,11 @@ namespace AutoFileMover.Desktop.ViewModels
                 this.SourceRegex.Remove(this.SelectedSourceRegex);
                 this.SelectedSourceRegex = null;
             });
+
+            this.NewSourcePath = "";
+            this.SelectedSourcePath = "";
+            this.NewSourceRegex = "";
+            this.SelectedSourceRegex = "";
         }
     }
 }
