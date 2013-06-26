@@ -161,6 +161,12 @@ a.button span {
 #view-on-github span {
   background: transparent url(../images/octocat-icon.png) 12px 50% no-repeat;
 }
+#launch span {
+  background: transparent url(../images/launch-icon.png) 12px 50% no-repeat;
+}
+#install span {
+  background: transparent url(../images/install-icon.png) 12px 50% no-repeat;
+}
 #view-on-github {
   margin-right: 0;
 }
