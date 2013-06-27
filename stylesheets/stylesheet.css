@@ -375,3 +375,28 @@ footer a:hover {
 
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) {}
+
+
+/* ClickOnce publish page styles */
+.BannerColumn {background-color:#000000}
+.Banner {border:0; padding:0; height:8px; margin-top:0px; color:#ffffff; filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1,StartColorStr='#1c5280',EndColorStr='#FFFFFF');}
+.BannerTextCompany {font:bold; font-size:18pt; color:#cecece; font-family:Tahoma; height:0px; margin-top:0; margin-left:8px; margin-bottom:0; padding:0px; white-space:nowrap; filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2,OffY=2,Color='black',Positive='true');}
+.BannerTextApplication {font:bold; font-size:18pt; font-family:Tahoma; height:0px; margin-top:0; margin-left:8px; margin-bottom:0; padding:0px; white-space:nowrap; filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2,OffY=2,Color='black',Positive='true');}
+.BannerText {font:bold; font-size:18pt; font-family:Tahoma; height:0px; margin-top:0; margin-left:8px; margin-bottom:0; padding:0px; filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2,OffY=2,Color='black',Positive='true');}
+.BannerSubhead {border:0; padding:0; height:16px; margin-top:0px; margin-left:10px; color:#ffffff; filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1,StartColorStr='#4B3E1A',EndColorStr='#FFFFFF');}
+.BannerSubheadText {font:bold; height:11px; font-size:11px; font-family:Tahoma; margin-top:1; margin-left:10; filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2,OffY=2,Color='black',Positive='true');}
+.FooterRule {border:0; padding:0; height:1px; margin:0px; color:#ffffff; filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1,StartColorStr='#4B3E1A',EndColorStr='#FFFFFF');}
+.FooterText {font-size:11px; font-weight:normal; text-decoration:none; font-family:Tahoma; margin-top:10; margin-left:0px; margin-bottom:2; padding:0px; color:#999999; white-space:nowrap}
+.FooterText A:link {font-weight:normal; color:#999999; text-decoration:underline}
+.FooterText A:visited {font-weight:normal; color:#999999; text-decoration:underline}
+.FooterText A:active {font-weight:normal; color:#999999; text-decoration:underline}
+.FooterText A:hover {font-weight:normal; color:#FF6600; text-decoration:underline}
+.ClickOnceInfoText {font-size:11px; font-weight:normal; text-decoration:none; font-family:Tahoma; margin-top:0; margin-right:2px; margin-bottom:0; padding:0px; color:#000000}
+.InstallTextStyle {font:bold; font-size:14pt; font-family:Tahoma; a:#FF0000; text-decoration:None}
+.DetailsStyle {margin-left:30px}
+.ItemStyle {margin-left:-15px; font-weight:bold}
+.StartColorStr {background-color:#4B3E1A}
+.JustThisApp A:link {font-weight:normal; color:#000066; text-decoration:underline}
+.JustThisApp A:visited {font-weight:normal; color:#000066; text-decoration:underline}
+.JustThisApp A:active {font-weight:normal; text-decoration:underline}
+.JustThisApp A:hover {font-weight:normal; color:#FF6600; text-decoration:underline}
