@@ -123,6 +123,7 @@ namespace AutoFileMover.Desktop.ViewModels
             });
 
             AddSourcePath = new ReactiveCommand(this.ObservableForProperty(x => x.NewSourcePath)
+                                                    .Delay(TimeSpan.FromMilliseconds(500))
                                                     .Select(e => e.GetValue())
                                                     .Where(v => !string.IsNullOrWhiteSpace(v))
                                                     .Select(v => Directory.Exists(v)));
@@ -140,6 +141,7 @@ namespace AutoFileMover.Desktop.ViewModels
             });
 
             AddSourceRegex = new ReactiveCommand(this.ObservableForProperty(x => x.NewSourceRegex)
+                                                    .Delay(TimeSpan.FromMilliseconds(500))
                                                     .Select(e => e.GetValue())
                                                     .Select(v => IsValidRegex(v)));
             AddSourceRegex.Subscribe(e =>

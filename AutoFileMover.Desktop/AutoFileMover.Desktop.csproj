@@ -23,16 +23,19 @@
     <UpdateMode>Background</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdatePeriodically>true</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>http://sneakybrian.github.io/AutoFileMover/downloads/latest/</InstallUrl>
     <SupportUrl>http://sneakybrian.github.io/AutoFileMover/</SupportUrl>
-    <ProductName>AutoFileMover</ProductName>
+    <ErrorReportUrl>http://sneakybrian.github.io/AutoFileMover/Error/</ErrorReportUrl>
+    <ProductName>AutoFileMover %28beta%29</ProductName>
     <PublisherName>SneakyBrian</PublisherName>
     <SuiteName>AutoFileMover</SuiteName>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.html</WebPage>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
