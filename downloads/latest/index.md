@@ -18,7 +18,7 @@ download_b_text: Install
    
   **Name:**           AutoFileMover (beta)
    
-  **Version:**        0.1.0.0
+  **Version:**        0.1.0.1
    
   **Publisher:**      SneakyBrian
    
@@ -29,6 +29,9 @@ The following prerequisites are required:
  
 
 -   Microsoft .NET Framework 4.5 (x86 and x64)
+-   .NET Framework 3.5 SP1
+-   Microsoft .NET Framework 4 (x86 and x64) and Update for .NET
+    Framework 4 (KB2468871)
 
 If these components are already installed, you can
 [launch](AutoFileMover.Desktop.application) the application now.
