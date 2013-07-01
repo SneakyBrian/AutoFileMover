@@ -1,12 +1,11 @@
 ---
 layout: index
+title: Main Page
 ---
 
 # Heading 1 #
 
 ## Heading 2 ##
-
-
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in ante quam. Proin ut ante cursus enim volutpat accumsan a quis nunc. Nam venenatis nisl eget commodo volutpat. Sed tempor massa id libero pulvinar, non commodo urna congue. In ornare, est vitae gravida accumsan, lorem est fermentum libero, a interdum erat est sit amet massa. Ut et leo sem. Aliquam faucibus dui at risus mollis, at aliquam ipsum commodo. Integer erat urna, bibendum sed ante quis, vulputate dignissim eros. Fusce vestibulum cursus tincidunt.
 
