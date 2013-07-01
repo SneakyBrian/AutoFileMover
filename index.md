@@ -1,6 +1,12 @@
 ---
 layout: index
 title: Main Page
+download_a_href: https://github.com/SneakyBrian/AutoFileMover/zipball/master
+download_a_id: download-zip
+download_a_text: Download .zip
+download_b_href: https://github.com/SneakyBrian/AutoFileMover/tarball/master
+download_b_id: download-tar-gz
+download_b_text: Download .tar.gz
 ---
 
 # Heading 1 #
