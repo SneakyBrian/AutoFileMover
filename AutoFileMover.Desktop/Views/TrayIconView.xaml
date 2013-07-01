@@ -10,7 +10,7 @@
         <tb:TaskbarIcon 
             Visibility="Visible"
             ToolTipText="AutoFileMover"
-            IconSource="/Images/AutoFileMover.ico"
+            IconSource="{Binding Icon}"
             MenuActivation="RightClick"
             DoubleClickCommand="{Binding ShowWindow}">
 

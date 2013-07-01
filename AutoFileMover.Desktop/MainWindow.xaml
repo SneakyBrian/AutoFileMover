@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:AutoFileMover.Desktop.ViewModels"
         xmlns:v="clr-namespace:AutoFileMover.Desktop.Views" 
+        Icon="/AutoFileMover.Desktop;component/Images/AutoFileMover.ico"
         Title="AutoFileMover" 
         WindowState="Minimized"
         StateChanged="Window_StateChanged" 

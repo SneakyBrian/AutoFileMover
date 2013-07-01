@@ -39,12 +39,9 @@ namespace AutoFileMover.Desktop.ViewModels
 
         public void Initialise(IEngine engine)
         {
-            //var defaultIcon = GetEmbeddedIcon("AutoFileMover.Desktop.Images.AutoFileMover.png");
-            //var errorIcon = GetEmbeddedIcon("AutoFileMover.Desktop.Images.AutoFileMover_Error.png");
-            //var progressIcon = GetEmbeddedIcon("AutoFileMover.Desktop.Images.AutoFileMover_InProgress.png");
-            var defaultIcon = "/Images/AutoFileMover.png";
-            var errorIcon = "/Images/AutoFileMover_Error.png";
-            var progressIcon = "/Images/AutoFileMover_InProgress.png";
+            var defaultIcon = "/AutoFileMover.Desktop;component/Images/AutoFileMover.ico";
+            var errorIcon = "/AutoFileMover.Desktop;component/Images/AutoFileMover_Error.ico";
+            var progressIcon = "/AutoFileMover.Desktop;component/Images/AutoFileMover_InProgress.ico";
 
             _Icon = Observable.Merge(Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveStarted += h, h => engine.FileMoveStarted -= h).Select(e => progressIcon),
                                     Observable.FromEventPattern<EventHandler<FileMoveEventArgs>, FileMoveEventArgs>(h => engine.FileMoveProgress += h, h => engine.FileMoveProgress -= h).Select(e => progressIcon),
@@ -67,20 +64,5 @@ namespace AutoFileMover.Desktop.ViewModels
                 App.Current.Shutdown();
             });
         }
-
-        //private ImageSource GetEmbeddedIcon(string iconPath)
-        //{
-        //    using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(iconPath))
-        //    {
-        //        var bitmap = new BitmapImage();
-        //        bitmap.BeginInit();
-        //        bitmap.StreamSource = stream;
-        //        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-        //        bitmap.EndInit();
-        //        bitmap.Freeze();
-
-        //        return bitmap;
-        //    }
-        //}
     }
 }
