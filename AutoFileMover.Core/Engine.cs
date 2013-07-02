@@ -24,7 +24,7 @@ namespace AutoFileMover.Core
             //build the regex list
             _regexList = Config.SourceRegex.Select(sr => new Regex(sr, RegexOptions.Compiled | RegexOptions.IgnoreCase));
 
-            _watchers = Config.SourcePaths.Select(sp =>
+            _watchers = Config.SourcePaths.Where(sp => Directory.Exists(sp)).Select(sp =>
             {
                 var fsw = new FileSystemWatcher(sp);
 
