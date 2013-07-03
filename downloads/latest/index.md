@@ -1,5 +1,5 @@
 ---
-layout: index
+layout: download
 title: Download Latest
 download_a_href: AutoFileMover.Desktop.application
 download_a_id: launch
