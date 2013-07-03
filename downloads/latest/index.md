@@ -9,20 +9,20 @@ download_b_id: install
 download_b_text: Install
 ---
 
-  ----------------------
-  SneakyBrian
-  AutoFileMover (beta)
-  ----------------------
+||
+||
+|SneakyBrian|
+|AutoFileMover (beta)|
+||
 
-  ---------------- -- ----------------------
-   
-  **Name:**           AutoFileMover (beta)
-   
-  **Version:**        0.1.0.2
-   
-  **Publisher:**      SneakyBrian
-   
-  ---------------- -- ----------------------
+||
+| |
+|**Name:**||AutoFileMover (beta)|
+| |
+|**Version:**||0.1.0.2|
+| |
+|**Publisher:**||SneakyBrian|
+| |
 
 The following prerequisites are required:
 
@@ -37,15 +37,16 @@ the application.
 
  
 
-  -- ---------------------- --
-     [Install](setup.exe)   
-  -- ---------------------- --
+||
+||[Install](setup.exe)||
 
  
 
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  [SneakyBrian Customer Support](http://sneakybrian.github.io/AutoFileMover/)    ::    [ClickOnce and .NET Framework Resources](http://go.microsoft.com/fwlink/?LinkId=154571)
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+||
+||
+|[SneakyBrian Customer Support](http://sneakybrian.github.io/AutoFileMover/)    ::    [ClickOnce and .NET Framework Resources](http://go.microsoft.com/fwlink/?LinkId=154571)|
+||
+||
 
 
 
