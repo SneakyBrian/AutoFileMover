@@ -9,20 +9,54 @@ download_b_id: install
 download_b_text: Install
 ---
 
-||
-||
-|SneakyBrian|
-|AutoFileMover (beta)|
-||
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">SneakyBrian</td>
+</tr>
+<tr class="odd">
+<td align="left">AutoFileMover (beta)</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
 
-||
-| |
-|**Name:**||AutoFileMover (beta)|
-| |
-|**Version:**||0.1.0.2|
-| |
-|**Publisher:**||SneakyBrian|
-| |
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"> </td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Name:</strong></td>
+<td align="left"></td>
+<td align="left">AutoFileMover (beta)</td>
+</tr>
+<tr class="odd">
+<td align="left"> </td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Version:</strong></td>
+<td align="left"></td>
+<td align="left">0.1.0.2</td>
+</tr>
+<tr class="odd">
+<td align="left"> </td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Publisher:</strong></td>
+<td align="left"></td>
+<td align="left">SneakyBrian</td>
+</tr>
+<tr class="odd">
+<td align="left"> </td>
+</tr>
+</tbody>
+</table>
 
 The following prerequisites are required:
 
@@ -37,16 +71,34 @@ the application.
 
  
 
-||
-||[Install](setup.exe)||
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"><a href="setup.exe">Install</a></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
 
  
 
-||
-||
-|[SneakyBrian Customer Support](http://sneakybrian.github.io/AutoFileMover/)    ::    [ClickOnce and .NET Framework Resources](http://go.microsoft.com/fwlink/?LinkId=154571)|
-||
-||
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><a href="http://sneakybrian.github.io/AutoFileMover/">SneakyBrian Customer Support</a>    ::    <a href="http://go.microsoft.com/fwlink/?LinkId=154571">ClickOnce and .NET Framework Resources</a></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
 
 
 
