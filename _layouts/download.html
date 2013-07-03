@@ -49,5 +49,14 @@
 
       </div>
     </div>
+	
+	<script type="text/javascript">
+		var links = document.getElementsByTagName('a');
+		for (var i = 0; i < links.length; i++) {
+			if (links[i].innerText === 'Install') {
+				links[i].className = 'button';
+			}
+		}
+	</script>
   </body>
 </html>
