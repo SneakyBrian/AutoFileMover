@@ -53,7 +53,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="File Operations:" VerticalAlignment="Center" Margin="5" />
-                <Button Grid.Column="1" Content="Clear" Width="75" Margin="5" Command="{Binding ClearFileOperations}" />
+                <Button Grid.Column="1" Content="Clear" Width="75" Margin="5" Command="{Binding ClearFileOperations}" Visibility="Hidden" />
 
             </Grid>
             
@@ -79,7 +79,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="Errors:" VerticalAlignment="Center" Margin="5" />
-                <Button Grid.Column="1" Content="Clear" Width="75" Margin="5" Command="{Binding ClearErrors}" />
+                <Button Grid.Column="1" Content="Clear" Width="75" Margin="5" Command="{Binding ClearErrors}" Visibility="Hidden" />
 
             </Grid>
 

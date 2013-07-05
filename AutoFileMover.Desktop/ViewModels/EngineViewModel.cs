@@ -92,7 +92,7 @@ namespace AutoFileMover.Desktop.ViewModels
 
             errors.ChangeTrackingEnabled = true;
 
-            Errors = errors.CreateDerivedCollection(x => x, x => !Properties.Settings.Default.AutoClear, null, errors.ItemsAdded.Delay(TimeSpan.FromSeconds(10)));
+            Errors = errors.CreateDerivedCollection(x => x, x => !Properties.Settings.Default.AutoClear);
 
             var fileOperations = Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileDetected += h, h => engine.FileDetected -= h)
                                 .Select(e => new FileOperationViewModel(e.EventArgs.OldFilePath, engine))
@@ -100,16 +100,13 @@ namespace AutoFileMover.Desktop.ViewModels
 
             fileOperations.ChangeTrackingEnabled = true;
 
-            //fileOperations.ItemChanged.Subscribe(x => System.Diagnostics.Debug.WriteLine("fileOperations.ItemChanged: {0}, {1}", x.PropertyName, x.Sender.State));
-
-            FileOperations = fileOperations.CreateDerivedCollection(x => x, x => !(Properties.Settings.Default.AutoClear && x.State == FileOperationState.Completed), 
-                                                                    null, fileOperations.ItemChanged.Delay(TimeSpan.FromSeconds(2)));
+            FileOperations = fileOperations.CreateDerivedCollection(x => x, x => !(Properties.Settings.Default.AutoClear && x.State == FileOperationState.Completed));
 
             ClearErrors = new ReactiveCommand(Errors.IsEmpty.Select(c => !c).StartWith(false));
-            ClearErrors.ObserveOn(RxApp.DeferredScheduler).Subscribe(x => Errors.Reset());
+            ClearErrors.Subscribe(x => Errors.Reset());
 
             ClearFileOperations = new ReactiveCommand(FileOperations.IsEmpty.Select(c => !c).StartWith(false));
-            ClearFileOperations.ObserveOn(RxApp.DeferredScheduler).Subscribe(x => FileOperations.Reset());
+            ClearFileOperations.Subscribe(x => FileOperations.Reset());
             
 
             Config = new ConfigViewModel(engine.Config);

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:AutoFileMover.Desktop.ViewModels"
         xmlns:v="clr-namespace:AutoFileMover.Desktop.Views" 
-        Icon="/AutoFileMover.Desktop;component/Images/AutoFileMover.ico"
+        Icon="{Binding Path=TrayIcon.Icon}"
         Title="AutoFileMover" 
         WindowState="Minimized"
         StateChanged="Window_StateChanged" 
@@ -29,7 +29,7 @@
     </Window.DataContext>
 
     <Grid>
-        <ContentControl Content="{Binding }"/>
+        <ContentControl Content="{Binding}"/>
     </Grid>
 
 </Window>
