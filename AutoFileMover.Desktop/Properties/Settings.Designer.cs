@@ -74,7 +74,7 @@ namespace AutoFileMover.Desktop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int FileMoveRetries {
             get {
                 return ((int)(this["FileMoveRetries"]));

@@ -15,7 +15,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="FileMoveRetries" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">3</Value>
+      <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="AutoStart" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
