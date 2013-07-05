@@ -29,7 +29,8 @@ namespace AutoFileMover.Desktop
                             {
                                 var assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName();
 
-                                var result = MessageBox.Show("Sorry, an error occurred. Click OK to log the error.", assemblyName.Name, MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                                var result = MessageBox.Show("Sorry, an error occurred.\nClick OK to log the error.", 
+                                                                assemblyName.Name, MessageBoxButton.OKCancel, MessageBoxImage.Error);
 
                                 if (result == MessageBoxResult.OK)
                                 {
