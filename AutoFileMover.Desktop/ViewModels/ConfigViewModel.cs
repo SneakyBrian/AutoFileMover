@@ -23,6 +23,13 @@ namespace AutoFileMover.Desktop.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.AutoStart, value); }
         }
 
+        private bool _AutoClear;
+        public bool AutoClear
+        {
+            get { return _AutoClear; }
+            set { this.RaiseAndSetIfChanged(x => x.AutoClear, value); }
+        }
+
         private ReactiveCollection<string> _SourcePaths;
         public ReactiveCollection<string> SourcePaths
         {
@@ -102,6 +109,7 @@ namespace AutoFileMover.Desktop.ViewModels
         private void Initialise(IConfig config)
         {
             this.AutoStart = Properties.Settings.Default.AutoStart;
+            this.AutoClear = Properties.Settings.Default.AutoClear;
 
             this.DestinationPath = config.DestinationPath;
             this.FileMoveRetries = config.FileMoveRetries;
@@ -113,6 +121,7 @@ namespace AutoFileMover.Desktop.ViewModels
             Save.Subscribe(e =>
             {
                 Properties.Settings.Default.AutoStart = this.AutoStart;
+                Properties.Settings.Default.AutoClear = this.AutoClear;
                 Properties.Settings.Default.Save();
 
                 config.DestinationPath = this.DestinationPath;
@@ -126,7 +135,8 @@ namespace AutoFileMover.Desktop.ViewModels
                                                     .Delay(TimeSpan.FromMilliseconds(500))
                                                     .Select(e => e.GetValue())
                                                     .Where(v => !string.IsNullOrWhiteSpace(v))
-                                                    .Select(v => Directory.Exists(v)));
+                                                    .Select(v => Directory.Exists(v))
+                                                    .StartWith(false));
             AddSourcePath.Subscribe(e => 
             {
                 this.SourcePaths.Add(this.NewSourcePath);
@@ -143,7 +153,8 @@ namespace AutoFileMover.Desktop.ViewModels
             AddSourceRegex = new ReactiveCommand(this.ObservableForProperty(x => x.NewSourceRegex)
                                                     .Delay(TimeSpan.FromMilliseconds(500))
                                                     .Select(e => e.GetValue())
-                                                    .Select(v => IsValidRegex(v)));
+                                                    .Select(v => IsValidRegex(v))
+                                                    .StartWith(false));
             AddSourceRegex.Subscribe(e =>
             {
                 this.SourceRegex.Add(this.NewSourceRegex);

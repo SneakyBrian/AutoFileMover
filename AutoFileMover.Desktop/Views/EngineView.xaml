@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="400">
+             d:DesignHeight="400" d:DesignWidth="800">
             
     <Grid>
         
@@ -39,13 +39,27 @@
         <Grid Grid.Column="1">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
+                <RowDefinition Height="35" />
                 <RowDefinition Height="7*" />
-                <RowDefinition Height="20" />
+                <RowDefinition Height="35" />
                 <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="File Operations:" />
+            <Grid Grid.Row="0">
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="File Operations:" VerticalAlignment="Center" Margin="5" />
+                <Button Grid.Column="1" Content="Clear" Width="75" Margin="5" Command="{Binding ClearFileOperations}" />
+
+            </Grid>
+            
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+
+            </StackPanel>
             
             <ScrollViewer Grid.Row="1">
                 <ListView ItemsSource="{Binding FileOperations}">
@@ -57,7 +71,17 @@
                 </ListView>
             </ScrollViewer>
 
-            <TextBlock Grid.Row="2" Text="Errors:" />
+            <Grid Grid.Row="2">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Errors:" VerticalAlignment="Center" Margin="5" />
+                <Button Grid.Column="1" Content="Clear" Width="75" Margin="5" Command="{Binding ClearErrors}" />
+
+            </Grid>
 
             <ScrollViewer Grid.Row="3">
                 <ListView ItemsSource="{Binding Errors}">

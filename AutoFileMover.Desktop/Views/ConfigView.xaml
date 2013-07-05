@@ -6,17 +6,18 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              MinWidth="300" MinHeight="410"
-             d:DesignHeight="450" d:DesignWidth="300">
+             d:DesignHeight="550" d:DesignWidth="300">
     
     <StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="5">
             <CheckBox Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutoStart}" Content="Auto Start" />
+            <CheckBox Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutoClear}" Content="Auto Clear" />
         </StackPanel>        
         
         <StackPanel Margin="5">
             <Label Content="Source Paths"/>
-            <ListBox Height="50" Margin="5" ItemsSource="{Binding SourcePaths}" SelectedItem="{Binding SelectedSourcePath}" />
+            <ListBox Height="80" Margin="5" ItemsSource="{Binding SourcePaths}" SelectedItem="{Binding SelectedSourcePath}" />
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -31,7 +32,7 @@
 
         <StackPanel Margin="5">
             <Label Content="Source Regex"/>
-            <ListBox Height="50" Margin="5" ItemsSource="{Binding SourceRegex}" SelectedItem="{Binding SelectedSourceRegex}" />
+            <ListBox Height="80" Margin="5" ItemsSource="{Binding SourceRegex}" SelectedItem="{Binding SelectedSourceRegex}" />
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />

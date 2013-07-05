@@ -25,7 +25,7 @@ namespace AutoFileMover.Desktop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Temp\\AFMTEST\\Input")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Public\\Downloads")]
         public string SourcePaths {
             get {
                 return ((string)(this["SourcePaths"]));
@@ -50,7 +50,7 @@ namespace AutoFileMover.Desktop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Temp\\AFMTEST\\Output")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Public\\Videos")]
         public string DestinationPath {
             get {
                 return ((string)(this["DestinationPath"]));
@@ -93,6 +93,18 @@ namespace AutoFileMover.Desktop.Properties {
             }
             set {
                 this["AutoStart"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoClear {
+            get {
+                return ((bool)(this["AutoClear"]));
+            }
+            set {
+                this["AutoClear"] = value;
             }
         }
     }
