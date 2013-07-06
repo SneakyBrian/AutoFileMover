@@ -19,21 +19,24 @@
   <userSettings>
     <AutoFileMover.Desktop.Properties.Settings>
       <setting name="SourcePaths" serializeAs="String">
-        <value>D:\Temp\AFMTEST\Input</value>
+        <value>C:\Users\Public\Downloads</value>
       </setting>
       <setting name="SourceRegex" serializeAs="String">
         <value>^(\b.*\b(?=[.])).*(?&lt;Season&gt;(?:(?&lt;=s)[1-9][0-9]|(?&lt;=s0)[1-9])).*\.(?:avi|mkv|mp4)$</value>
       </setting>
       <setting name="DestinationPath" serializeAs="String">
-        <value>D:\Temp\AFMTEST\Output</value>
+        <value>C:\Users\Public\Videos</value>
       </setting>
       <setting name="IncludeSubdirectories" serializeAs="String">
         <value>False</value>
       </setting>
       <setting name="FileMoveRetries" serializeAs="String">
-        <value>3</value>
+        <value>10</value>
       </setting>
       <setting name="AutoStart" serializeAs="String">
+        <value>True</value>
+      </setting>
+      <setting name="AutoClear" serializeAs="String">
         <value>True</value>
       </setting>
     </AutoFileMover.Desktop.Properties.Settings>
