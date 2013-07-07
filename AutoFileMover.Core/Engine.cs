@@ -103,24 +103,26 @@ namespace AutoFileMover.Core
 
                         OnFileMoveStarted(outputPath, filePath, fileInfo.Length);
 
-                        for (int i = 0; i < Config.FileMoveRetries; i++)
+                        int tries = 0;
+
+                        for (; tries < Config.FileMoveRetries; tries++)
                         {
                             try
                             {
                                 XCopy.Copy(filePath, outputPath, true, true, (o, pce) =>
                                 {
-                                    OnFileMoveProgress(outputPath, filePath, fileInfo.Length, pce.ProgressPercentage);
+                                    OnFileMoveProgress(outputPath, filePath, fileInfo.Length, pce.ProgressPercentage, tries);
                                 });
                                 break;
                             }
                             catch (Exception ex)
                             {
-                                OnFileMoveError(outputPath, filePath, fileInfo.Length, ex);
-                                Thread.Sleep(1000 * (i + 1));
+                                OnFileMoveError(outputPath, filePath, fileInfo.Length, ex, tries);
+                                Thread.Sleep(1000 * (tries + 1));
                             }
                         }
 
-                        for (int i = 0; i < Config.FileMoveRetries && File.Exists(filePath); i++)
+                        for (; tries < Config.FileMoveRetries && File.Exists(filePath); tries++)
                         {
                             try
                             {
@@ -129,8 +131,8 @@ namespace AutoFileMover.Core
                             }
                             catch (Exception ex)
                             {
-                                OnFileMoveError(outputPath, filePath, fileInfo.Length, ex);
-                                Thread.Sleep(1000 * (i + 1));
+                                OnFileMoveError(outputPath, filePath, fileInfo.Length, ex, tries);
+                                Thread.Sleep(1000 * (tries + 1));
                             }
                         }
 
@@ -201,12 +203,12 @@ namespace AutoFileMover.Core
 
         public event EventHandler<FileMoveEventArgs> FileMoveProgress;
 
-        private void OnFileMoveProgress(string filePath, string oldFilePath, long fileSize, int percentage)
+        private void OnFileMoveProgress(string filePath, string oldFilePath, long fileSize, int percentage, int tries)
         {
             var handler = FileMoveProgress;
             if (handler != null)
             {
-                handler(this, new FileMoveEventArgs(filePath, oldFilePath, fileSize, percentage));
+                handler(this, new FileMoveEventArgs(filePath, oldFilePath, fileSize, percentage, tries));
             }
         }
         
@@ -223,12 +225,12 @@ namespace AutoFileMover.Core
 
         public event EventHandler<FileErrorEventArgs> FileMoveError;
 
-        private void OnFileMoveError(string filePath, string oldFilePath, long fileSize, Exception ex)
+        private void OnFileMoveError(string filePath, string oldFilePath, long fileSize, Exception ex, int tries)
         {
             var handler = FileMoveError;
             if (handler != null)
             {
-                handler(this, new FileErrorEventArgs(filePath, oldFilePath, fileSize, ex));
+                handler(this, new FileErrorEventArgs(filePath, oldFilePath, fileSize, ex, tries));
             }
         }
 

@@ -42,23 +42,35 @@ namespace AutoFileMover.Core.Interfaces
         }
     }
 
-    public class FileMoveEventArgs : FileEventArgs
+    public class FileTryEventArgs : FileEventArgs
+    {
+        public int Tries { get; private set; }
+
+        public FileTryEventArgs(string filePath, string oldFilePath, long fileSize, int tries)
+            : base(filePath, oldFilePath, fileSize)
+        {
+            Tries = tries;
+        }
+
+    }
+
+    public class FileMoveEventArgs : FileTryEventArgs
     {
         public int Percentage { get; private set; }
 
-        public FileMoveEventArgs(string filePath, string oldFilePath, long fileSize, int percentage)
-            : base(filePath, oldFilePath, fileSize)
+        public FileMoveEventArgs(string filePath, string oldFilePath, long fileSize, int percentage, int tries)
+            : base(filePath, oldFilePath, fileSize, tries)
         {
             Percentage = percentage;
         }
     }
 
-    public class FileErrorEventArgs : FileEventArgs
+    public class FileErrorEventArgs : FileTryEventArgs
     {
         public Exception Exception { get; private set; }
 
-        public FileErrorEventArgs(string filePath, string oldFilePath, long fileSize, Exception ex)
-            : base(filePath, oldFilePath, fileSize)
+        public FileErrorEventArgs(string filePath, string oldFilePath, long fileSize, Exception ex, int tries)
+            : base(filePath, oldFilePath, fileSize, tries)
         {
             Exception = ex;
         }

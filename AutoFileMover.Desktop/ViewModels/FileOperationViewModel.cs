@@ -49,6 +49,12 @@ namespace AutoFileMover.Desktop.ViewModels
             get { return _error.Value; }
         }
 
+        private ObservableAsPropertyHelper<string> _triesText;
+        public string TriesText
+        {
+            get { return _triesText.Value; }
+        }
+
         public FileOperationViewModel(string filePath, IEngine engine)
         {
             //this property doesn't change
@@ -89,6 +95,17 @@ namespace AutoFileMover.Desktop.ViewModels
                             .Where(e => e.EventArgs.OldFilePath == OldFilePath)
                             .Select(e => e.EventArgs.Exception)
                             .ToProperty(this, vm => vm.Error);
+
+            //tries
+            _triesText = Observable.Merge(Observable.FromEventPattern<EventHandler<FileMoveEventArgs>, FileMoveEventArgs>(h => engine.FileMoveProgress += h, h => engine.FileMoveProgress -= h)
+                                                .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                                                .Select(e => string.Format("Attempt {0} of {1}", e.EventArgs.Tries + 1, engine.Config.FileMoveRetries)),
+                                        Observable.FromEventPattern<EventHandler<FileErrorEventArgs>, FileErrorEventArgs>(h => engine.FileMoveError += h, h => engine.FileMoveError -= h)
+                                                .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                                                .Select(e => string.Format("Attempt {0} of {1}", e.EventArgs.Tries + 1, engine.Config.FileMoveRetries)))
+                                        .StartWith(string.Format("Attempt 1 of {0}", engine.Config.FileMoveRetries))
+                                        .ToProperty(this, vm => vm.TriesText);
+
         }
     }
 
