@@ -177,6 +177,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Interfaces\IApplicationConfig.cs" />
     <Compile Include="IoC\IoCRegistry.cs" />
     <Compile Include="Models\AppSettingsConfig.cs" />
     <Compile Include="Settings.cs" />

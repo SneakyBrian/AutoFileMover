@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoFileMover.Core;
 using AutoFileMover.Core.Interfaces;
+using AutoFileMover.Desktop.Interfaces;
 using UnityConfiguration;
 
 namespace AutoFileMover.Desktop.IoC
@@ -13,7 +14,6 @@ namespace AutoFileMover.Desktop.IoC
     {
         public IoCRegistry()
         {
-            //scan for implementations
             Scan(scan =>
             {
                 scan.AssembliesInBaseDirectory();
@@ -21,9 +21,7 @@ namespace AutoFileMover.Desktop.IoC
                 scan.With<FirstInterfaceConvention>();
             });
 
-            //configure the engine and config as a singleton
             Configure<IEngine>().AsSingleton();
-            Configure<IConfig>().AsSingleton();
         }
     }
 }

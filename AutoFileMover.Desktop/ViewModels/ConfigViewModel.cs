@@ -4,6 +4,7 @@ using System.IO;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using AutoFileMover.Core.Interfaces;
+using AutoFileMover.Desktop.Interfaces;
 using AutoFileMover.Desktop.IoC;
 using Microsoft.Practices.Unity;
 using ReactiveUI;
@@ -14,7 +15,7 @@ namespace AutoFileMover.Desktop.ViewModels
 {
     public class ConfigViewModel : ReactiveObject
     {
-        private IConfig _config;
+        private IApplicationConfig _config;
 
         private bool _AutoStart;
         public bool AutoStart
@@ -99,17 +100,17 @@ namespace AutoFileMover.Desktop.ViewModels
         public ReactiveCommand AddSourceRegex { get; set; }
         public ReactiveCommand RemoveSourceRegex { get; set; }
 
-        public ConfigViewModel(IConfig config)
+        public ConfigViewModel(IApplicationConfig config)
         {
             _config = config;
             
             Initialise(_config);
         }
 
-        private void Initialise(IConfig config)
+        private void Initialise(IApplicationConfig config)
         {
-            this.AutoStart = Properties.Settings.Default.AutoStart;
-            this.AutoClear = Properties.Settings.Default.AutoClear;
+            this.AutoStart = config.AutoStart;
+            this.AutoClear = config.AutoClear;
 
             this.DestinationPath = config.DestinationPath;
             this.FileMoveRetries = config.FileMoveRetries;
@@ -120,9 +121,8 @@ namespace AutoFileMover.Desktop.ViewModels
             Save = new ReactiveCommand();
             Save.Subscribe(e =>
             {
-                Properties.Settings.Default.AutoStart = this.AutoStart;
-                Properties.Settings.Default.AutoClear = this.AutoClear;
-                Properties.Settings.Default.Save();
+                config.AutoStart = this.AutoStart;
+                config.AutoClear = this.AutoClear;
 
                 config.DestinationPath = this.DestinationPath;
                 config.FileMoveRetries = this.FileMoveRetries;

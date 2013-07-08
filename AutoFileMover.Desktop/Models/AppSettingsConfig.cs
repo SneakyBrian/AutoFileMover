@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoFileMover.Core.Interfaces;
 using AutoFileMover.Desktop;
+using AutoFileMover.Desktop.Interfaces;
 
 namespace AutoFileMover.Desktop.Models
 {
-    public class AppSettingsConfig : IConfig
+    public class AppSettingsConfig : IApplicationConfig
     {
         public IEnumerable<string> SourcePaths
         {
@@ -57,6 +58,26 @@ namespace AutoFileMover.Desktop.Models
             set 
             { 
                 Properties.Settings.Default.FileMoveRetries = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public bool AutoStart
+        {
+            get { return Properties.Settings.Default.AutoStart; }
+            set
+            {
+                Properties.Settings.Default.AutoStart = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public bool AutoClear
+        {
+            get { return Properties.Settings.Default.AutoClear; }
+            set
+            {
+                Properties.Settings.Default.AutoClear = value;
                 Properties.Settings.Default.Save();
             }
         }
