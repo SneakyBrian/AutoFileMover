@@ -1,35 +1,49 @@
-﻿<Window x:Class="AutoFileMover.Desktop.MainWindow"
+﻿<c:MetroWindow x:Class="AutoFileMover.Desktop.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:AutoFileMover.Desktop.ViewModels"
         xmlns:v="clr-namespace:AutoFileMover.Desktop.Views" 
+        xmlns:c="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Icon="{Binding Path=TrayIcon.Icon}"
         Title="AutoFileMover" 
         WindowState="Minimized"
         StateChanged="Window_StateChanged" 
         SizeChanged="Window_SizeChanged">
-    
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:EngineViewModel}">
-            <v:EngineView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:FileOperationViewModel}">
-            <v:FileOperationView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:ConfigViewModel}">
-            <v:ConfigView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:TrayIconViewModel}">
-            <v:TrayIconView/>
-        </DataTemplate>
-    </Window.Resources>
 
-    <Window.DataContext>
+    <c:MetroWindow.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type vm:EngineViewModel}">
+                <v:EngineView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:FileOperationViewModel}">
+                <v:FileOperationView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ConfigViewModel}">
+                <v:ConfigView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:TrayIconViewModel}">
+                <v:TrayIconView/>
+            </DataTemplate>
+
+        </ResourceDictionary>
+        
+    </c:MetroWindow.Resources>
+
+    <c:MetroWindow.DataContext>
         <vm:EngineViewModel/>
-    </Window.DataContext>
+    </c:MetroWindow.DataContext>
 
     <Grid>
         <ContentControl Content="{Binding}"/>
     </Grid>
 
-</Window>
+</c:MetroWindow>
