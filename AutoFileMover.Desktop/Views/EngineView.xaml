@@ -9,7 +9,7 @@
     <Grid>
         
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="320" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
     
@@ -32,7 +32,9 @@
                 <Button Content="Scan" Width="75" Margin="5" Command="{Binding Scan}"/>
             </StackPanel>
 
-            <ContentControl Content="{Binding Config }" Grid.Row="2" />
+            <ScrollViewer Grid.Row="2">
+                <ContentControl Content="{Binding Config }" />
+            </ScrollViewer>
 
         </Grid>
 

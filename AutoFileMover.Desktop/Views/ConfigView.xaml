@@ -4,15 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:c="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              MinWidth="300" MinHeight="410"
-             d:DesignHeight="550" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="320">
     
     <StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="5">
-            <CheckBox Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutoStart}" Content="Auto Start" />
-            <CheckBox Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutoClear}" Content="Auto Clear" />
+            <c:ToggleSwitch IsChecked="{Binding AutoStart}" Header="Automatically Start" />
+            <c:ToggleSwitch IsChecked="{Binding AutoClear}" Header="Automatically Clear" />
         </StackPanel>        
         
         <StackPanel Margin="5">
@@ -24,7 +25,7 @@
                     <ColumnDefinition Width="80" />
                     <ColumnDefinition Width="80" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" VerticalAlignment="Center" Margin="5" Text="{Binding NewSourcePath, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Grid.Column="0" VerticalAlignment="Center" Margin="5" Text="{Binding NewSourcePath, UpdateSourceTrigger=PropertyChanged}" c:TextboxHelper.Watermark="Enter Path" c:TextboxHelper.ClearTextButton="True" />
                 <Button Grid.Column="1" Content="Add" Margin="5" Command="{Binding AddSourcePath}"/>
                 <Button Grid.Column="2" Content="Remove" Margin="5" Command="{Binding RemoveSourcePath}"/>
             </Grid>
@@ -39,7 +40,7 @@
                     <ColumnDefinition Width="80" />
                     <ColumnDefinition Width="80" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" VerticalAlignment="Center" Margin="5" Text="{Binding NewSourceRegex, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Grid.Column="0" VerticalAlignment="Center" Margin="5" Text="{Binding NewSourceRegex, UpdateSourceTrigger=PropertyChanged}" c:TextboxHelper.Watermark="Enter Regex" c:TextboxHelper.ClearTextButton="True" />
                 <Button Grid.Column="1" Content="Add" Margin="5" Command="{Binding AddSourceRegex}"/>
                 <Button Grid.Column="2" Content="Remove" Margin="5" Command="{Binding RemoveSourceRegex}"/>
             </Grid>
@@ -51,11 +52,11 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Label Content="Destination Path" Grid.Column="0"/>
-            <TextBox Margin="5" Grid.Column="1" Text="{Binding DestinationPath}"/>
+            <TextBox Margin="5" Grid.Column="1" Text="{Binding DestinationPath}" c:TextboxHelper.Watermark="Enter Destination Path" c:TextboxHelper.ClearTextButton="True" />
         </Grid>
         
         <StackPanel Orientation="Horizontal" Margin="5">
-            <CheckBox Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding IncludeSubdirectories}" Content="Include Subdirectories" />
+            <c:ToggleSwitch IsChecked="{Binding IncludeSubdirectories}" Header="Include Subdirectories" />
         </StackPanel>
 
         <StackPanel Margin="5" Orientation="Horizontal">
