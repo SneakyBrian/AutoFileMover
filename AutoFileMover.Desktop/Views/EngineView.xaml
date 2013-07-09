@@ -46,36 +46,16 @@
         </TabItem>
 
         <TabItem Header="Operations">
-            <Grid>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="0">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="100" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0" Text="File Operations:" VerticalAlignment="Center" Margin="5" />
-                    <Button Grid.Column="1" Content="Clear" Width="75" Margin="5" Command="{Binding ClearFileOperations}" Visibility="Hidden" />
-
-                </Grid>
-
-                <ScrollViewer Grid.Row="1">
-                    <ListView ItemsSource="{Binding FileOperations}">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                    </ListView>
-                </ScrollViewer>
-
-            </Grid>
+            <ScrollViewer>
+                <ListView ItemsSource="{Binding FileOperations}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </ScrollViewer>
 
         </TabItem>
 
