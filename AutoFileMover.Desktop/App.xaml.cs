@@ -6,6 +6,9 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace AutoFileMover.Desktop
 {
@@ -18,6 +21,9 @@ namespace AutoFileMover.Desktop
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            TextElement.FontFamilyProperty.OverrideMetadata(typeof(TextElement), new FrameworkPropertyMetadata(new FontFamily("Segoe UI")));
+            TextBlock.FontFamilyProperty.OverrideMetadata(typeof(TextBlock), new FrameworkPropertyMetadata(new FontFamily("Segoe UI")));
+
             if (!System.Diagnostics.Debugger.IsAttached)
             {
                 // hook on error before app really starts

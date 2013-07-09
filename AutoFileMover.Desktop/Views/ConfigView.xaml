@@ -11,9 +11,11 @@
     
     <StackPanel>
 
+        <Button Content="Save Changes" Width="100" Command="{Binding Save}" Margin="5" HorizontalAlignment="Left" />
+
         <StackPanel Orientation="Horizontal" Margin="5">
-            <c:ToggleSwitch IsChecked="{Binding AutoStart}" Header="Automatically Start" />
-            <c:ToggleSwitch IsChecked="{Binding AutoClear}" Header="Automatically Clear" />
+            <c:ToggleSwitch IsChecked="{Binding AutoStart}" Header="Automatically Start" Margin="5"/>
+            <c:ToggleSwitch IsChecked="{Binding AutoClear}" Header="Automatically Clear" Margin="5"/>
         </StackPanel>        
         
         <StackPanel Margin="5">
@@ -48,10 +50,10 @@
 
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="110" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Label Content="Destination Path" Grid.Column="0"/>
+            <Label Margin="5" Content="Destination Path" Grid.Column="0"/>
             <TextBox Margin="5" Grid.Column="1" Text="{Binding DestinationPath}" c:TextboxHelper.Watermark="Enter Destination Path" c:TextboxHelper.ClearTextButton="True" />
         </Grid>
         
@@ -60,13 +62,10 @@
         </StackPanel>
 
         <StackPanel Margin="5" Orientation="Horizontal">
-            <Label Content="File Move Retries"/>
+            <Label Margin="5" Content="File Move Retries"/>
             <xctk:IntegerUpDown Minimum="0" Maximum="99" FormatString="N0" Value="{Binding FileMoveRetries}" />
         </StackPanel>
 
-        <StackPanel Margin="5">
-            <Button Content="Save" Width="75" Command="{Binding Save}" HorizontalAlignment="Right" Margin="5"/>
-        </StackPanel>
 
     </StackPanel>
 

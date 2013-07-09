@@ -21,7 +21,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="0">
-                    <Label Content="Current Status:" Margin="5" />
+                    <Label Content="Current Status:" Margin="5" VerticalAlignment="Center" />
                     <TextBlock Text="{Binding State}" VerticalAlignment="Center" Margin="5" />
                 </StackPanel>
 
