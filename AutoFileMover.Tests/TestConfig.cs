@@ -38,5 +38,11 @@ namespace AutoFileMover.Tests
             get;
             set;
         }
+
+        public int ConcurrentOperations
+        {
+            get;
+            set;
+        }
     }
 }

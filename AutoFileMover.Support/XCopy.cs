@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoFileMover.Core
+namespace AutoFileMover.Support
 {
     /// <summary>
     /// PInvoke wrapper for CopyEx

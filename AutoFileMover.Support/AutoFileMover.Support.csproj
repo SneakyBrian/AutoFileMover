@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D34E0663-8FAD-4A29-8F52-386A94D38EAA}</ProjectGuid>
+    <ProjectGuid>{CB0CEAC3-3FFB-4A50-90B2-583CA306917A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AutoFileMover.Core</RootNamespace>
-    <AssemblyName>AutoFileMover.Core</AssemblyName>
+    <RootNamespace>AutoFileMover.Support</RootNamespace>
+    <AssemblyName>AutoFileMover.Support</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,7 +31,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,30 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine.cs" />
+    <Compile Include="LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AutoFileMover.Core.Interfaces\AutoFileMover.Core.Interfaces.csproj">
-      <Project>{311eb925-d683-43bb-9168-6053abdbcc1a}</Project>
-      <Name>AutoFileMover.Core.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AutoFileMover.Support\AutoFileMover.Support.csproj">
-      <Project>{cb0ceac3-3ffb-4a50-90b2-583ca306917a}</Project>
-      <Name>AutoFileMover.Support</Name>
-    </ProjectReference>
+    <Compile Include="XCopy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

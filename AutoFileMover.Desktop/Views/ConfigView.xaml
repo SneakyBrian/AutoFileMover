@@ -7,7 +7,7 @@
              xmlns:c="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              MinWidth="300" MinHeight="410"
-             d:DesignHeight="600" d:DesignWidth="320">
+             d:DesignHeight="650" d:DesignWidth="320">
     
     <StackPanel>
 
@@ -56,16 +56,24 @@
             <Label Margin="5" Content="Destination Path" Grid.Column="0"/>
             <TextBox Margin="5" Grid.Column="1" Text="{Binding DestinationPath}" c:TextboxHelper.Watermark="Enter Destination Path" c:TextboxHelper.ClearTextButton="True" />
         </Grid>
-        
-        <StackPanel Orientation="Horizontal" Margin="5">
-            <c:ToggleSwitch IsChecked="{Binding IncludeSubdirectories}" Header="Include Subdirectories" />
-        </StackPanel>
 
-        <StackPanel Margin="5" Orientation="Horizontal">
-            <Label Margin="5" Content="File Move Retries"/>
-            <xctk:IntegerUpDown Minimum="0" Maximum="99" FormatString="N0" Value="{Binding FileMoveRetries}" />
-        </StackPanel>
+        <StackPanel HorizontalAlignment="Left">
+                    
+            <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
+                <c:ToggleSwitch IsChecked="{Binding IncludeSubdirectories}" Header="Include Subdirectories" />
+            </StackPanel>
 
+            <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label Margin="5" Content="File Move Retries"/>
+                <xctk:IntegerUpDown Minimum="0" Maximum="99" FormatString="N0" Value="{Binding FileMoveRetries}" />
+            </StackPanel>
+
+            <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label Margin="5" Content="Concurrent Operations"/>
+                <xctk:IntegerUpDown Minimum="1" Maximum="99" FormatString="N0" Value="{Binding ConcurrentOperations}" />
+            </StackPanel>
+
+        </StackPanel>
 
     </StackPanel>
 

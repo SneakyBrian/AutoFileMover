@@ -38,5 +38,11 @@ namespace AutoFileMover.Console
             get;
             set;
         }
+
+        public int ConcurrentOperations
+        {
+            get;
+            set;
+        }
     }
 }

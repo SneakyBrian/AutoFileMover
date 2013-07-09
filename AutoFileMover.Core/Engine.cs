@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFileMover.Core.Interfaces;
+using AutoFileMover.Support;
 
 namespace AutoFileMover.Core
 {
@@ -14,12 +15,16 @@ namespace AutoFileMover.Core
     {
         private IEnumerable<FileSystemWatcher> _watchers;
         private IEnumerable<Regex> _regexList;
+
+        private TaskFactory _taskFactory;
         
         public void Start()
         {
             Stop();
 
             OnStarting();
+
+            _taskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(Config.ConcurrentOperations));
 
             //build the regex list
             _regexList = Config.SourceRegex.Select(sr => new Regex(sr, RegexOptions.Compiled | RegexOptions.IgnoreCase));
@@ -63,7 +68,7 @@ namespace AutoFileMover.Core
 
         private void ProcessFile(string filePath)
         {
-            Task.Factory.StartNew(() =>
+            _taskFactory.StartNew(() =>
             {
                 var fileInfo = new FileInfo(filePath);
 

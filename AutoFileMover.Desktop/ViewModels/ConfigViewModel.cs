@@ -66,6 +66,13 @@ namespace AutoFileMover.Desktop.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.FileMoveRetries, value); }
         }
 
+        private int _ConcurrentOperations;
+        public int ConcurrentOperations
+        {
+            get { return _ConcurrentOperations; }
+            set { this.RaiseAndSetIfChanged(x => x.ConcurrentOperations, value); }
+        }
+
         private string _NewSourcePath;
         public string NewSourcePath
         {
@@ -114,6 +121,7 @@ namespace AutoFileMover.Desktop.ViewModels
 
             this.DestinationPath = config.DestinationPath;
             this.FileMoveRetries = config.FileMoveRetries;
+            this.ConcurrentOperations = config.ConcurrentOperations;
             this.IncludeSubdirectories = config.IncludeSubdirectories;
             this.SourcePaths = new ReactiveCollection<string>(config.SourcePaths);
             this.SourceRegex = new ReactiveCollection<string>(config.SourceRegex);
@@ -126,6 +134,7 @@ namespace AutoFileMover.Desktop.ViewModels
 
                 config.DestinationPath = this.DestinationPath;
                 config.FileMoveRetries = this.FileMoveRetries;
+                config.ConcurrentOperations = this.ConcurrentOperations;
                 config.IncludeSubdirectories = this.IncludeSubdirectories;
                 config.SourcePaths = this.SourcePaths;
                 config.SourceRegex = this.SourceRegex;

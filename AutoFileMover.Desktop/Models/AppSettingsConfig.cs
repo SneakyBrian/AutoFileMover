@@ -62,6 +62,16 @@ namespace AutoFileMover.Desktop.Models
             }
         }
 
+        public int ConcurrentOperations
+        {
+            get { return Properties.Settings.Default.ConcurrentOperations; }
+            set
+            {
+                Properties.Settings.Default.ConcurrentOperations = value;
+                Properties.Settings.Default.Save();
+            }
+        }        
+
         public bool AutoStart
         {
             get { return Properties.Settings.Default.AutoStart; }
