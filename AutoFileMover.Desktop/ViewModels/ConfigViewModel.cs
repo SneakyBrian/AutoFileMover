@@ -17,6 +17,13 @@ namespace AutoFileMover.Desktop.ViewModels
     {
         private IApplicationConfig _config;
 
+        private bool _VerifyFiles;
+        public bool VerifyFiles
+        {
+            get { return _VerifyFiles; }
+            set { this.RaiseAndSetIfChanged(x => x.VerifyFiles, value); }
+        }
+
         private bool _AutoStart;
         public bool AutoStart
         {
@@ -118,6 +125,7 @@ namespace AutoFileMover.Desktop.ViewModels
         {
             this.AutoStart = config.AutoStart;
             this.AutoClear = config.AutoClear;
+            this.VerifyFiles = config.VerifyFiles;
 
             this.DestinationPath = config.DestinationPath;
             this.FileMoveRetries = config.FileMoveRetries;
@@ -131,6 +139,7 @@ namespace AutoFileMover.Desktop.ViewModels
             {
                 config.AutoStart = this.AutoStart;
                 config.AutoClear = this.AutoClear;
+                config.VerifyFiles = this.VerifyFiles;
 
                 config.DestinationPath = this.DestinationPath;
                 config.FileMoveRetries = this.FileMoveRetries;

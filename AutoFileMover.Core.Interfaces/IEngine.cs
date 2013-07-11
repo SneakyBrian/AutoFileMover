@@ -17,6 +17,7 @@ namespace AutoFileMover.Core.Interfaces
 
         event EventHandler<FileEventArgs> FileDetected;
         event EventHandler<FileEventArgs> FileMoveStarted;
+        event EventHandler<FileHashEventArgs> FileHashProgress;
         event EventHandler<FileMoveEventArgs> FileMoveProgress;
         event EventHandler<FileEventArgs> FileMoveCompleted;
         event EventHandler<FileErrorEventArgs> FileMoveError;
@@ -62,6 +63,21 @@ namespace AutoFileMover.Core.Interfaces
             : base(filePath, oldFilePath, fileSize, tries)
         {
             Percentage = percentage;
+        }
+    }
+
+    public class FileHashEventArgs : FileTryEventArgs
+    {
+        public int Percentage { get; private set; }
+        public string Hash { get; private set; }
+        public string HashFilePath { get; private set; }
+
+        public FileHashEventArgs(string filePath, string oldFilePath, string hashFilePath, string hash, long fileSize, int percentage, int tries)
+            : base(filePath, oldFilePath, fileSize, tries)
+        {
+            Percentage = percentage;
+            Hash = hash;
+            HashFilePath = hashFilePath;
         }
     }
 

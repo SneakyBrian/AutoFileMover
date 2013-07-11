@@ -11,11 +11,25 @@
     </UserControl.Resources>
     
     <StackPanel>
-        <TextBlock Text="{Binding OldFilePath}" Margin="5"/>
-        <TextBlock Text="{Binding FilePath}" Margin="5"/>
-        <TextBlock Text="{Binding State}" Margin="5"/>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding OldFilePath}" Margin="5"/>
+            <TextBlock Text="{Binding SourceFileHash}" Margin="5"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding FilePath}" Margin="5"/>
+            <TextBlock Text="{Binding DestinationFileHash}" Margin="5"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding State}" Margin="5"/>
+            <TextBlock Text="{Binding TriesText}" Margin="5"/>
+        </StackPanel>
+
         <ProgressBar Value="{Binding Percentage, Mode=OneWay}" Height="20" Margin="5" Visibility="{Binding Path=InProgress, Converter={StaticResource BoolToVis}}" />
-        <TextBlock Text="{Binding TriesText}" Margin="5"/>
+        
         <TextBlock Text="{Binding Error}" Foreground="Red" Margin="5"/>
+        
     </StackPanel>
 </UserControl>

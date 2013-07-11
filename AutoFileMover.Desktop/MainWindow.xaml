@@ -34,6 +34,9 @@
             <DataTemplate DataType="{x:Type vm:TrayIconViewModel}">
                 <v:TrayIconView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:AboutViewModel}">
+                <v:AboutView/>
+            </DataTemplate>            
 
         </ResourceDictionary>
         

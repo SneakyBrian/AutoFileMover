@@ -91,5 +91,15 @@ namespace AutoFileMover.Desktop.Models
                 Properties.Settings.Default.Save();
             }
         }
+
+        public bool VerifyFiles
+        {
+            get { return Properties.Settings.Default.VerifyFiles; }
+            set
+            {
+                Properties.Settings.Default.VerifyFiles = value;
+                Properties.Settings.Default.Save();
+            }
+        }
     }
 }

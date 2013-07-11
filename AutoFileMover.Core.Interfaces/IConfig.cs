@@ -14,5 +14,6 @@ namespace AutoFileMover.Core.Interfaces
         bool IncludeSubdirectories { get; set; }
         int FileMoveRetries { get; set; }
         int ConcurrentOperations { get; set; }
+        bool VerifyFiles { get; set; }
     }
 }

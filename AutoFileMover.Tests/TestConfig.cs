@@ -44,5 +44,11 @@ namespace AutoFileMover.Tests
             get;
             set;
         }
+
+        public bool VerifyFiles
+        {
+            get;
+            set;
+        }
     }
 }

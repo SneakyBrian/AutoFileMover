@@ -55,6 +55,19 @@ namespace AutoFileMover.Desktop.ViewModels
             get { return _triesText.Value; }
         }
 
+        private ObservableAsPropertyHelper<string> _sourceFileHash;
+        public string SourceFileHash
+        {
+            get { return _sourceFileHash.Value; }
+        }
+
+        private ObservableAsPropertyHelper<string> _destinationFileHash;
+        public string DestinationFileHash
+        {
+            get { return _destinationFileHash.Value; }
+        }
+
+
         public FileOperationViewModel(string filePath, IEngine engine)
         {
             //this property doesn't change
@@ -67,7 +80,10 @@ namespace AutoFileMover.Desktop.ViewModels
                             .ToProperty(this, vm => vm.FilePath);
 
             //state property
-            _state =  Observable.Merge(Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveStarted += h, h => engine.FileMoveStarted -= h)
+            _state = Observable.Merge(Observable.FromEventPattern<EventHandler<FileHashEventArgs>, FileHashEventArgs>(h => engine.FileHashProgress += h, h => engine.FileHashProgress -= h)
+                                                .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                                                .Select(e => FileOperationState.Verifying), 
+                                        Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveStarted += h, h => engine.FileMoveStarted -= h)
                                                 .Where(e => e.EventArgs.OldFilePath == OldFilePath)
                                                 .Select(e => FileOperationState.Moving),
                                         Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveCompleted += h, h => engine.FileMoveCompleted -= h)
@@ -80,14 +96,17 @@ namespace AutoFileMover.Desktop.ViewModels
                                         .ToProperty(this, vm => vm.State);
 
             //percentage
-            _percentage = Observable.FromEventPattern<EventHandler<FileMoveEventArgs>, FileMoveEventArgs>(h => engine.FileMoveProgress += h, h => engine.FileMoveProgress -= h)
-                            .Where(e => e.EventArgs.OldFilePath == OldFilePath)
-                            .Select(e => e.EventArgs.Percentage)
-                            .ToProperty(this, vm => vm.Percentage);
+            _percentage = Observable.Merge(Observable.FromEventPattern<EventHandler<FileMoveEventArgs>, FileMoveEventArgs>(h => engine.FileMoveProgress += h, h => engine.FileMoveProgress -= h)
+                                                        .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                                                        .Select(e => e.EventArgs.Percentage),
+                                            Observable.FromEventPattern<EventHandler<FileHashEventArgs>, FileHashEventArgs>(h => engine.FileHashProgress += h, h => engine.FileHashProgress -= h)
+                                            .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                                                        .Select(e => e.EventArgs.Percentage))
+                                        .ToProperty(this, vm => vm.Percentage);
 
             //in progress
             _inProgress = _state.AsObservable()
-                            .Select(e => e == FileOperationState.Moving)
+                            .Select(e => e != FileOperationState.Completed && e != FileOperationState.Error)
                             .ToProperty(this, vm => vm.InProgress);
 
             //error
@@ -97,14 +116,31 @@ namespace AutoFileMover.Desktop.ViewModels
                             .ToProperty(this, vm => vm.Error);
 
             //tries
-            _triesText = Observable.Merge(Observable.FromEventPattern<EventHandler<FileMoveEventArgs>, FileMoveEventArgs>(h => engine.FileMoveProgress += h, h => engine.FileMoveProgress -= h)
+            _triesText = Observable.Merge(Observable.FromEventPattern<EventHandler<FileHashEventArgs>, FileHashEventArgs>(h => engine.FileHashProgress += h, h => engine.FileHashProgress -= h)
                                                 .Where(e => e.EventArgs.OldFilePath == OldFilePath)
                                                 .Select(e => string.Format("Attempt {0} of {1}", e.EventArgs.Tries + 1, engine.Config.FileMoveRetries)),
-                                        Observable.FromEventPattern<EventHandler<FileErrorEventArgs>, FileErrorEventArgs>(h => engine.FileMoveError += h, h => engine.FileMoveError -= h)
+                                            Observable.FromEventPattern<EventHandler<FileMoveEventArgs>, FileMoveEventArgs>(h => engine.FileMoveProgress += h, h => engine.FileMoveProgress -= h)
+                                                .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                                                .Select(e => string.Format("Attempt {0} of {1}", e.EventArgs.Tries + 1, engine.Config.FileMoveRetries)),
+                                            Observable.FromEventPattern<EventHandler<FileErrorEventArgs>, FileErrorEventArgs>(h => engine.FileMoveError += h, h => engine.FileMoveError -= h)
                                                 .Where(e => e.EventArgs.OldFilePath == OldFilePath)
                                                 .Select(e => string.Format("Attempt {0} of {1}", e.EventArgs.Tries + 1, engine.Config.FileMoveRetries)))
                                         .StartWith(string.Format("Attempt 1 of {0}", engine.Config.FileMoveRetries))
                                         .ToProperty(this, vm => vm.TriesText);
+
+            //source hash
+            _sourceFileHash = Observable.FromEventPattern<EventHandler<FileHashEventArgs>, FileHashEventArgs>(h => engine.FileHashProgress += h, h => engine.FileHashProgress -= h)
+                                                .Where(e => e.EventArgs.OldFilePath == OldFilePath && e.EventArgs.HashFilePath == OldFilePath)
+                                                .Select(e => e.EventArgs.Hash)
+                                                .StartWith(string.Empty)
+                                                .ToProperty(this, vm => vm.SourceFileHash);
+
+            //destination hash
+            _destinationFileHash = Observable.FromEventPattern<EventHandler<FileHashEventArgs>, FileHashEventArgs>(h => engine.FileHashProgress += h, h => engine.FileHashProgress -= h)
+                                                .Where(e => e.EventArgs.OldFilePath == OldFilePath && e.EventArgs.HashFilePath == e.EventArgs.FilePath)
+                                                .Select(e => e.EventArgs.Hash)
+                                                .StartWith(string.Empty)
+                                                .ToProperty(this, vm => vm.SourceFileHash);
 
         }
     }
@@ -113,6 +149,7 @@ namespace AutoFileMover.Desktop.ViewModels
     {
         Detected,
         Moving,
+        Verifying,
         Completed,
         Error
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -16,6 +17,7 @@ namespace AutoFileMover.Core
         private IEnumerable<FileSystemWatcher> _watchers;
         private IEnumerable<Regex> _regexList;
 
+        private TaskScheduler _taskScheduler;
         private TaskFactory _taskFactory;
         
         public void Start()
@@ -24,7 +26,9 @@ namespace AutoFileMover.Core
 
             OnStarting();
 
-            _taskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(Config.ConcurrentOperations));
+            _taskScheduler = new LimitedConcurrencyLevelTaskScheduler(Config.ConcurrentOperations);
+            _taskFactory = new TaskFactory(_taskScheduler);
+
 
             //build the regex list
             _regexList = Config.SourceRegex.Select(sr => new Regex(sr, RegexOptions.Compiled | RegexOptions.IgnoreCase));
@@ -68,85 +72,117 @@ namespace AutoFileMover.Core
 
         private void ProcessFile(string filePath)
         {
-            _taskFactory.StartNew(() =>
+            _taskFactory.StartNew(() => AsyncHelpers.RunSync(() => ProcessFileAsync(filePath)));
+        }
+
+        private async Task ProcessFileAsync(string filePath)
+        {
+            var fileInfo = new FileInfo(filePath);
+
+            OnFileDetected(null, filePath, fileInfo.Length);
+
+            var fileName = Path.GetFileName(filePath);
+
+            foreach (var regex in _regexList)
             {
-                var fileInfo = new FileInfo(filePath);
+                var match = regex.Match(fileName);
 
-                OnFileDetected(null, filePath, fileInfo.Length);
-
-                var fileName = Path.GetFileName(filePath);
-
-                foreach (var regex in _regexList)
+                if (match.Success)
                 {
-                    var match = regex.Match(fileName);
+                    var outputPath = Config.DestinationPath;
 
-                    if (match.Success)
+                    foreach (string groupName in regex.GetGroupNames())
                     {
-                        var outputPath = Config.DestinationPath;
-
-                        foreach (string groupName in regex.GetGroupNames())
+                        string prefix = string.Empty;
+                        int index;
+                        if (int.TryParse(groupName, out index))
                         {
-                            string prefix = string.Empty;
-                            int index;
-                            if (int.TryParse(groupName, out index))
-                            {
-                                if (index == 0)
-                                    continue;
-                            }
-                            else
-                            {
-                                prefix = groupName + " ";
-                            }
-
-                            outputPath = Path.Combine(outputPath, string.Format("{0}{1}", prefix, match.Groups[groupName].Value.Replace(".", " ")));
+                            if (index == 0)
+                                continue;
+                        }
+                        else
+                        {
+                            prefix = groupName + " ";
                         }
 
-                        //ensure the directory has been created
-                        Directory.CreateDirectory(outputPath);
-
-                        outputPath = Path.Combine(outputPath, fileName);
-
-                        OnFileMoveStarted(outputPath, filePath, fileInfo.Length);
-
-                        int tries = 0;
-
-                        for (; tries < Config.FileMoveRetries; tries++)
-                        {
-                            try
-                            {
-                                XCopy.Copy(filePath, outputPath, true, true, (o, pce) =>
-                                {
-                                    OnFileMoveProgress(outputPath, filePath, fileInfo.Length, pce.ProgressPercentage, tries);
-                                });
-                                break;
-                            }
-                            catch (Exception ex)
-                            {
-                                OnFileMoveError(outputPath, filePath, fileInfo.Length, ex, tries);
-                                Thread.Sleep(1000 * (tries + 1));
-                            }
-                        }
-
-                        for (; tries < Config.FileMoveRetries && File.Exists(filePath); tries++)
-                        {
-                            try
-                            {
-                                File.Delete(filePath);
-                                break;
-                            }
-                            catch (Exception ex)
-                            {
-                                OnFileMoveError(outputPath, filePath, fileInfo.Length, ex, tries);
-                                Thread.Sleep(1000 * (tries + 1));
-                            }
-                        }
-
-                        OnFileMoveCompleted(outputPath, filePath, fileInfo.Length);
-
-                        break;
+                        outputPath = Path.Combine(outputPath, string.Format("{0}{1}", prefix, match.Groups[groupName].Value.Replace(".", " ")));
                     }
+
+                    //ensure the directory has been created
+                    Directory.CreateDirectory(outputPath);
+
+                    outputPath = Path.Combine(outputPath, fileName);
+
+                    OnFileMoveStarted(outputPath, filePath, fileInfo.Length);
+
+                    int tries = 0;
+
+                    for (; tries < Config.FileMoveRetries; tries++)
+                    {
+                        try
+                        {
+                            //if our output exists
+                            if (File.Exists(outputPath))
+                            {
+                                //just nuke it
+                                File.Delete(outputPath);
+                            }
+
+                            await FileCopier.CopyFile(filePath, outputPath, percentage =>
+                            {
+                                OnFileMoveProgress(outputPath, filePath, fileInfo.Length, percentage, tries);
+                            });
+
+                            if (Config.VerifyFiles)
+                            {
+                                var hasher = new ASyncFileHashAlgorithm(SHA1.Create());
+
+                                long inputSize = 0;
+
+                                await hasher.ComputeHash(filePath, (o, fhp) =>
+                                {
+                                    OnFileHashProgress(outputPath, filePath, filePath, "", inputSize = fhp.TotalSize, fhp.Percentage, tries);
+                                });
+
+                                string inputHash = hasher.ToString();
+
+                                OnFileHashProgress(outputPath, filePath, filePath, inputHash, inputSize, 100, tries);
+
+                                long outputSize = 0;
+
+                                await hasher.ComputeHash(outputPath, (o, fhp) =>
+                                {
+                                    OnFileHashProgress(outputPath, filePath, outputPath, "", outputSize = fhp.TotalSize, fhp.Percentage, tries);
+                                });
+
+                                string outputHash = hasher.ToString();
+
+                                OnFileHashProgress(outputPath, filePath, outputPath, outputHash, outputSize, 100, tries);
+
+                                if (inputHash != outputHash)
+                                {
+                                    throw new ApplicationException("File Verification Failed");
+                                }
+                            }
+
+                            //if we got this far we can delete the source file
+                            File.Delete(filePath);
+
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            OnFileMoveError(outputPath, filePath, fileInfo.Length, ex, tries);
+                        }
+
+                        await Task.Delay(1000 * (tries + 1));
+                    }
+
+                    OnFileMoveCompleted(outputPath, filePath, fileInfo.Length);
+
+                    break;
                 }
-            });
+            }
         }
 
         public void Stop()
@@ -182,6 +218,7 @@ namespace AutoFileMover.Core
                 .ForEach(ProcessFile);
         }
 
+
         public IConfig Config { get; set; }
 
         public event EventHandler<FileEventArgs> FileDetected;
@@ -214,6 +251,17 @@ namespace AutoFileMover.Core
             if (handler != null)
             {
                 handler(this, new FileMoveEventArgs(filePath, oldFilePath, fileSize, percentage, tries));
+            }
+        }
+
+        public event EventHandler<FileHashEventArgs> FileHashProgress;
+
+        private void OnFileHashProgress(string filePath, string oldFilePath, string hashFilePath, string hash, long fileSize, int percentage, int tries)
+        {
+            var handler = FileHashProgress;
+            if (handler != null)
+            {
+                handler(this, new FileHashEventArgs(filePath, oldFilePath, hashFilePath, hash, fileSize, percentage, tries));
             }
         }
         

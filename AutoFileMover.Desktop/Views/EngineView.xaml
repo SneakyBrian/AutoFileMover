@@ -58,6 +58,14 @@
             </ScrollViewer>
 
         </TabItem>
+        
+        <TabItem Header="About">
+
+            <ScrollViewer>
+                <ContentControl Content="{Binding About }" />
+            </ScrollViewer>
+
+        </TabItem>
 
     </TabControl>
         
