@@ -115,16 +115,15 @@ namespace AutoFileMover.Core
 
                     OnFileMoveStarted(outputPath, filePath, fileInfo.Length);
 
-                    int tries = 0;
-
-                    for (; tries < Config.FileMoveRetries; tries++)
+                    for (int tries = 0; tries < Config.FileMoveRetries; tries++)
                     {
                         try
                         {
                             //if our output exists
                             if (File.Exists(outputPath))
                             {
-                                //just nuke it
+                                //make sure it's not readonly and just nuke it
+                                File.SetAttributes(outputPath, FileAttributes.Normal);
                                 File.Delete(outputPath);
                             }
 
@@ -132,6 +131,8 @@ namespace AutoFileMover.Core
                             {
                                 OnFileMoveProgress(outputPath, filePath, fileInfo.Length, percentage, tries);
                             });
+
+                            bool deleteSourceFile = true;
 
                             if (Config.VerifyFiles)
                             {
@@ -159,14 +160,15 @@ namespace AutoFileMover.Core
 
                                 OnFileHashProgress(outputPath, filePath, outputPath, outputHash, outputSize, 100, tries);
 
-                                if (inputHash != outputHash)
-                                {
-                                    throw new ApplicationException("File Verification Failed");
-                                }
+                                deleteSourceFile = inputHash == outputHash;
                             }
 
-                            //if we got this far we can delete the source file
-                            File.Delete(filePath);
+                            if (deleteSourceFile)
+                            {
+                                //if we got this far we can delete the source file
+                                File.SetAttributes(filePath, FileAttributes.Normal);
+                                File.Delete(filePath);
+                            }
 
                             break;
                         }
