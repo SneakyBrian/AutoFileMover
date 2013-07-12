@@ -101,6 +101,7 @@ namespace AutoFileMover.Desktop.ViewModels
 
             var fileOperations = Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileDetected += h, h => engine.FileDetected -= h)
                                 .Select(e => new FileOperationViewModel(e.EventArgs.OldFilePath, engine))
+                                .Distinct(fovm => fovm.OldFilePath)
                                 .CreateCollection();
 
             fileOperations.ChangeTrackingEnabled = true;
