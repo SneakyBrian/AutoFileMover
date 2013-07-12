@@ -123,7 +123,7 @@ namespace AutoFileMover.Desktop.ViewModels
 
             TrayIcon = new TrayIconViewModel(engine);
 
-            About = new AboutViewModel();
+            //About = new AboutViewModel();
         }
     }
 

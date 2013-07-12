@@ -59,13 +59,13 @@
 
         </TabItem>
         
-        <TabItem Header="About">
+        <!--<TabItem Header="About">
 
             <ScrollViewer>
                 <ContentControl Content="{Binding About }" />
             </ScrollViewer>
 
-        </TabItem>
+        </TabItem>-->
 
     </TabControl>
         
