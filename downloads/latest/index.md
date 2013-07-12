@@ -42,7 +42,7 @@ download_b_text: Install
 <tr class="even">
 <td align="left"><strong>Version:</strong></td>
 <td align="left"></td>
-<td align="left">0.2.0.1</td>
+<td align="left">0.2.0.2</td>
 </tr>
 <tr class="odd">
 <td align="left"> </td>
