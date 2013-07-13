@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoFileMover.Core.Interfaces;
 
-namespace AutoFileMover.Tests
+namespace AutoFileMover.Tests.Helpers
 {
     public class TestConfig : IConfig
     {

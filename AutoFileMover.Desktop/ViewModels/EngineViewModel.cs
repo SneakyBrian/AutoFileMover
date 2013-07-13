@@ -26,17 +26,53 @@ namespace AutoFileMover.Desktop.ViewModels
         public bool AutoStart
         {
             get { return _AutoStart; }
-            set { this.RaiseAndSetIfChanged(x => x.AutoStart, value); }
+            set { this.RaiseAndSetIfChanged(ref _AutoStart, value); }
         }
         
-        public ReactiveCollection<Exception> Errors { get; private set; }
-        public ReactiveCollection<FileOperationViewModel> FileOperations { get; private set; }
+        public IReactiveDerivedList<Exception> Errors { get; private set; }
+        public IReactiveDerivedList<FileOperationViewModel> FileOperations { get; private set; }
 
-        public ConfigViewModel Config { get; private set; }
+        private ConfigViewModel _config = null;
+        public ConfigViewModel Config 
+        {
+            get 
+            {
+                if (_config == null)
+                {
+                    _config = new ConfigViewModel(_appConfig);
+                }
 
-        public TrayIconViewModel TrayIcon { get; private set; }
+                return _config;
+            }
+        }
 
-        public AboutViewModel About { get; private set; }
+        private TrayIconViewModel _trayIcon = null;
+        public TrayIconViewModel TrayIcon 
+        {
+            get 
+            {
+                if (_trayIcon == null)
+                {
+                    _trayIcon = new TrayIconViewModel(_engine);
+                }
+
+                return _trayIcon;
+            }
+        }
+
+        private AboutViewModel _about = null;
+        public AboutViewModel About 
+        { 
+            get 
+            {
+                if (_about == null)
+                {
+                    _about = new AboutViewModel();
+                }
+
+                return _about;
+            } 
+        }
 
         public ReactiveCommand Start { get; private set; }
         public ReactiveCommand Stop { get; private set; }
@@ -108,23 +144,16 @@ namespace AutoFileMover.Desktop.ViewModels
 
             FileOperations = fileOperations.CreateDerivedCollection(x => x, x => !(_appConfig.AutoClear && x.State == FileOperationState.Completed));
 
-            ClearErrors = new ReactiveCommand(Errors.IsEmpty.Select(c => !c).StartWith(false));
-            ClearErrors.Subscribe(x => Errors.Reset());
+            ClearErrors = new ReactiveCommand(Errors.ObservableForProperty(e => e.Count).Select(c => c.Value > 0).StartWith(false));
+            //ClearErrors.Subscribe(x => Errors.Reset());
 
-            ClearFileOperations = new ReactiveCommand(FileOperations.IsEmpty.Select(c => !c).StartWith(false));
-            ClearFileOperations.Subscribe(x => FileOperations.Reset());
+            ClearFileOperations = new ReactiveCommand(FileOperations.ObservableForProperty(e => e.Count).Select(c => c.Value > 0).StartWith(false));
+            //ClearFileOperations.Subscribe(x => FileOperations.Reset());
 
-
-            Config = new ConfigViewModel(_appConfig);
-
-            if (Config.AutoStart)
+            if (_appConfig.AutoStart)
             {
                 engine.Start();
             }
-
-            TrayIcon = new TrayIconViewModel(engine);
-
-            //About = new AboutViewModel();
         }
     }
 

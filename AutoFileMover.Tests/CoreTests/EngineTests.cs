@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
 using AutoFileMover.Core;
+using AutoFileMover.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AutoFileMover.Tests
+namespace AutoFileMover.Tests.CoreTests
 {
     [TestClass]
     public class EngineTests

@@ -4,11 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:c="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:vc="clr-namespace:AutoFileMover.Desktop.ValueConverters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <vc:EnumToStringConverter x:Key="EnumToString" />
     </UserControl.Resources>    
     
     <StackPanel>
@@ -19,21 +21,51 @@
         </StackPanel>
 
         <StackPanel Visibility="{Binding Path=NetworkDeployed, Converter={StaticResource BoolToVis}}">
-            
+
+            <Button Content="Check For Update" Margin="5" Command="{Binding CheckForUpdate}"/>
+
             <StackPanel Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource BoolToVis}}">
 
                 <TextBlock Text="Update Available" Margin="5" />
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Available Version: " Margin="5" />
-                    <TextBlock Text="{Binding AVailableVersion}" Margin="5"/>
+                    <TextBlock Text="{Binding AvailableVersion}" Margin="5"/>
                 </StackPanel>
-                
+
+                <StackPanel Orientation="Horizontal" Visibility="{Binding Path=IsUpdateRequired, Converter={StaticResource BoolToVis}}">
+                    <TextBlock Text="Minimum Required Version: " Margin="5" Foreground="Red" />
+                    <TextBlock Text="{Binding MinimumRequiredVersion}" Margin="5" Foreground="Red" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Update Size (Bytes): " Margin="5" />
+                    <TextBlock Text="{Binding UpdateSizeBytes}" Margin="5"/>
+                </StackPanel>
+
                 <Button Content="Update" Margin="5" Command="{Binding Update}"/>
 
             </StackPanel>
 
-            <c:ProgressRing IsActive="{Binding UpdateCheckInProgress}" />
+            <StackPanel Visibility="{Binding Path=InProgress, Converter={StaticResource BoolToVis}}">
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding DeploymentProgressState}" Margin="5"/>
+                    <TextBlock Text="{Binding Group}" Margin="5"/>
+                </StackPanel>
+
+                <c:ProgressRing IsActive="True" Margin="5" />
+
+                <ProgressBar Value="{Binding ProgressPercentage, Mode=OneWay}" Height="20" Margin="5" />
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding BytesCompleted}" Margin="5"/>
+                    <TextBlock Text=" / " Margin="5" />
+                    <TextBlock Text="{Binding BytesTotal}" Margin="5"/>
+                    <TextBlock Text=" bytes" Margin="5" />
+                </StackPanel>
+
+            </StackPanel>
             
         </StackPanel>
 

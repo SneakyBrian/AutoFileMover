@@ -17,7 +17,6 @@ namespace AutoFileMover.Core
         private IEnumerable<FileSystemWatcher> _watchers;
         private IEnumerable<Regex> _regexList;
 
-        private TaskScheduler _taskScheduler;
         private TaskFactory _taskFactory;
         
         public void Start()
@@ -26,9 +25,7 @@ namespace AutoFileMover.Core
 
             OnStarting();
 
-            _taskScheduler = new LimitedConcurrencyLevelTaskScheduler(Config.ConcurrentOperations);
-            _taskFactory = new TaskFactory(_taskScheduler);
-
+            _taskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(Config.ConcurrentOperations));
 
             //build the regex list
             _regexList = Config.SourceRegex.Select(sr => new Regex(sr, RegexOptions.Compiled | RegexOptions.IgnoreCase));
@@ -168,9 +165,9 @@ namespace AutoFileMover.Core
                                 //if we got this far we can delete the source file
                                 File.SetAttributes(filePath, FileAttributes.Normal);
                                 File.Delete(filePath);
-                            }
 
-                            break;
+                                break;
+                            }                            
                         }
                         catch (Exception ex)
                         {

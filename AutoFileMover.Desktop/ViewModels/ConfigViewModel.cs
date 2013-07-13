@@ -17,95 +17,95 @@ namespace AutoFileMover.Desktop.ViewModels
     {
         private IApplicationConfig _config;
 
-        private bool _VerifyFiles;
+        private bool _verifyFiles;
         public bool VerifyFiles
         {
-            get { return _VerifyFiles; }
-            set { this.RaiseAndSetIfChanged(x => x.VerifyFiles, value); }
+            get { return _verifyFiles; }
+            set { this.RaiseAndSetIfChanged(ref _verifyFiles, value); }
         }
 
-        private bool _AutoStart;
+        private bool _autoStart;
         public bool AutoStart
         {
-            get { return _AutoStart; }
-            set { this.RaiseAndSetIfChanged(x => x.AutoStart, value); }
+            get { return _autoStart; }
+            set { this.RaiseAndSetIfChanged(ref _autoStart, value); }
         }
 
-        private bool _AutoClear;
+        private bool _autoClear;
         public bool AutoClear
         {
-            get { return _AutoClear; }
-            set { this.RaiseAndSetIfChanged(x => x.AutoClear, value); }
+            get { return _autoClear; }
+            set { this.RaiseAndSetIfChanged(ref _autoClear, value); }
         }
 
-        private ReactiveCollection<string> _SourcePaths;
-        public ReactiveCollection<string> SourcePaths
+        private ReactiveList<string> _sourcePaths;
+        public ReactiveList<string> SourcePaths
         {
-            get { return _SourcePaths; }
-            set { this.RaiseAndSetIfChanged(x => x.SourcePaths, value); }
+            get { return _sourcePaths; }
+            set { this.RaiseAndSetIfChanged(ref _sourcePaths, value); }
         }
 
-        private ReactiveCollection<string> _SourceRegex;
-        public ReactiveCollection<string> SourceRegex
+        private ReactiveList<string> _sourceRegex;
+        public ReactiveList<string> SourceRegex
         {
-            get { return _SourceRegex; }
-            set { this.RaiseAndSetIfChanged(x => x.SourceRegex, value); }
+            get { return _sourceRegex; }
+            set { this.RaiseAndSetIfChanged(ref _sourceRegex, value); }
         }
 
-        private string _DestinationPath;
+        private string _destinationPath;
         public string DestinationPath
         {
-            get { return _DestinationPath; }
-            set { this.RaiseAndSetIfChanged(x => x.DestinationPath, value); }
+            get { return _destinationPath; }
+            set { this.RaiseAndSetIfChanged(ref _destinationPath, value); }
         }
 
-        private bool _IncludeSubdirectories;
+        private bool _includeSubdirectories;
         public bool IncludeSubdirectories
         {
-            get { return _IncludeSubdirectories; }
-            set { this.RaiseAndSetIfChanged(x => x.IncludeSubdirectories, value); }
+            get { return _includeSubdirectories; }
+            set { this.RaiseAndSetIfChanged(ref _includeSubdirectories, value); }
         }
 
-        private int _FileMoveRetries;
+        private int _fileMoveRetries;
         public int FileMoveRetries
         {
-            get { return _FileMoveRetries; }
-            set { this.RaiseAndSetIfChanged(x => x.FileMoveRetries, value); }
+            get { return _fileMoveRetries; }
+            set { this.RaiseAndSetIfChanged(ref _fileMoveRetries, value); }
         }
 
-        private int _ConcurrentOperations;
+        private int _concurrentOperations;
         public int ConcurrentOperations
         {
-            get { return _ConcurrentOperations; }
-            set { this.RaiseAndSetIfChanged(x => x.ConcurrentOperations, value); }
+            get { return _concurrentOperations; }
+            set { this.RaiseAndSetIfChanged(ref _concurrentOperations, value); }
         }
 
-        private string _NewSourcePath;
+        private string _newSourcePath;
         public string NewSourcePath
         {
-            get { return _NewSourcePath; }
-            set { this.RaiseAndSetIfChanged(x => x.NewSourcePath, value); }
+            get { return _newSourcePath; }
+            set { this.RaiseAndSetIfChanged(ref _newSourcePath, value); }
         }
 
-        private string _NewSourceRegex;
+        private string _newSourceRegex;
         public string NewSourceRegex
         {
-            get { return _NewSourceRegex; }
-            set { this.RaiseAndSetIfChanged(x => x.NewSourceRegex, value); }
+            get { return _newSourceRegex; }
+            set { this.RaiseAndSetIfChanged(ref _newSourceRegex, value); }
         }
 
-        private string _SelectedSourcePath;
+        private string _selectedSourcePath;
         public string SelectedSourcePath
         {
-            get { return _SelectedSourcePath; }
-            set { this.RaiseAndSetIfChanged(x => x.SelectedSourcePath, value); }
+            get { return _selectedSourcePath; }
+            set { this.RaiseAndSetIfChanged(ref _selectedSourcePath, value); }
         }
 
-        private string _SelectedSourceRegex;
+        private string _selectedSourceRegex;
         public string SelectedSourceRegex
         {
-            get { return _SelectedSourceRegex; }
-            set { this.RaiseAndSetIfChanged(x => x.SelectedSourceRegex, value); }
+            get { return _selectedSourceRegex; }
+            set { this.RaiseAndSetIfChanged(ref _selectedSourceRegex, value); }
         }
         
         public ReactiveCommand Save { get; set; }
@@ -131,8 +131,8 @@ namespace AutoFileMover.Desktop.ViewModels
             this.FileMoveRetries = config.FileMoveRetries;
             this.ConcurrentOperations = config.ConcurrentOperations;
             this.IncludeSubdirectories = config.IncludeSubdirectories;
-            this.SourcePaths = new ReactiveCollection<string>(config.SourcePaths);
-            this.SourceRegex = new ReactiveCollection<string>(config.SourceRegex);
+            this.SourcePaths = new ReactiveList<string>(config.SourcePaths);
+            this.SourceRegex = new ReactiveList<string>(config.SourceRegex);
 
             Save = new ReactiveCommand();
             Save.Subscribe(e =>
