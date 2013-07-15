@@ -46,9 +46,6 @@ namespace AutoFileMover.Tests.ViewModelTests
             //execute the check for update command
             vm.CheckForUpdate.Execute(null);
 
-            //make sure this called through to the mock
-            mock.Verify(ad => ad.CheckForUpdateAsync());
-
             //check that an update is available
             Assert.IsTrue(vm.UpdateAvailable);
 

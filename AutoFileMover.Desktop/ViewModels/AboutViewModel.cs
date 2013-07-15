@@ -44,124 +44,123 @@ namespace AutoFileMover.Desktop.ViewModels
 
             var checkForUpdateObservable = Observable.FromEventPattern<CheckForUpdateCompletedEventHandler, CheckForUpdateCompletedEventArgs>
                     (h => deployment.CheckForUpdateCompleted += h,
-                     h => deployment.CheckForUpdateCompleted += h);
+                     h => deployment.CheckForUpdateCompleted -= h);
 
-            checkForUpdateObservable.Select(e => e.EventArgs.AvailableVersion).ToProperty(this, vm => vm.AvailableVersion);
-            checkForUpdateObservable.Select(e => e.EventArgs.UpdateAvailable).ToProperty(this, vm => vm.UpdateAvailable);
-            checkForUpdateObservable.Select(e => e.EventArgs.UpdateSizeBytes).ToProperty(this, vm => vm.UpdateSizeBytes);
-            checkForUpdateObservable.Select(e => e.EventArgs.MinimumRequiredVersion).ToProperty(this, vm => vm.MinimumRequiredVersion);
-            checkForUpdateObservable.Select(e => e.EventArgs.IsUpdateRequired).ToProperty(this, vm => vm.IsUpdateRequired);
+            _availableVersion = checkForUpdateObservable.Select(e => e.EventArgs.AvailableVersion).ToProperty(this, vm => vm.AvailableVersion);
+            _updateAvailable = checkForUpdateObservable.Select(e => e.EventArgs.UpdateAvailable).ToProperty(this, vm => vm.UpdateAvailable);
+            _updateSizeBytes = checkForUpdateObservable.Select(e => e.EventArgs.UpdateSizeBytes).ToProperty(this, vm => vm.UpdateSizeBytes);
+            _minimumRequiredVersion = checkForUpdateObservable.Select(e => e.EventArgs.MinimumRequiredVersion).ToProperty(this, vm => vm.MinimumRequiredVersion);
+            _isUpdateRequired = checkForUpdateObservable.Select(e => e.EventArgs.IsUpdateRequired).ToProperty(this, vm => vm.IsUpdateRequired);
 
             Update = new ReactiveCommand(checkForUpdateObservable.Select(e => e.EventArgs.UpdateAvailable));
             Update.Subscribe(x => deployment.UpdateAsync());
 
             var updateProgressObservable = Observable.Merge(Observable.FromEventPattern<DeploymentProgressChangedEventHandler, DeploymentProgressChangedEventArgs>
                                                             (h => deployment.CheckForUpdateProgressChanged += h,
-                                                             h => deployment.CheckForUpdateProgressChanged += h),
+                                                             h => deployment.CheckForUpdateProgressChanged -= h),
                                                              Observable.FromEventPattern<DeploymentProgressChangedEventHandler, DeploymentProgressChangedEventArgs>
                                                             (h => deployment.UpdateProgressChanged += h,
-                                                             h => deployment.UpdateProgressChanged += h),
+                                                             h => deployment.UpdateProgressChanged -= h),
                                                              Observable.FromEventPattern<DeploymentProgressChangedEventHandler, DeploymentProgressChangedEventArgs>
                                                             (h => deployment.DownloadFileGroupProgressChanged += h,
-                                                             h => deployment.DownloadFileGroupProgressChanged += h));
+                                                             h => deployment.DownloadFileGroupProgressChanged -= h));
 
-            updateProgressObservable.Select(e => e.EventArgs.State).ToProperty(this, vm => vm.DeploymentProgressState);
-            updateProgressObservable.Select(e => e.EventArgs.ProgressPercentage).ToProperty(this, vm => vm.ProgressPercentage);
-            updateProgressObservable.Select(e => e.EventArgs.BytesCompleted).ToProperty(this, vm => vm.BytesCompleted);
-            updateProgressObservable.Select(e => e.EventArgs.BytesTotal).ToProperty(this, vm => vm.BytesTotal);
-            updateProgressObservable.Select(e => e.EventArgs.Group).ToProperty(this, vm => vm.Group);
+            _deploymentProgressState = updateProgressObservable.Select(e => e.EventArgs.State).ToProperty(this, vm => vm.DeploymentProgressState);
+            _progressPercentage = updateProgressObservable.Select(e => e.EventArgs.ProgressPercentage).ToProperty(this, vm => vm.ProgressPercentage);
+            _bytesCompleted = updateProgressObservable.Select(e => e.EventArgs.BytesCompleted).ToProperty(this, vm => vm.BytesCompleted);
+            _bytesTotal = updateProgressObservable.Select(e => e.EventArgs.BytesTotal).ToProperty(this, vm => vm.BytesTotal);
+            _group = updateProgressObservable.Select(e => e.EventArgs.Group).ToProperty(this, vm => vm.Group);
 
             var updateCompleteObservable = Observable.FromEventPattern<AsyncCompletedEventHandler, AsyncCompletedEventArgs>
                     (h => deployment.UpdateCompleted += h,
-                     h => deployment.UpdateCompleted += h);
+                     h => deployment.UpdateCompleted -= h);
 
             //make sure the current version is kept up-to-date
-            updateCompleteObservable.Select(e => deployment.CurrentVersion)
+            _currentVersion = updateCompleteObservable.Select(e => deployment.CurrentVersion)
                 .StartWith(deployment.CurrentVersion)
                 .ToProperty(this, vm => vm.CurrentVersion);
 
             //build the in progress flag from all of ouyr observables
-            Observable.Merge(checkForUpdateObservable.Select(e => false),
+            _inProgress = Observable.Merge(checkForUpdateObservable.Select(e => false),
                                 updateProgressObservable.Select(e => true),
                                 updateCompleteObservable.Select(e => false),
                                 Update.Select(e => true))
                             .StartWith(true)
                             .ToProperty(this, vm => vm.InProgress);
-
         }
 
         public bool NetworkDeployed { get { return _deployment.IsNetworkDeployed; } }
 
-        private ObservableAsPropertyHelper<Version> _CurrentVersion;
+        private ObservableAsPropertyHelper<Version> _currentVersion;
         public Version CurrentVersion
         {
-            get { return _CurrentVersion.Value; }
+            get { return _currentVersion.Value; }
         }
 
-        private ObservableAsPropertyHelper<Version> _AvailableVersion;
+        private ObservableAsPropertyHelper<Version> _availableVersion;
         public Version AvailableVersion
         {
-            get { return _AvailableVersion.Value; }
+            get { return _availableVersion.Value; }
         }
 
-        private ObservableAsPropertyHelper<Version> _MinimumRequiredVersion;
+        private ObservableAsPropertyHelper<Version> _minimumRequiredVersion;
         public Version MinimumRequiredVersion
         {
-            get { return _MinimumRequiredVersion.Value; }
+            get { return _minimumRequiredVersion.Value; }
         }
 
-        private ObservableAsPropertyHelper<bool> _UpdateAvailable;
+        private ObservableAsPropertyHelper<bool> _updateAvailable;
         public bool UpdateAvailable
         {
-            get { return _UpdateAvailable.Value; }
+            get { return _updateAvailable.Value; }
         }
 
-        private ObservableAsPropertyHelper<bool> _IsUpdateRequired;
+        private ObservableAsPropertyHelper<bool> _isUpdateRequired;
         public bool IsUpdateRequired
         {
-            get { return _IsUpdateRequired.Value; }
+            get { return _isUpdateRequired.Value; }
         }
 
-        private ObservableAsPropertyHelper<long> _UpdateSizeBytes;
+        private ObservableAsPropertyHelper<long> _updateSizeBytes;
         public long UpdateSizeBytes
         {
-            get { return _UpdateSizeBytes.Value; }
+            get { return _updateSizeBytes.Value; }
         }
 
-        private ObservableAsPropertyHelper<bool> _InProgress;
+        private ObservableAsPropertyHelper<bool> _inProgress;
         public bool InProgress
         {
-            get { return _InProgress.Value; }
+            get { return _inProgress.Value; }
         }
 
-        private ObservableAsPropertyHelper<System.Deployment.Application.DeploymentProgressState> _DeploymentProgressState;
+        private ObservableAsPropertyHelper<System.Deployment.Application.DeploymentProgressState> _deploymentProgressState;
         public System.Deployment.Application.DeploymentProgressState DeploymentProgressState
         {
-            get { return _DeploymentProgressState.Value; }
+            get { return _deploymentProgressState.Value; }
         }
 
-        private ObservableAsPropertyHelper<int> _ProgressPercentage;
+        private ObservableAsPropertyHelper<int> _progressPercentage;
         public int ProgressPercentage
         {
-            get { return _ProgressPercentage.Value; }
+            get { return _progressPercentage.Value; }
         }
 
-        private ObservableAsPropertyHelper<long> _BytesCompleted;
+        private ObservableAsPropertyHelper<long> _bytesCompleted;
         public long BytesCompleted
         {
-            get { return _BytesCompleted.Value; }
+            get { return _bytesCompleted.Value; }
         }
 
-        private ObservableAsPropertyHelper<long> _BytesTotal;
+        private ObservableAsPropertyHelper<long> _bytesTotal;
         public long BytesTotal
         {
-            get { return _BytesTotal.Value; }
+            get { return _bytesTotal.Value; }
         }
 
-        private ObservableAsPropertyHelper<string> _Group;
+        private ObservableAsPropertyHelper<string> _group;
         public string Group
         {
-            get { return _Group.Value; }
+            get { return _group.Value; }
         }
 
         public ReactiveCommand CheckForUpdate { get; private set; }

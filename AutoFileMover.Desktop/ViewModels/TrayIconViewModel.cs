@@ -21,10 +21,10 @@ namespace AutoFileMover.Desktop.ViewModels
     {
         private IEngine _engine;
 
-        private ObservableAsPropertyHelper<string> _Icon;
+        private ObservableAsPropertyHelper<string> _icon;
         public string Icon
         {
-            get { return _Icon.Value; }
+            get { return _icon.Value; }
         }
 
         public ReactiveCommand ShowWindow { get; private set; }
@@ -43,7 +43,7 @@ namespace AutoFileMover.Desktop.ViewModels
             var errorIcon = "/AutoFileMover.Desktop;component/Images/AutoFileMover_Error.ico";
             var progressIcon = "/AutoFileMover.Desktop;component/Images/AutoFileMover_InProgress.ico";
 
-            _Icon = Observable.Merge(Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveStarted += h, h => engine.FileMoveStarted -= h).Select(e => progressIcon),
+            _icon = Observable.Merge(Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveStarted += h, h => engine.FileMoveStarted -= h).Select(e => progressIcon),
                                     Observable.FromEventPattern<EventHandler<FileMoveEventArgs>, FileMoveEventArgs>(h => engine.FileMoveProgress += h, h => engine.FileMoveProgress -= h).Select(e => progressIcon),
                                     Observable.FromEventPattern<EventHandler<FileEventArgs>, FileEventArgs>(h => engine.FileMoveCompleted += h, h => engine.FileMoveCompleted -= h).Select(e => defaultIcon),
                                     Observable.FromEventPattern<EventHandler<FileErrorEventArgs>, FileErrorEventArgs>(h => engine.FileMoveError += h, h => engine.FileMoveError -= h).Select(e => errorIcon),
