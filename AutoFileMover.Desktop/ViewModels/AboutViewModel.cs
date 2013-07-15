@@ -77,16 +77,14 @@ namespace AutoFileMover.Desktop.ViewModels
 
             //make sure the current version is kept up-to-date
             _currentVersion = updateCompleteObservable.Select(e => deployment.CurrentVersion)
-                .StartWith(deployment.CurrentVersion)
-                .ToProperty(this, vm => vm.CurrentVersion);
+                .ToProperty(this, vm => vm.CurrentVersion, deployment.CurrentVersion);
 
-            //build the in progress flag from all of ouyr observables
+            //build the in progress flag from all of our observables
             _inProgress = Observable.Merge(checkForUpdateObservable.Select(e => false),
                                 updateProgressObservable.Select(e => true),
                                 updateCompleteObservable.Select(e => false),
                                 Update.Select(e => true))
-                            .StartWith(true)
-                            .ToProperty(this, vm => vm.InProgress);
+                            .ToProperty(this, vm => vm.InProgress, false);
         }
 
         public bool NetworkDeployed { get { return _deployment.IsNetworkDeployed; } }

@@ -13,7 +13,7 @@
         <vc:EnumToStringConverter x:Key="EnumToString" />
     </UserControl.Resources>    
     
-    <StackPanel>
+    <StackPanel HorizontalAlignment="Left">
 
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Current Version: " Margin="5" />
@@ -50,7 +50,7 @@
             <StackPanel Visibility="{Binding Path=InProgress, Converter={StaticResource BoolToVis}}">
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding DeploymentProgressState}" Margin="5"/>
+                    <TextBlock Text="{Binding DeploymentProgressState, Converter={StaticResource EnumToString}}" Margin="5"/>
                     <TextBlock Text="{Binding Group}" Margin="5"/>
                 </StackPanel>
 

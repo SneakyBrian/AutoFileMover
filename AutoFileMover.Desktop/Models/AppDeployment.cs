@@ -89,7 +89,11 @@ namespace AutoFileMover.Desktop.Models
             var handler = CheckForUpdateCompleted;
             if (handler != null)
             {
-                handler(this, new AutoFileMover.Desktop.Interfaces.CheckForUpdateCompletedEventArgs(e.AvailableVersion, e.IsUpdateRequired, e.MinimumRequiredVersion, e.UpdateAvailable, e.UpdateSizeBytes, e.Error, e.Cancelled, e.UserState));
+                handler(this, new AutoFileMover.Desktop.Interfaces.CheckForUpdateCompletedEventArgs(e.UpdateAvailable ? e.AvailableVersion : CurrentVersion, e.IsUpdateRequired, 
+                                                                                                    e.UpdateAvailable ? e.MinimumRequiredVersion : CurrentVersion, 
+                                                                                                    e.UpdateAvailable, 
+                                                                                                    e.UpdateAvailable ? e.UpdateSizeBytes : 0, 
+                                                                                                    e.Error, e.Cancelled, e.UserState));
             }
         }
 
