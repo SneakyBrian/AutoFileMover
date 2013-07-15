@@ -12,8 +12,7 @@ namespace AutoFileMover.Support
     {
         protected HashAlgorithm _hashAlgorithm;
         protected byte[] _hash = new byte[0];
-        protected bool _cancel = false;
-        protected int _bufferSize = 4096;
+        protected int _bufferSize = 1024 * 1024;
 
         public ASyncFileHashAlgorithm(HashAlgorithm hashAlgorithm)
         {
@@ -30,7 +29,6 @@ namespace AutoFileMover.Support
 
         public async Task<byte[]> ComputeHash(Stream stream, EventHandler<FileHashingProgressArgs> handler)
         {
-            _cancel = false;
             _hash = null;
             int bufferSize = _bufferSize;
 
@@ -66,16 +64,9 @@ namespace AutoFileMover.Support
                     handler(this, new FileHashingProgressArgs(totalBytesRead, size));
                 }
 
-            } while (readAheadBytesRead != 0 && !_cancel);
+            } while (readAheadBytesRead != 0);
 
-            if (_cancel)
-            {
-                _hash = new byte[0];
-            }
-            else
-            {
-                _hash = _hashAlgorithm.Hash;
-            }
+            _hash = _hashAlgorithm.Hash;
             
             return _hash;
         }
@@ -89,11 +80,6 @@ namespace AutoFileMover.Support
         public byte[] Hash
         {
             get { return _hash; }
-        }
-
-        public void Cancel()
-        {
-            _cancel = true;
         }
 
         public override string ToString()

@@ -112,7 +112,10 @@ namespace AutoFileMover.Core
 
                     OnFileMoveStarted(outputPath, filePath, fileInfo.Length);
 
-                    for (int tries = 0; tries < Config.FileMoveRetries; tries++)
+                    //Phase 1 - Copy file from source to destination
+
+                    int tries = 0;
+                    for (; tries < Config.FileMoveRetries; tries++)
                     {
                         try
                         {
@@ -127,9 +130,7 @@ namespace AutoFileMover.Core
                             await FileCopier.CopyFile(filePath, outputPath, percentage =>
                             {
                                 OnFileMoveProgress(outputPath, filePath, fileInfo.Length, percentage, tries);
-                            });
-
-                            bool deleteSourceFile = true;
+                            });                            
 
                             if (Config.VerifyFiles)
                             {
@@ -157,17 +158,14 @@ namespace AutoFileMover.Core
 
                                 OnFileHashProgress(outputPath, filePath, outputPath, outputHash, outputSize, 100, tries);
 
-                                deleteSourceFile = inputHash == outputHash;
-                            }
-
-                            if (deleteSourceFile)
-                            {
-                                //if we got this far we can delete the source file
-                                File.SetAttributes(filePath, FileAttributes.Normal);
-                                File.Delete(filePath);
+                                if (inputHash != outputHash)
+                                {
+                                    throw new ApplicationException(string.Format("Source File '{0}' hash '{1}' does not match Destination File '{2}' hash '{3}'", 
+                                        filePath, inputHash, outputPath, outputHash));
+                                }
 
                                 break;
-                            }                            
+                            }                         
                         }
                         catch (Exception ex)
                         {
@@ -176,6 +174,25 @@ namespace AutoFileMover.Core
 
                         await Task.Delay(1000 * (tries + 1));
                     }
+
+                    //Phase 2 = delete source file
+
+                    for (; tries < Config.FileMoveRetries; tries++)
+                    {
+                        try
+                        {
+                            File.SetAttributes(filePath, FileAttributes.Normal);
+                            File.Delete(filePath);
+
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            OnFileMoveError(outputPath, filePath, fileInfo.Length, ex, tries);
+                        }
+
+                        await Task.Delay(1000 * (tries + 1));
+                    }    
 
                     OnFileMoveCompleted(outputPath, filePath, fileInfo.Length);
 
