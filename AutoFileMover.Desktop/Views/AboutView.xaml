@@ -6,7 +6,7 @@
              xmlns:c="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:vc="clr-namespace:AutoFileMover.Desktop.ValueConverters"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="400" d:DesignWidth="300">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
@@ -38,7 +38,7 @@
                     <TextBlock Text="{Binding MinimumRequiredVersion}" Margin="5" Foreground="Red" />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" >
                     <TextBlock Text="Update Size (Bytes): " Margin="5" />
                     <TextBlock Text="{Binding UpdateSizeBytes}" Margin="5"/>
                 </StackPanel>
@@ -54,7 +54,7 @@
                     <TextBlock Text="{Binding Group}" Margin="5"/>
                 </StackPanel>
 
-                <c:ProgressRing IsActive="True" Margin="5" />
+                <c:ProgressRing IsActive="{Binding InProgress, Mode=OneWay}" Margin="5" />
 
                 <ProgressBar Value="{Binding ProgressPercentage, Mode=OneWay}" Height="20" Margin="5" />
 

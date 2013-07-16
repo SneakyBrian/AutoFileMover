@@ -53,7 +53,7 @@ namespace AutoFileMover.Desktop.ViewModels
             {
                 if (_trayIcon == null)
                 {
-                    _trayIcon = new TrayIconViewModel(_engine);
+                    _trayIcon = new TrayIconViewModel(_engine, _appConfig);
                 }
 
                 return _trayIcon;
