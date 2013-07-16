@@ -163,9 +163,9 @@ namespace AutoFileMover.Core
                                     throw new ApplicationException(string.Format("Source File '{0}' hash '{1}' does not match Destination File '{2}' hash '{3}'", 
                                         filePath, inputHash, outputPath, outputHash));
                                 }
+                            }
 
-                                break;
-                            }                         
+                            break;
                         }
                         catch (Exception ex)
                         {
