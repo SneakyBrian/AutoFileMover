@@ -41,6 +41,16 @@
 			<h3>Application Information</h3>
 			{{content}}
         </section>
+		
+        <section id="main_content">
+			<h3>Donate</h3>
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+				<input type="hidden" name="cmd" value="_s-xclick">
+				<input type="hidden" name="hosted_button_id" value="FWUZ2DB2LQWHQ">
+				<input type="image" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
+				<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+			</form>
+        </section>		
 
         <footer>
           AutoFileMover is maintained by <a href="https://github.com/SneakyBrian">SneakyBrian</a>.<br />
@@ -60,11 +70,9 @@
 			}
 			
 			if(links[i].attachEvent) {
-				links[i].attachEvent('onclick', function(){ _gaq.push(['_trackEvent', 'Link', links[i].innerText, links[i].href]); });	
-			}
-
-			if(links[i].addEventListener) {
-				links[i].addEventListener('click', function(){ _gaq.push(['_trackEvent', 'Link', links[i].innerText, links[i].href]); }, false);	
+				links[i].attachEvent('onclick', function(){ _gaq.push(['_trackEvent', 'Link', links[i].text, links[i].href]); });	
+			} else if(links[i].addEventListener) {
+				links[i].addEventListener('click', function(){ _gaq.push(['_trackEvent', 'Link', links[i].text, links[i].href]); }, false);	
 			}						
 		}
 	</script>
