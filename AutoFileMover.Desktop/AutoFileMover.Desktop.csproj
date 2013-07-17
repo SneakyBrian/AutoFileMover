@@ -168,10 +168,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Interfaces\IApplicationContainer.cs" />
     <Compile Include="Interfaces\IApplicationConfig.cs" />
     <Compile Include="Interfaces\IApplicationDeployment.cs" />
     <Compile Include="IoC\IoCRegistry.cs" />
     <Compile Include="Models\AppDeployment.cs" />
+    <Compile Include="Models\ApplicationContainer.cs" />
     <Compile Include="Models\AppSettingsConfig.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ValueConverters\EnumToStringConverter.cs" />

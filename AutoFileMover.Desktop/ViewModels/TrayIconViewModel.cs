@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using AutoFileMover.Core.Interfaces;
@@ -23,6 +24,7 @@ namespace AutoFileMover.Desktop.ViewModels
     {
         private IEngine _engine;
         private IApplicationConfig _appConfig;
+        private IApplicationContainer _appContainer;
 
         private ObservableAsPropertyHelper<string> _icon;
         public string Icon
@@ -37,13 +39,32 @@ namespace AutoFileMover.Desktop.ViewModels
 
         public TrayIconViewModel(IEngine engine, IApplicationConfig config)
         {
+            using (var container = new UnityContainer())
+            {
+                container.Configure(x =>
+                {
+                    x.AddRegistry<IoCRegistry>();
+                });
+
+                _appContainer = container.Resolve<IApplicationContainer>();
+            }
+
             _engine = engine;
             _appConfig = config;
 
-            Initialise(_engine);
+            Initialise(_engine, _appConfig, _appContainer);
         }
 
-        public void Initialise(IEngine engine)
+        public TrayIconViewModel(IEngine engine, IApplicationConfig config, IApplicationContainer appContainer)
+        {
+            _engine = engine;
+            _appConfig = config;
+            _appContainer = appContainer;
+
+            Initialise(_engine, _appConfig, _appContainer);
+        }
+
+        public void Initialise(IEngine engine, IApplicationConfig config, IApplicationContainer appContainer)
         {
             var defaultIcon = "/AutoFileMover.Desktop;component/Images/AutoFileMover.ico";
             var errorIcon = "/AutoFileMover.Desktop;component/Images/AutoFileMover_Error.ico";
@@ -69,14 +90,14 @@ namespace AutoFileMover.Desktop.ViewModels
             ShowWindow = new ReactiveCommand();
             ShowWindow.Subscribe(x => 
             {
-                App.Current.MainWindow.WindowState = System.Windows.WindowState.Normal;
-                App.Current.MainWindow.Activate();
+                appContainer.Current.MainWindow.WindowState = WindowState.Normal;
+                appContainer.Current.MainWindow.Activate();
             });
             
             Exit = new ReactiveCommand();
             Exit.Subscribe(x =>
             {
-                App.Current.Shutdown();
+                appContainer.Current.Shutdown();
             });
         }
     }

@@ -29,14 +29,16 @@ namespace AutoFileMover.Desktop
                 // hook on error before app really starts
                 Observable.FromEventPattern<UnhandledExceptionEventHandler, UnhandledExceptionEventArgs>(h => AppDomain.CurrentDomain.UnhandledException += h,
                                                                                                          h => AppDomain.CurrentDomain.UnhandledException -= h)
-                            .Select(evt => evt.EventArgs.ExceptionObject)
-                            .Cast<Exception>()
-                            .Subscribe(ex => 
+                            .SubscribeOnDispatcher()
+                            .Select(evt => evt.EventArgs)
+                            .Subscribe(ea => 
                             {
+                                var ex = ea.ExceptionObject as Exception;
+
                                 var assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName();
 
                                 var result = MessageBox.Show("Sorry, an error occurred.\nClick OK to log the error.", 
-                                                                assemblyName.Name, MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                                    assemblyName.Name, MessageBoxButton.OKCancel,  ea.IsTerminating ? MessageBoxImage.Error : MessageBoxImage.Warning);
 
                                 if (result == MessageBoxResult.OK)
                                 {
@@ -51,8 +53,7 @@ namespace AutoFileMover.Desktop
 
                                         System.Diagnostics.Process.Start(string.Format("https://github.com/SneakyBrian/AutoFileMover/issues/new?title={0}&body={1}%20{2}", ex.Message, version, ex));
                                     }
-                                }
- 
+                                } 
                             });
             }
 
