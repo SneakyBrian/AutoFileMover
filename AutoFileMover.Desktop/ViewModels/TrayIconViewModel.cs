@@ -88,17 +88,10 @@ namespace AutoFileMover.Desktop.ViewModels
             FileOperations = fileOperations.CreateDerivedCollection(x => x, x => !(_appConfig.AutoClear && x.State == FileOperationState.Completed));
 
             ShowWindow = new ReactiveCommand();
-            ShowWindow.Subscribe(x => 
-            {
-                appContainer.Current.MainWindow.WindowState = WindowState.Normal;
-                appContainer.Current.MainWindow.Activate();
-            });
+            ShowWindow.Subscribe(_ => appContainer.ShowWindow());
             
             Exit = new ReactiveCommand();
-            Exit.Subscribe(x =>
-            {
-                appContainer.Current.Shutdown();
-            });
+            Exit.Subscribe(_ => appContainer.Exit());
         }
     }
 }

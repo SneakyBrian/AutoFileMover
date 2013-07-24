@@ -9,6 +9,7 @@ namespace AutoFileMover.Desktop.Interfaces
 {
     public interface IApplicationContainer
     {
-        Application Current { get; }
+        void ShowWindow();
+        void Exit();
     }
 }

@@ -10,9 +10,15 @@ namespace AutoFileMover.Desktop.Models
 {
     public class ApplicationContainer : IApplicationContainer
     {
-        public Application Current
+        public void ShowWindow()
         {
-            get { return App.Current; }
+            App.Current.MainWindow.WindowState = WindowState.Normal;
+            App.Current.MainWindow.Activate();
+        }
+
+        public void Exit()
+        {
+            App.Current.Shutdown();
         }
     }
 }
