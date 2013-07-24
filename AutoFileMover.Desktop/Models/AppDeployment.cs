@@ -28,15 +28,19 @@ namespace AutoFileMover.Desktop.Models
 
         ~AppDeployment()
         {
-            if (ApplicationDeployment.IsNetworkDeployed)
+            try
             {
-                ApplicationDeployment.CurrentDeployment.CheckForUpdateCompleted -= CurrentDeployment_CheckForUpdateCompleted;
-                ApplicationDeployment.CurrentDeployment.CheckForUpdateProgressChanged -= CurrentDeployment_CheckForUpdateProgressChanged;
-                ApplicationDeployment.CurrentDeployment.DownloadFileGroupCompleted -= CurrentDeployment_DownloadFileGroupCompleted;
-                ApplicationDeployment.CurrentDeployment.DownloadFileGroupProgressChanged -= CurrentDeployment_DownloadFileGroupProgressChanged;
-                ApplicationDeployment.CurrentDeployment.UpdateCompleted -= CurrentDeployment_UpdateCompleted;
-                ApplicationDeployment.CurrentDeployment.UpdateProgressChanged -= CurrentDeployment_UpdateProgressChanged;
+                if (ApplicationDeployment.IsNetworkDeployed)
+                {
+                    ApplicationDeployment.CurrentDeployment.CheckForUpdateCompleted -= CurrentDeployment_CheckForUpdateCompleted;
+                    ApplicationDeployment.CurrentDeployment.CheckForUpdateProgressChanged -= CurrentDeployment_CheckForUpdateProgressChanged;
+                    ApplicationDeployment.CurrentDeployment.DownloadFileGroupCompleted -= CurrentDeployment_DownloadFileGroupCompleted;
+                    ApplicationDeployment.CurrentDeployment.DownloadFileGroupProgressChanged -= CurrentDeployment_DownloadFileGroupProgressChanged;
+                    ApplicationDeployment.CurrentDeployment.UpdateCompleted -= CurrentDeployment_UpdateCompleted;
+                    ApplicationDeployment.CurrentDeployment.UpdateProgressChanged -= CurrentDeployment_UpdateProgressChanged;
+                }
             }
+            finally { }
         }
 
         void CurrentDeployment_UpdateProgressChanged(object sender, System.Deployment.Application.DeploymentProgressChangedEventArgs e)
