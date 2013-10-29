@@ -76,8 +76,6 @@ namespace AutoFileMover.Core
         {
             var fileInfo = new FileInfo(filePath);
 
-            OnFileDetected(null, filePath, fileInfo.Length);
-
             var fileName = Path.GetFileName(filePath);
 
             foreach (var regex in _regexList)
@@ -86,6 +84,8 @@ namespace AutoFileMover.Core
 
                 if (match.Success)
                 {
+                    OnFileDetected(null, filePath, fileInfo.Length); 
+                    
                     var outputPath = Config.DestinationPath;
 
                     foreach (string groupName in regex.GetGroupNames())
@@ -119,22 +119,17 @@ namespace AutoFileMover.Core
                     {
                         try
                         {
-                            //if our output exists
-                            if (File.Exists(outputPath))
+                            if (!File.Exists(outputPath))
                             {
-                                //make sure it's not readonly and just nuke it
-                                File.SetAttributes(outputPath, FileAttributes.Normal);
-                                File.Delete(outputPath);
+                                await AsyncFileCopier.CopyFile(filePath, outputPath, percentage =>
+                                {
+                                    OnFileMoveProgress(outputPath, filePath, fileInfo.Length, percentage, tries);
+                                }); 
                             }
-
-                            await FileCopier.CopyFile(filePath, outputPath, percentage =>
-                            {
-                                OnFileMoveProgress(outputPath, filePath, fileInfo.Length, percentage, tries);
-                            });                            
 
                             if (Config.VerifyFiles)
                             {
-                                var hasher = new ASyncFileHashAlgorithm(SHA1.Create());
+                                var hasher = new AsyncFileHashAlgorithm(SHA1.Create());
 
                                 long inputSize = 0;
 
@@ -160,6 +155,10 @@ namespace AutoFileMover.Core
 
                                 if (inputHash != outputHash)
                                 {
+                                    //make sure it's not readonly and just nuke it
+                                    File.SetAttributes(outputPath, FileAttributes.Normal);
+                                    File.Delete(outputPath);
+
                                     throw new ApplicationException(string.Format("Source File '{0}' hash '{1}' does not match Destination File '{2}' hash '{3}'", 
                                         filePath, inputHash, outputPath, outputHash));
                                 }

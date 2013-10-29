@@ -39,9 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ASyncFileHashAlgorithm.cs" />
+    <Compile Include="AsyncFileHashAlgorithm.cs" />
     <Compile Include="AsyncHelpers.cs" />
-    <Compile Include="FileCopier.cs" />
+    <Compile Include="AsyncFileCopier.cs" />
+    <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="InUseDetection.cs" />
     <Compile Include="LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

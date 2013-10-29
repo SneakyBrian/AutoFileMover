@@ -40,7 +40,7 @@ namespace AutoFileMover.Desktop.Models
                     ApplicationDeployment.CurrentDeployment.UpdateProgressChanged -= CurrentDeployment_UpdateProgressChanged;
                 }
             }
-            finally { }
+            catch { }
         }
 
         void CurrentDeployment_UpdateProgressChanged(object sender, System.Deployment.Application.DeploymentProgressChangedEventArgs e)

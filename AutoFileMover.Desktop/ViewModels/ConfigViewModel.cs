@@ -16,7 +16,7 @@ namespace AutoFileMover.Desktop.ViewModels
     public class ConfigViewModel : ReactiveObject
     {
         private IApplicationConfig _config;
-
+        
         private bool _verifyFiles;
         public bool VerifyFiles
         {
@@ -107,6 +107,13 @@ namespace AutoFileMover.Desktop.ViewModels
             get { return _selectedSourceRegex; }
             set { this.RaiseAndSetIfChanged(ref _selectedSourceRegex, value); }
         }
+
+        private bool _settingsChanged;
+        public bool SettingsChanged
+        {
+            get { return _settingsChanged; }
+            set { this.RaiseAndSetIfChanged(ref _settingsChanged, value); }
+        }
         
         public ReactiveCommand Save { get; set; }
         public ReactiveCommand AddSourcePath { get; set; }
@@ -134,7 +141,9 @@ namespace AutoFileMover.Desktop.ViewModels
             this.SourcePaths = new ReactiveList<string>(config.SourcePaths);
             this.SourceRegex = new ReactiveList<string>(config.SourceRegex);
 
-            Save = new ReactiveCommand();
+            this.SettingsChanged = false;
+
+            Save = new ReactiveCommand(this.ObservableForProperty(x => x.SettingsChanged).Select(e => e.GetValue()));
             Save.Subscribe(e =>
             {
                 config.AutoStart = this.AutoStart;
@@ -190,6 +199,21 @@ namespace AutoFileMover.Desktop.ViewModels
             this.SelectedSourcePath = "";
             this.NewSourceRegex = "";
             this.SelectedSourceRegex = "";
+
+            Observable.Merge(this.ObservableForProperty(x => x.VerifyFiles).Select(e => true),
+                             this.ObservableForProperty(x => x.AutoStart).Select(e => true),
+                             this.ObservableForProperty(x => x.AutoClear).Select(e => true),
+                             this.ObservableForProperty(x => x.SourcePaths).Select(e => true),
+                             this.ObservableForProperty(x => x.SourceRegex).Select(e => true),
+                             this.ObservableForProperty(x => x.DestinationPath).Select(e => true),
+                             this.ObservableForProperty(x => x.IncludeSubdirectories).Select(e => true),
+                             this.ObservableForProperty(x => x.FileMoveRetries).Select(e => true),
+                             this.ObservableForProperty(x => x.ConcurrentOperations).Select(e => true),
+                             this.ObservableForProperty(x => x.NewSourcePath).Select(e => true),
+                             this.ObservableForProperty(x => x.NewSourceRegex).Select(e => true),
+                             this.ObservableForProperty(x => x.SelectedSourcePath).Select(e => true),
+                             this.ObservableForProperty(x => x.SelectedSourceRegex).Select(e => true))
+                .Subscribe(e => this.SettingsChanged = true);
         }
 
         private static bool IsValidRegex(string pattern)

@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace AutoFileMover.Support
 {
-    public class FileCopier
+    public class AsyncFileCopier
     {
         public static async Task CopyFile(string sourceFilePath, string destinationFilePath, Action<int> progressHandler)
         {
             byte[] buffer = new byte[1024 * 1024]; // 1MB buffer
 
-            using (FileStream source = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
+            using (FileStream source = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read, FileShare.None))
             {
                 long fileLength = source.Length;
-                using (FileStream dest = new FileStream(destinationFilePath, FileMode.CreateNew, FileAccess.Write))
+                using (FileStream dest = new FileStream(destinationFilePath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
                 {
                     long totalBytes = 0;
                     int currentBlockSize = 0;

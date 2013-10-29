@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace AutoFileMover.Support
 {
-    public class ASyncFileHashAlgorithm
+    public class AsyncFileHashAlgorithm
     {
         protected HashAlgorithm _hashAlgorithm;
         protected byte[] _hash = new byte[0];
         protected int _bufferSize = 1024 * 1024;
 
-        public ASyncFileHashAlgorithm(HashAlgorithm hashAlgorithm)
+        public AsyncFileHashAlgorithm(HashAlgorithm hashAlgorithm)
         {
             this._hashAlgorithm = hashAlgorithm;
         }
