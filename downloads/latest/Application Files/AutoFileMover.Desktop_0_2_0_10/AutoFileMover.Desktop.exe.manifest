@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="AutoFileMover.Desktop.exe" version="0.2.0.9" publicKeyToken="1fb27d9a6e44a7da" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="AutoFileMover.Desktop.exe" version="0.2.0.10" publicKeyToken="1fb27d9a6e44a7da" language="neutral" processorArchitecture="msil" type="win32" />
   <description asmv2:iconFile="Images\AutoFileMover.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="AutoFileMover.Desktop" version="1.0.4954.40252" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="AutoFileMover.Desktop" version="1.0.5050.41117" language="neutral" processorArchitecture="msil" />
     <commandLine file="AutoFileMover.Desktop.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -50,7 +50,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>9RODh8jhomq5VU6QWgRdw37owUPABfSniOocDc3AFE4=</dsig:DigestValue>
+        <dsig:DigestValue>EwddrZNRLhQ3qCAM4Uoxo3IkBYJOKy+f1xSFKQY9pt0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -62,31 +62,31 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>AOr84EHIZNjH4t9bafFyo6CNfe+QwRrZm7FFJBOsVPA=</dsig:DigestValue>
+        <dsig:DigestValue>OC0F+hcQN1h98HXg+V591yBW+53eujAkcFr/53V2nXo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AutoFileMover.Desktop.exe" size="249856">
-      <assemblyIdentity name="AutoFileMover.Desktop" version="1.0.4954.40252" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AutoFileMover.Desktop.exe" size="253440">
+      <assemblyIdentity name="AutoFileMover.Desktop" version="1.0.5050.41117" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>1ddSaeJ+7WlJdF7XCEyYEdtXN7wrzIb+r33wCf8Jztc=</dsig:DigestValue>
+        <dsig:DigestValue>5DR5u59OUE1fdh/4EVmP4g15xB01CuPEY2il8mrfHa4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AutoFileMover.Support.dll" size="16896">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AutoFileMover.Support.dll" size="21504">
       <assemblyIdentity name="AutoFileMover.Support" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Xkj9A0b1DowYioCD9gShMIcp4c6+LPSwlrsDXlMFnu8=</dsig:DigestValue>
+        <dsig:DigestValue>CHDpNchTLOjQdMLf+OvXre8sKXAVMxzjH8RxlIm4CCo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -480,4 +480,4 @@
       <dsig:DigestValue>jUB5ro8sE38t8Z7fZbzHWPHI92g2kDjwCHY7hovmA2g=</dsig:DigestValue>
     </hash>
   </file>
-<publisherIdentity name="CN=Nellytop\Nelly" issuerKeyHash="26c0c60f120e2e8216ac0d104c01163479653f6a" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>dmc82TLJXZ05v+ardfGYBCzpQWCO+VZUla5OAYoA4vE=</DigestValue></Reference></SignedInfo><SignatureValue>Owg92p/Sq6ZOdb6mtF2fzdEqz/z5XNh8h63lErstJrGNYZR/xxeocgP5oyTdk3JQwPQeoirAPShkTQcypRLR6XBT38Q3fipJaWnulWieT/aej7rbQb/7mer8bswddaAi2drSZ5UsG2yGjhwp+3wfZKuZ1gpCwpq1Cd0VomAXhl4=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>lFQExKSc1RtX8j+mHLRV00e7vMEsR2H6jq4Y5MlIkCmAww2PNWny+TD2gKF+wvyozZMulFHmR1ZPHVsXwVgqs6DYWZYOURN2x2yKALK7DqWdElT2bwlfMw0b73CzDSQOAf1PprovAp+cqmwxrSubjj4GaF4VZ3Y/NGiUWf724EM=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="f1e2008a014eae955456f98e6041e92c0498f175abe6bf399d5dc932d93c6776" Description="" Url=""><as:assemblyIdentity name="AutoFileMover.Desktop.exe" version="0.2.0.9" publicKeyToken="1fb27d9a6e44a7da" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=Nellytop\Nelly</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>thAIf4LNCsPYqzasVpawftubIAJsrrXoE6NUkx6C0PM=</DigestValue></Reference></SignedInfo><SignatureValue>iiUhIPOSGFYaACqcEPOkKkZiycMUMl2IUC7Mq0668qhDvXKe3ayoE67s0mnmzTAyqsdl/dL40Ga6iYDdMB0ynBMT72yO6gAQ2d7MGv4VlYUNnjygXYxw6iSbhEZi475Y51+YvYKx0APz4KofKpmhPjMDDCleOwwfKZ8dPtFC4w4=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>lFQExKSc1RtX8j+mHLRV00e7vMEsR2H6jq4Y5MlIkCmAww2PNWny+TD2gKF+wvyozZMulFHmR1ZPHVsXwVgqs6DYWZYOURN2x2yKALK7DqWdElT2bwlfMw0b73CzDSQOAf1PprovAp+cqmwxrSubjj4GaF4VZ3Y/NGiUWf724EM=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB0TCCATqgAwIBAgIQW/cTLTqfe4VIDZtCd52N1TANBgkqhkiG9w0BAQsFADAnMSUwIwYDVQQDHhwATgBlAGwAbAB5AHQAbwBwAFwATgBlAGwAbAB5MB4XDTEzMDYyNjIyMTI0OFoXDTE0MDYyNzA0MTI0OFowJzElMCMGA1UEAx4cAE4AZQBsAGwAeQB0AG8AcABcAE4AZQBsAGwAeTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAlFQExKSc1RtX8j+mHLRV00e7vMEsR2H6jq4Y5MlIkCmAww2PNWny+TD2gKF+wvyozZMulFHmR1ZPHVsXwVgqs6DYWZYOURN2x2yKALK7DqWdElT2bwlfMw0b73CzDSQOAf1PprovAp+cqmwxrSubjj4GaF4VZ3Y/NGiUWf724EMCAwEAATANBgkqhkiG9w0BAQsFAAOBgQAVGg4wBL7AzpzA0UQToEcjAIhWchGKIs8inAleNJBLVBPO3n4cMee7Zz4dF/SrosAve2i46KyDECQWK6+6Z8A+HBbe/iKMpgJYp7103UwzCr1fm/GAIU+pMP71yNoCoNwl0By6O/vRViugnT11Uwkxzkwefq6f/3epRQ8LiuzN4g==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
+<publisherIdentity name="CN=Nellytop\Nelly" issuerKeyHash="26c0c60f120e2e8216ac0d104c01163479653f6a" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>CxBqMgsX5vRt9EAhJIZpmRYNlSXNCDMDwgRcZBZPwKs=</DigestValue></Reference></SignedInfo><SignatureValue>ICIuw97ojnYgR+Caw4BhEAjpKM2k9ZIMUCMZeCctVV7uCKssRg4yFDAOBBaQtSQX5M6RMnLMyQWWyAeAwj2j7QF5+hZAcQdgpVxJtZctKJW+RH5tl8IWNemcYUMt1l7vJXzc5zQbjRnv0SGqUfCIroGjje8iXUe4yeQA+UQjKw0=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>lFQExKSc1RtX8j+mHLRV00e7vMEsR2H6jq4Y5MlIkCmAww2PNWny+TD2gKF+wvyozZMulFHmR1ZPHVsXwVgqs6DYWZYOURN2x2yKALK7DqWdElT2bwlfMw0b73CzDSQOAf1PprovAp+cqmwxrSubjj4GaF4VZ3Y/NGiUWf724EM=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="abc04f16645c04c2033308cd25950d16996986242140f46df4e6170b326a100b" Description="" Url=""><as:assemblyIdentity name="AutoFileMover.Desktop.exe" version="0.2.0.10" publicKeyToken="1fb27d9a6e44a7da" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=Nellytop\Nelly</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>GYoJxtkVx73qzSUot8nFpJn6j8fl+659WD+mtcIbj4U=</DigestValue></Reference></SignedInfo><SignatureValue>JWDl/E0zi5XZSCVugZ2VbSMLInOeLPIX0Sy2Jzr1RcQNIyxlWkdAudknMTRVGDrbA6mFRDLVT//UJZwhWd0rRrajCfQowfwAyshTbO15cYBTtVYvePx8JG0d2gn5Nw4xTVYGyiTw0qSzRm5FK1vtCk/slPF0x6+V+/zdGnkSFFU=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>lFQExKSc1RtX8j+mHLRV00e7vMEsR2H6jq4Y5MlIkCmAww2PNWny+TD2gKF+wvyozZMulFHmR1ZPHVsXwVgqs6DYWZYOURN2x2yKALK7DqWdElT2bwlfMw0b73CzDSQOAf1PprovAp+cqmwxrSubjj4GaF4VZ3Y/NGiUWf724EM=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB0TCCATqgAwIBAgIQW/cTLTqfe4VIDZtCd52N1TANBgkqhkiG9w0BAQsFADAnMSUwIwYDVQQDHhwATgBlAGwAbAB5AHQAbwBwAFwATgBlAGwAbAB5MB4XDTEzMDYyNjIyMTI0OFoXDTE0MDYyNzA0MTI0OFowJzElMCMGA1UEAx4cAE4AZQBsAGwAeQB0AG8AcABcAE4AZQBsAGwAeTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAlFQExKSc1RtX8j+mHLRV00e7vMEsR2H6jq4Y5MlIkCmAww2PNWny+TD2gKF+wvyozZMulFHmR1ZPHVsXwVgqs6DYWZYOURN2x2yKALK7DqWdElT2bwlfMw0b73CzDSQOAf1PprovAp+cqmwxrSubjj4GaF4VZ3Y/NGiUWf724EMCAwEAATANBgkqhkiG9w0BAQsFAAOBgQAVGg4wBL7AzpzA0UQToEcjAIhWchGKIs8inAleNJBLVBPO3n4cMee7Zz4dF/SrosAve2i46KyDECQWK6+6Z8A+HBbe/iKMpgJYp7103UwzCr1fm/GAIU+pMP71yNoCoNwl0By6O/vRViugnT11Uwkxzkwefq6f/3epRQ8LiuzN4g==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
