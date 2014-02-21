@@ -50,5 +50,11 @@ namespace AutoFileMover.Tests.Helpers
             get;
             set;
         }
+
+        public TimeSpan TimeBetweenRetries
+        {
+            get;
+            set;
+        }
     }
 }

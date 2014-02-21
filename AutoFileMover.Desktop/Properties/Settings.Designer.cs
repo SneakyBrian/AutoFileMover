@@ -62,7 +62,7 @@ namespace AutoFileMover.Desktop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool IncludeSubdirectories {
             get {
                 return ((bool)(this["IncludeSubdirectories"]));
@@ -74,7 +74,7 @@ namespace AutoFileMover.Desktop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("99")]
         public int FileMoveRetries {
             get {
                 return ((int)(this["FileMoveRetries"]));
@@ -110,7 +110,7 @@ namespace AutoFileMover.Desktop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int ConcurrentOperations {
             get {
                 return ((int)(this["ConcurrentOperations"]));
@@ -122,13 +122,25 @@ namespace AutoFileMover.Desktop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool VerifyFiles {
             get {
                 return ((bool)(this["VerifyFiles"]));
             }
             set {
                 this["VerifyFiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:05:00")]
+        public global::System.TimeSpan TimeBetweenRetries {
+            get {
+                return ((global::System.TimeSpan)(this["TimeBetweenRetries"]));
+            }
+            set {
+                this["TimeBetweenRetries"] = value;
             }
         }
     }

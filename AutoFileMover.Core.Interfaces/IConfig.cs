@@ -13,6 +13,7 @@ namespace AutoFileMover.Core.Interfaces
         string DestinationPath { get; set; }
         bool IncludeSubdirectories { get; set; }
         int FileMoveRetries { get; set; }
+        TimeSpan TimeBetweenRetries { get; set; }
         int ConcurrentOperations { get; set; }
         bool VerifyFiles { get; set; }
     }

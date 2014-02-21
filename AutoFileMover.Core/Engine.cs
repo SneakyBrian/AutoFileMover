@@ -171,7 +171,7 @@ namespace AutoFileMover.Core
                             OnFileMoveError(outputPath, filePath, fileInfo.Length, ex, tries);
                         }
 
-                        await Task.Delay(1000 * (tries + 1));
+                        await Task.Delay(Config.TimeBetweenRetries);
                     }
 
                     //Phase 2 = delete source file
@@ -190,7 +190,7 @@ namespace AutoFileMover.Core
                             OnFileMoveError(outputPath, filePath, fileInfo.Length, ex, tries);
                         }
 
-                        await Task.Delay(1000 * (tries + 1));
+                        await Task.Delay(Config.TimeBetweenRetries);
                     }    
 
                     OnFileMoveCompleted(outputPath, filePath, fileInfo.Length);

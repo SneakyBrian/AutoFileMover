@@ -101,5 +101,15 @@ namespace AutoFileMover.Desktop.Models
                 Properties.Settings.Default.Save();
             }
         }
+
+        public TimeSpan TimeBetweenRetries
+        {
+            get { return Properties.Settings.Default.TimeBetweenRetries; }
+            set
+            {
+                Properties.Settings.Default.TimeBetweenRetries = value;
+                Properties.Settings.Default.Save();
+            }
+        }
     }
 }

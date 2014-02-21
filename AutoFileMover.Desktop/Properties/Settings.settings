@@ -12,10 +12,10 @@
       <Value Profile="(Default)">C:\Users\Public\Videos</Value>
     </Setting>
     <Setting Name="IncludeSubdirectories" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="FileMoveRetries" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">99</Value>
     </Setting>
     <Setting Name="AutoStart" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -24,10 +24,13 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ConcurrentOperations" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="VerifyFiles" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="TimeBetweenRetries" Type="System.TimeSpan" Scope="User">
+      <Value Profile="(Default)">00:05:00</Value>
     </Setting>
   </Settings>
 </SettingsFile>

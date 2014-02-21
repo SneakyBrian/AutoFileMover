@@ -50,5 +50,12 @@ namespace AutoFileMover.Console
             get;
             set;
         }
+
+
+        public TimeSpan TimeBetweenRetries
+        {
+            get;
+            set;
+        }
     }
 }

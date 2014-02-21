@@ -108,6 +108,13 @@ namespace AutoFileMover.Desktop.ViewModels
             set { this.RaiseAndSetIfChanged(ref _selectedSourceRegex, value); }
         }
 
+        private int _timeBetweenRetries;
+        public int TimeBetweenRetries
+        {
+            get { return _timeBetweenRetries; }
+            set { this.RaiseAndSetIfChanged(ref _timeBetweenRetries, value); }
+        }
+        
         private bool _settingsChanged;
         public bool SettingsChanged
         {
@@ -140,6 +147,7 @@ namespace AutoFileMover.Desktop.ViewModels
             this.IncludeSubdirectories = config.IncludeSubdirectories;
             this.SourcePaths = new ReactiveList<string>(config.SourcePaths);
             this.SourceRegex = new ReactiveList<string>(config.SourceRegex);
+            this.TimeBetweenRetries = (int)config.TimeBetweenRetries.TotalSeconds;
 
             this.SettingsChanged = false;
 
@@ -156,6 +164,7 @@ namespace AutoFileMover.Desktop.ViewModels
                 config.IncludeSubdirectories = this.IncludeSubdirectories;
                 config.SourcePaths = this.SourcePaths;
                 config.SourceRegex = this.SourceRegex;
+                config.TimeBetweenRetries = TimeSpan.FromSeconds(this.TimeBetweenRetries);
             });
 
             AddSourcePath = new ReactiveCommand(this.ObservableForProperty(x => x.NewSourcePath)
@@ -212,7 +221,8 @@ namespace AutoFileMover.Desktop.ViewModels
                              this.ObservableForProperty(x => x.NewSourcePath).Select(e => true),
                              this.ObservableForProperty(x => x.NewSourceRegex).Select(e => true),
                              this.ObservableForProperty(x => x.SelectedSourcePath).Select(e => true),
-                             this.ObservableForProperty(x => x.SelectedSourceRegex).Select(e => true))
+                             this.ObservableForProperty(x => x.SelectedSourceRegex).Select(e => true),
+                             this.ObservableForProperty(x => x.TimeBetweenRetries).Select(e => true))
                 .Subscribe(e => this.SettingsChanged = true);
         }
 

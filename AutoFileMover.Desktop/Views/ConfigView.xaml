@@ -26,22 +26,27 @@
                 <c:ToggleSwitch IsChecked="{Binding VerifyFiles}" Header="Verify Files" MinWidth="200" Margin="5" />
             </StackPanel>
 
-            <StackPanel HorizontalAlignment="Left">
+        </WrapPanel>
 
-                <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Label Margin="5" Content="File Move Retries"/>
-                    <xctk:IntegerUpDown Minimum="0" Maximum="99" FormatString="N0" Value="{Binding FileMoveRetries}" />
-                </StackPanel>
+        <StackPanel Orientation="Horizontal">
 
-                <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Label Margin="5" Content="Concurrent Operations"/>
-                    <xctk:IntegerUpDown Minimum="1" Maximum="99" FormatString="N0" Value="{Binding ConcurrentOperations}" />
-                </StackPanel>
-
+            <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label Margin="5" Content="File Move Retries"/>
+                <xctk:IntegerUpDown Minimum="0" Maximum="999" FormatString="N0" Value="{Binding FileMoveRetries}" />
             </StackPanel>
 
-        </WrapPanel>        
-        
+            <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label Margin="5" Content="Seconds Between Retries"/>
+                <xctk:IntegerUpDown Minimum="1" Maximum="999" FormatString="N0" Value="{Binding TimeBetweenRetries}" />
+            </StackPanel>
+
+            <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label Margin="5" Content="Concurrent Operations"/>
+                <xctk:IntegerUpDown Minimum="1" Maximum="99" FormatString="N0" Value="{Binding ConcurrentOperations}" />
+            </StackPanel>
+
+        </StackPanel>
+
         <StackPanel Margin="5">
             <Label Content="Source Paths"/>
             <ListBox Height="80" Margin="5" ItemsSource="{Binding SourcePaths}" SelectedItem="{Binding SelectedSourcePath}" />
