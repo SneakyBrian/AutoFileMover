@@ -26,7 +26,7 @@
             <Button Margin="5" Command="{Binding CheckForUpdate}" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource InvBoolToVis}}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="5" Text="Check For Update" VerticalAlignment="Center"/>
-                    <c:ProgressRing IsActive="{Binding CheckInProgress, Mode=OneWay}" MinHeight="30" MinWidth="30" />
+                    <c:ProgressRing Margin="5" Foreground="Black" IsActive="{Binding CheckInProgress, Mode=OneWay}" MinHeight="30" MinWidth="30" />
                 </StackPanel>            
             </Button>
             
@@ -52,7 +52,7 @@
                 <Button Margin="5" Command="{Binding Update}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="5" Text="Update" VerticalAlignment="Center"/>
-                        <c:ProgressRing IsActive="{Binding UpdateInProgress, Mode=OneWay}" MinHeight="30" MinWidth="30" />
+                        <c:ProgressRing Margin="5" Foreground="Black" IsActive="{Binding UpdateInProgress, Mode=OneWay}" MinHeight="30" MinWidth="30" />
                     </StackPanel>
                 </Button>
 

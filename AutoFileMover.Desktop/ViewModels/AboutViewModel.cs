@@ -46,8 +46,12 @@ namespace AutoFileMover.Desktop.ViewModels
             CheckForUpdate.Subscribe(x => deployment.CheckForUpdateAsync());
 
             var checkForUpdateObservable = Observable.FromEventPattern<CheckForUpdateCompletedEventHandler, CheckForUpdateCompletedEventArgs>
-                    (h => deployment.CheckForUpdateCompleted += h,
-                     h => deployment.CheckForUpdateCompleted -= h);
+                                                    (h => deployment.CheckForUpdateCompleted += h,
+                                                     h => deployment.CheckForUpdateCompleted -= h);
+
+            var checkForUpdateProgressObservable = Observable.FromEventPattern<DeploymentProgressChangedEventHandler, DeploymentProgressChangedEventArgs>
+                                                            (h => deployment.CheckForUpdateProgressChanged += h,
+                                                             h => deployment.CheckForUpdateProgressChanged -= h);                                                             
 
             _availableVersion = checkForUpdateObservable.Select(e => e.EventArgs.AvailableVersion).ToProperty(this, vm => vm.AvailableVersion);
             _updateAvailable = checkForUpdateObservable.Select(e => e.EventArgs.UpdateAvailable).ToProperty(this, vm => vm.UpdateAvailable);
@@ -59,9 +63,6 @@ namespace AutoFileMover.Desktop.ViewModels
             Update.Subscribe(x => deployment.UpdateAsync());
 
             var updateProgressObservable = Observable.Merge(Observable.FromEventPattern<DeploymentProgressChangedEventHandler, DeploymentProgressChangedEventArgs>
-                                                            (h => deployment.CheckForUpdateProgressChanged += h,
-                                                             h => deployment.CheckForUpdateProgressChanged -= h),
-                                                             Observable.FromEventPattern<DeploymentProgressChangedEventHandler, DeploymentProgressChangedEventArgs>
                                                             (h => deployment.UpdateProgressChanged += h,
                                                              h => deployment.UpdateProgressChanged -= h),
                                                              Observable.FromEventPattern<DeploymentProgressChangedEventHandler, DeploymentProgressChangedEventArgs>
@@ -88,6 +89,7 @@ namespace AutoFileMover.Desktop.ViewModels
             //build the in progress flags from all of our observables
 
             _checkInProgress = Observable.Merge(checkForUpdateObservable.Select(e => false),
+                                checkForUpdateProgressObservable.Select(e => true),
                                 CheckForUpdate.Select(e => true),
                                 Update.Select(e => false))
                             .ToProperty(this, vm => vm.CheckInProgress, false);
