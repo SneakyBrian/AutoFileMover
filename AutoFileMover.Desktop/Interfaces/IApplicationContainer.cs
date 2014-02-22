@@ -11,5 +11,8 @@ namespace AutoFileMover.Desktop.Interfaces
     {
         void ShowWindow();
         void Exit();
+        void Restart();
+
+        string EntryPoint { get; set; }
     }
 }

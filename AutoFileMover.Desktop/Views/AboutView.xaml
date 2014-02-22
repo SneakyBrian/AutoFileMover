@@ -9,7 +9,8 @@
              d:DesignHeight="400" d:DesignWidth="300">
 
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <vc:BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <vc:BooleanToVisibilityConverter x:Key="InvBoolToVis" True="Collapsed" False="Visible" />
         <vc:EnumToStringConverter x:Key="EnumToString" />
     </UserControl.Resources>    
     
@@ -22,8 +23,13 @@
 
         <StackPanel Visibility="{Binding Path=NetworkDeployed, Converter={StaticResource BoolToVis}}">
 
-            <Button Content="Check For Update" Margin="5" Command="{Binding CheckForUpdate}"/>
-
+            <Button Margin="5" Command="{Binding CheckForUpdate}" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource InvBoolToVis}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="5" Text="Check For Update" VerticalAlignment="Center"/>
+                    <c:ProgressRing IsActive="{Binding CheckInProgress, Mode=OneWay}" MinHeight="30" MinWidth="30" />
+                </StackPanel>            
+            </Button>
+            
             <StackPanel Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource BoolToVis}}">
 
                 <TextBlock Text="Update Available" Margin="5" />
@@ -43,18 +49,21 @@
                     <TextBlock Text="{Binding UpdateSizeBytes}" Margin="5"/>
                 </StackPanel>
 
-                <Button Content="Update" Margin="5" Command="{Binding Update}"/>
+                <Button Margin="5" Command="{Binding Update}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5" Text="Update" VerticalAlignment="Center"/>
+                        <c:ProgressRing IsActive="{Binding UpdateInProgress, Mode=OneWay}" MinHeight="30" MinWidth="30" />
+                    </StackPanel>
+                </Button>
 
             </StackPanel>
 
-            <StackPanel Visibility="{Binding Path=InProgress, Converter={StaticResource BoolToVis}}">
+            <StackPanel Visibility="{Binding Path=UpdateInProgress, Converter={StaticResource BoolToVis}}">
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding DeploymentProgressState, Converter={StaticResource EnumToString}}" Margin="5"/>
                     <TextBlock Text="{Binding Group}" Margin="5"/>
                 </StackPanel>
-
-                <c:ProgressRing IsActive="{Binding InProgress, Mode=OneWay}" Margin="5" />
 
                 <ProgressBar Value="{Binding ProgressPercentage, Mode=OneWay}" Height="20" Margin="5" />
 
@@ -66,7 +75,13 @@
                 </StackPanel>
 
             </StackPanel>
-            
+
+            <StackPanel Visibility="{Binding Path=UpdateCompleted, Converter={StaticResource BoolToVis}}">
+
+                <Button Content="Restart" Margin="5" Command="{Binding Restart}"/>
+
+            </StackPanel>    
+
         </StackPanel>
 
     </StackPanel>

@@ -14,6 +14,7 @@ namespace AutoFileMover.Desktop.ViewModels
     public class AboutViewModel : ReactiveObject
     {
         private IApplicationDeployment _deployment;
+        private IApplicationContainer _appContainer;
 
         public AboutViewModel()
         {
@@ -25,21 +26,23 @@ namespace AutoFileMover.Desktop.ViewModels
                 });
 
                 _deployment = container.Resolve<IApplicationDeployment>();
+                _appContainer = container.Resolve<IApplicationContainer>();
             }
 
-            Initialise(_deployment);
+            Initialise(_deployment, _appContainer);
         }
 
-        public AboutViewModel(IApplicationDeployment deployment)
+        public AboutViewModel(IApplicationDeployment deployment, IApplicationContainer appContainer)
         {
             _deployment = deployment;
+            _appContainer = appContainer;
 
-            Initialise(_deployment);
+            Initialise(_deployment, _appContainer);
         }
 
-        private void Initialise(IApplicationDeployment deployment)
+        private void Initialise(IApplicationDeployment deployment, IApplicationContainer appContainer)
         {
-            CheckForUpdate = new ReactiveCommand(this.ObservableForProperty(vm => vm.NetworkDeployed).Select(e => e.Value));
+            CheckForUpdate = new ReactiveCommand(this.ObservableForProperty(vm => vm.NetworkDeployed).Select(e => e.Value), false, null);
             CheckForUpdate.Subscribe(x => deployment.CheckForUpdateAsync());
 
             var checkForUpdateObservable = Observable.FromEventPattern<CheckForUpdateCompletedEventHandler, CheckForUpdateCompletedEventArgs>
@@ -52,7 +55,7 @@ namespace AutoFileMover.Desktop.ViewModels
             _minimumRequiredVersion = checkForUpdateObservable.Select(e => e.EventArgs.MinimumRequiredVersion).ToProperty(this, vm => vm.MinimumRequiredVersion);
             _isUpdateRequired = checkForUpdateObservable.Select(e => e.EventArgs.IsUpdateRequired).ToProperty(this, vm => vm.IsUpdateRequired);
 
-            Update = new ReactiveCommand(checkForUpdateObservable.Select(e => e.EventArgs.UpdateAvailable));
+            Update = new ReactiveCommand(checkForUpdateObservable.Select(e => e.EventArgs.UpdateAvailable), false, null);
             Update.Subscribe(x => deployment.UpdateAsync());
 
             var updateProgressObservable = Observable.Merge(Observable.FromEventPattern<DeploymentProgressChangedEventHandler, DeploymentProgressChangedEventArgs>
@@ -75,16 +78,32 @@ namespace AutoFileMover.Desktop.ViewModels
                     (h => deployment.UpdateCompleted += h,
                      h => deployment.UpdateCompleted -= h);
 
+            _updateCompleted = updateCompleteObservable.Select(e => true)
+                                .ToProperty(this, vm => vm.UpdateCompleted, false);
+
             //make sure the current version is kept up-to-date
             _currentVersion = updateCompleteObservable.Select(e => deployment.CurrentVersion)
                 .ToProperty(this, vm => vm.CurrentVersion, deployment.CurrentVersion);
 
-            //build the in progress flag from all of our observables
-            _inProgress = Observable.Merge(checkForUpdateObservable.Select(e => false),
-                                updateProgressObservable.Select(e => true),
+            //build the in progress flags from all of our observables
+
+            _checkInProgress = Observable.Merge(checkForUpdateObservable.Select(e => false),
+                                CheckForUpdate.Select(e => true),
+                                Update.Select(e => false))
+                            .ToProperty(this, vm => vm.CheckInProgress, false);
+
+            _updateInProgress = Observable.Merge(updateProgressObservable.Select(e => true),
                                 updateCompleteObservable.Select(e => false),
                                 Update.Select(e => true))
-                            .ToProperty(this, vm => vm.InProgress, false);
+                            .ToProperty(this, vm => vm.UpdateInProgress, false);
+
+            Restart = new ReactiveCommand(updateCompleteObservable.Select(e => true), false, null);
+            Restart.Subscribe(x => 
+            {
+                //as this may have changed, update it
+                appContainer.EntryPoint = deployment.UpdateLocation.AbsoluteUri;
+                appContainer.Restart();
+            });
         }
 
         public bool NetworkDeployed { get { return _deployment.IsNetworkDeployed; } }
@@ -125,10 +144,22 @@ namespace AutoFileMover.Desktop.ViewModels
             get { return _updateSizeBytes.Value; }
         }
 
-        private ObservableAsPropertyHelper<bool> _inProgress;
-        public bool InProgress
+        private ObservableAsPropertyHelper<bool> _checkInProgress;
+        public bool CheckInProgress
         {
-            get { return _inProgress.Value; }
+            get { return _checkInProgress.Value; }
+        }        
+        
+        private ObservableAsPropertyHelper<bool> _updateInProgress;
+        public bool UpdateInProgress
+        {
+            get { return _updateInProgress.Value; }
+        }
+
+        private ObservableAsPropertyHelper<bool> _updateCompleted;
+        public bool UpdateCompleted
+        {
+            get { return _updateCompleted.Value; }
         }
 
         private ObservableAsPropertyHelper<System.Deployment.Application.DeploymentProgressState> _deploymentProgressState;
@@ -164,6 +195,8 @@ namespace AutoFileMover.Desktop.ViewModels
         public ReactiveCommand CheckForUpdate { get; private set; }
 
         public ReactiveCommand Update { get; private set; }
+
+        public ReactiveCommand Restart { get; private set; }
 
     }
 }

@@ -176,6 +176,8 @@
     <Compile Include="Models\ApplicationContainer.cs" />
     <Compile Include="Models\AppSettingsConfig.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ValueConverters\BooleanConverter.cs" />
+    <Compile Include="ValueConverters\BooleanToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\EnumToStringConverter.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\ConfigViewModel.cs" />

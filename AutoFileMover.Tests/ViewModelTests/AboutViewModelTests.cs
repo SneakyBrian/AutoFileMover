@@ -16,10 +16,12 @@ namespace AutoFileMover.Tests.ViewModelTests
         public void NetworkDeployedTest()
         {
             var mock = _container.GetMock<IApplicationDeployment>();
+            var mock2 = _container.GetMock<IApplicationContainer>();
 
             mock.SetupGet(s => s.IsNetworkDeployed).Returns(true);
+            mock2.SetupAllProperties();
 
-            var vm = new AboutViewModel(mock.Object);
+            var vm = new AboutViewModel(mock.Object, mock2.Object);
 
             Assert.IsTrue(vm.NetworkDeployed);
         }
@@ -28,6 +30,7 @@ namespace AutoFileMover.Tests.ViewModelTests
         public void CheckForUpdateTest()
         {
             var mock = _container.GetMock<IApplicationDeployment>();
+            var mock2 = _container.GetMock<IApplicationContainer>();
 
             mock.SetupGet(s => s.IsNetworkDeployed).Returns(true);
             mock.Setup(ad => ad.CheckForUpdateAsync())
@@ -35,7 +38,9 @@ namespace AutoFileMover.Tests.ViewModelTests
                             new CheckForUpdateCompletedEventArgs(new Version(2, 0, 0, 0), true,
                                 new Version(2, 0, 0, 0), true, 1024 * 1024, null, false, null));
 
-            var vm = new AboutViewModel(mock.Object);
+            mock2.SetupAllProperties();
+
+            var vm = new AboutViewModel(mock.Object, mock2.Object);
 
             //check that we are network deployed
             Assert.IsTrue(vm.NetworkDeployed);

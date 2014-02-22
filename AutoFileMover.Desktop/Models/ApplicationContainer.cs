@@ -10,6 +10,11 @@ namespace AutoFileMover.Desktop.Models
 {
     public class ApplicationContainer : IApplicationContainer
     {
+        public ApplicationContainer()
+        {
+            EntryPoint = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+        }
+
         public void ShowWindow()
         {
             App.Current.MainWindow.WindowState = WindowState.Normal;
@@ -20,5 +25,15 @@ namespace AutoFileMover.Desktop.Models
         {
             App.Current.Shutdown();
         }
+
+
+        public void Restart()
+        {
+            System.Diagnostics.Process.Start(EntryPoint);
+
+            Exit();
+        }
+
+        public string EntryPoint { get; set; }
     }
 }
