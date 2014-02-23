@@ -29,7 +29,13 @@
                     <c:ProgressRing Margin="5" Foreground="Black" IsActive="{Binding CheckInProgress, Mode=OneWay}" MinHeight="30" MinWidth="30" />
                 </StackPanel>            
             </Button>
-            
+
+            <StackPanel Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource InvBoolToVis}}">
+
+                <TextBlock Text="No Update Available" Margin="5" />
+
+            </StackPanel>
+
             <StackPanel Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource BoolToVis}}">
 
                 <TextBlock Text="Update Available" Margin="5" />
