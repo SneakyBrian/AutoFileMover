@@ -44,6 +44,7 @@ namespace AutoFileMover.Desktop.ViewModels
         {
             CheckForUpdate = new ReactiveCommand(this.ObservableForProperty(vm => vm.NetworkDeployed).Select(e => e.Value), false, null);
             CheckForUpdate.Subscribe(x => deployment.CheckForUpdateAsync());
+            CheckForUpdate.ThrownExceptions.Subscribe();
 
             var checkForUpdateObservable = Observable.FromEventPattern<CheckForUpdateCompletedEventHandler, CheckForUpdateCompletedEventArgs>
                                                     (h => deployment.CheckForUpdateCompleted += h,
@@ -61,6 +62,7 @@ namespace AutoFileMover.Desktop.ViewModels
 
             Update = new ReactiveCommand(checkForUpdateObservable.Select(e => e.EventArgs.UpdateAvailable), false, null);
             Update.Subscribe(x => deployment.UpdateAsync());
+            Update.ThrownExceptions.Subscribe();
 
             var updateProgressObservable = Observable.Merge(Observable.FromEventPattern<DeploymentProgressChangedEventHandler, DeploymentProgressChangedEventArgs>
                                                             (h => deployment.UpdateProgressChanged += h,
@@ -100,12 +102,8 @@ namespace AutoFileMover.Desktop.ViewModels
                             .ToProperty(this, vm => vm.UpdateInProgress, false);
 
             Restart = new ReactiveCommand(updateCompleteObservable.Select(e => true), false, null);
-            Restart.Subscribe(x => 
-            {
-                //as this may have changed, update it
-                appContainer.EntryPoint = deployment.UpdateLocation.AbsoluteUri;
-                appContainer.Restart();
-            });
+            Restart.Subscribe(x => appContainer.Restart());
+            Restart.ThrownExceptions.Subscribe();
         }
 
         public bool NetworkDeployed { get { return _deployment.IsNetworkDeployed; } }
