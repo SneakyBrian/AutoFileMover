@@ -55,7 +55,6 @@ namespace AutoFileMover.Desktop.ViewModels
                                                              h => deployment.CheckForUpdateProgressChanged -= h);                                                             
 
             _availableVersion = checkForUpdateObservable.Select(e => e.EventArgs.AvailableVersion).ToProperty(this, vm => vm.AvailableVersion);
-            _updateAvailable = checkForUpdateObservable.Select(e => e.EventArgs.UpdateAvailable).ToProperty(this, vm => vm.UpdateAvailable);
             _updateSizeBytes = checkForUpdateObservable.Select(e => e.EventArgs.UpdateSizeBytes).ToProperty(this, vm => vm.UpdateSizeBytes);
             _minimumRequiredVersion = checkForUpdateObservable.Select(e => e.EventArgs.MinimumRequiredVersion).ToProperty(this, vm => vm.MinimumRequiredVersion);
             _isUpdateRequired = checkForUpdateObservable.Select(e => e.EventArgs.IsUpdateRequired).ToProperty(this, vm => vm.IsUpdateRequired);
@@ -81,9 +80,13 @@ namespace AutoFileMover.Desktop.ViewModels
                     (h => deployment.UpdateCompleted += h,
                      h => deployment.UpdateCompleted -= h);
 
+            _updateAvailable = Observable.Merge(checkForUpdateObservable.Select(e => e.EventArgs.UpdateAvailable),
+                                                updateCompleteObservable.Select(e => false))
+                                .ToProperty(this, vm => vm.UpdateAvailable);
+            
             _updateCompleted = updateCompleteObservable.Select(e => true)
                                 .ToProperty(this, vm => vm.UpdateCompleted, false);
-
+            
             //make sure the current version is kept up-to-date
             _currentVersion = updateCompleteObservable.Select(e => deployment.CurrentVersion)
                 .ToProperty(this, vm => vm.CurrentVersion, deployment.CurrentVersion);
