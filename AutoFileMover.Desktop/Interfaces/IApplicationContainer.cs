@@ -7,12 +7,24 @@ using System.Windows;
 
 namespace AutoFileMover.Desktop.Interfaces
 {
+    /// <summary>
+    /// Abstraction contract for dealing with the host application
+    /// </summary>
     public interface IApplicationContainer
     {
+        /// <summary>
+        /// Show the main window
+        /// </summary>
         void ShowWindow();
-        void Exit();
-        void Restart();
 
-        string EntryPoint { get; set; }
+        /// <summary>
+        /// Exit the application
+        /// </summary>
+        void Exit();
+
+        /// <summary>
+        /// Restart the application
+        /// </summary>
+        void Restart();
     }
 }

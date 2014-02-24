@@ -102,11 +102,7 @@ namespace AutoFileMover.Desktop.ViewModels
                             .ToProperty(this, vm => vm.UpdateInProgress, false);
 
             Restart = new ReactiveCommand(updateCompleteObservable.Select(e => true), false, null);
-            Restart.Subscribe(x => 
-            {
-                appContainer.EntryPoint = deployment.UpdatedApplicationFullName;
-                appContainer.Restart();
-            });
+            Restart.Subscribe(x => appContainer.Restart());
             Restart.ThrownExceptions.Subscribe();
         }
 
