@@ -115,6 +115,10 @@ namespace AutoFileMover.Core
                     //Phase 1 - Copy file from source to destination
 
                     int tries = 0;
+
+                    //create hasher if we need to verify files
+                    var hasher = Config.VerifyFiles ? new AsyncFileHashAlgorithm(SHA1.Create(), typeof(SHA1).Name) : null;
+
                     for (; tries < Config.FileMoveRetries; tries++)
                     {
                         try
@@ -127,16 +131,25 @@ namespace AutoFileMover.Core
                                 }); 
                             }
 
-                            if (Config.VerifyFiles)
+                            if (hasher != null)
                             {
-                                var hasher = new AsyncFileHashAlgorithm(SHA1.Create());
-
                                 long inputSize = 0;
 
-                                await hasher.ComputeHash(filePath, (o, fhp) =>
+                                if (!File.Exists(hasher.GetHashFilePath(filePath)))
                                 {
-                                    OnFileHashProgress(outputPath, filePath, filePath, "", inputSize = fhp.TotalSize, fhp.Percentage, tries);
-                                });
+                                    await hasher.ComputeHash(filePath, (o, fhp) =>
+                                    {
+                                        OnFileHashProgress(outputPath, filePath, filePath, "", inputSize = fhp.TotalSize, fhp.Percentage, tries);
+                                    });
+
+                                    await hasher.SaveToHashFile(filePath);
+                                }
+                                else
+                                {
+                                    inputSize = new FileInfo(filePath).Length;
+
+                                    await hasher.LoadFromHashFile(filePath);
+                                }
 
                                 string inputHash = hasher.ToString();
 
@@ -144,10 +157,21 @@ namespace AutoFileMover.Core
 
                                 long outputSize = 0;
 
-                                await hasher.ComputeHash(outputPath, (o, fhp) =>
+                                if (!File.Exists(hasher.GetHashFilePath(outputPath)))
                                 {
-                                    OnFileHashProgress(outputPath, filePath, outputPath, "", outputSize = fhp.TotalSize, fhp.Percentage, tries);
-                                });
+                                    await hasher.ComputeHash(outputPath, (o, fhp) =>
+                                    {
+                                        OnFileHashProgress(outputPath, filePath, outputPath, "", outputSize = fhp.TotalSize, fhp.Percentage, tries);
+                                    });
+
+                                    await hasher.SaveToHashFile(outputPath);
+                                }
+                                else
+                                {
+                                    outputSize = new FileInfo(outputPath).Length;
+
+                                    await hasher.LoadFromHashFile(outputPath);
+                                }
 
                                 string outputHash = hasher.ToString();
 
@@ -182,6 +206,16 @@ namespace AutoFileMover.Core
                         {
                             File.SetAttributes(filePath, FileAttributes.Normal);
                             File.Delete(filePath);
+
+                            if (hasher != null)
+                            {
+                                var hashFilePath = hasher.GetHashFilePath(filePath);
+
+                                if (File.Exists(hashFilePath))
+                                {
+                                    File.Delete(hashFilePath);
+                                }
+                            }
 
                             break;
                         }

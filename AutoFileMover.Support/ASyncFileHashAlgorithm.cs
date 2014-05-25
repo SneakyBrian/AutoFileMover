@@ -11,12 +11,14 @@ namespace AutoFileMover.Support
     public class AsyncFileHashAlgorithm
     {
         protected HashAlgorithm _hashAlgorithm;
+        protected string _hashAlgorithmName;
         protected byte[] _hash = new byte[0];
         protected int _bufferSize = 1024 * 1024;
 
-        public AsyncFileHashAlgorithm(HashAlgorithm hashAlgorithm)
+        public AsyncFileHashAlgorithm(HashAlgorithm hashAlgorithm, string hashAlgorithmName)
         {
             this._hashAlgorithm = hashAlgorithm;
+            this._hashAlgorithmName = hashAlgorithmName.ToLower();
         }
 
         public async Task<byte[]> ComputeHash(string filePath, EventHandler<FileHashingProgressArgs> handler)
@@ -87,6 +89,35 @@ namespace AutoFileMover.Support
             return ConvertHashToString(_hash);
         }
 
+        public async Task SaveToHashFile(string filePath)
+        {
+            var hashFilePath = GetHashFilePath(filePath);
+
+            using (var hashFileStreamWriter = new StreamWriter(File.Open(hashFilePath, FileMode.Create)))
+            {
+                await hashFileStreamWriter.WriteLineAsync(string.Format("{0} *{1}", this.ToString(), Path.GetFileName(filePath)));
+            }
+        }
+
+        public string GetHashFilePath(string filePath)
+        {
+            return string.Format("{0}.{1}", filePath, this._hashAlgorithmName);
+        }
+
+        public async Task LoadFromHashFile(string filePath)
+        {
+            var hashFilePath = GetHashFilePath(filePath);
+
+            using (var hashFileStreamReader = new StreamReader(File.Open(hashFilePath, FileMode.Open)))
+            {
+                var hashLine = await hashFileStreamReader.ReadLineAsync();
+
+                var hashString = hashLine.Substring(0, hashLine.IndexOf(' '));
+
+                _hash = ConvertStringToHash(hashString);
+            }
+        }
+
         private static string ConvertHashToString(byte[] hash)
         {
             string hex = "";
@@ -94,6 +125,17 @@ namespace AutoFileMover.Support
                 hex += b.ToString("x2");
 
             return hex;
+        }
+
+        private static byte[] ConvertStringToHash(string hex)
+        {
+            var numberChars = hex.Length;
+            var bytes = new byte[numberChars / 2];
+
+            for (var i = 0; i < numberChars; i += 2)
+                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+
+            return bytes;
         }
     }
 
