@@ -195,7 +195,11 @@ namespace AutoFileMover.Core
                             OnFileMoveError(outputPath, filePath, fileInfo.Length, ex, tries);
                         }
 
+                        OnWaitingForRetry(outputPath, filePath, fileInfo.Length, tries, Config.TimeBetweenRetries);
+
                         await Task.Delay(Config.TimeBetweenRetries);
+
+                        OnRetrying(outputPath, filePath, fileInfo.Length, tries + 1);
                     }
 
                     //Phase 2 = delete source file
@@ -224,7 +228,11 @@ namespace AutoFileMover.Core
                             OnFileMoveError(outputPath, filePath, fileInfo.Length, ex, tries);
                         }
 
+                        OnWaitingForRetry(outputPath, filePath, fileInfo.Length, tries, Config.TimeBetweenRetries);
+
                         await Task.Delay(Config.TimeBetweenRetries);
+
+                        OnRetrying(outputPath, filePath, fileInfo.Length, tries + 1);
                     }    
 
                     OnFileMoveCompleted(outputPath, filePath, fileInfo.Length);
@@ -233,6 +241,8 @@ namespace AutoFileMover.Core
                 }
             }
         }
+
+
 
         public void Stop()
         {
@@ -395,5 +405,32 @@ namespace AutoFileMover.Core
                 handler(this, new ErrorEventArgs(ex));
             }
         }
+
+
+        public event EventHandler<FileRetryEventArgs> FileRetryWaiting;
+
+        private void OnWaitingForRetry(string outputPath, string filePath, long fileSize, int tries, TimeSpan timeSpan)
+        {
+            var handler = FileRetryWaiting;
+            if (handler != null)
+            {
+                handler(this, new FileRetryEventArgs(outputPath, filePath, fileSize, tries, timeSpan));
+            }
+        }
+
+
+        public event EventHandler<FileTryEventArgs> FileRetrying;
+
+        private void OnRetrying(string outputPath, string filePath, long fileSize, int tries)
+        {
+            var handler = FileRetrying;
+            if (handler != null)
+            {
+                handler(this, new FileTryEventArgs(outputPath, filePath, fileSize, tries));
+            }
+        }
+
+
+
     }
 }

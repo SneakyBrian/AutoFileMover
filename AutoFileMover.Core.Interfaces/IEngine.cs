@@ -21,6 +21,8 @@ namespace AutoFileMover.Core.Interfaces
         event EventHandler<FileMoveEventArgs> FileMoveProgress;
         event EventHandler<FileEventArgs> FileMoveCompleted;
         event EventHandler<FileErrorEventArgs> FileMoveError;
+        event EventHandler<FileRetryEventArgs> FileRetryWaiting;
+        event EventHandler<FileTryEventArgs> FileRetrying;
 
         event EventHandler Starting;
         event EventHandler Started;
@@ -89,6 +91,17 @@ namespace AutoFileMover.Core.Interfaces
             : base(filePath, oldFilePath, fileSize, tries)
         {
             Exception = ex;
+        }
+    }
+
+    public class FileRetryEventArgs : FileTryEventArgs
+    {
+        public TimeSpan RetryDelay { get; private set; }
+
+        public FileRetryEventArgs(string filePath, string oldFilePath, long fileSize, int tries, TimeSpan retryDelay)
+            : base(filePath, oldFilePath, fileSize, tries)
+        {
+            RetryDelay = retryDelay;
         }
     }
 }
