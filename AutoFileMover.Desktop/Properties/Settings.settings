@@ -30,7 +30,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="TimeBetweenRetries" Type="System.TimeSpan" Scope="User">
-      <Value Profile="(Default)">00:05:00</Value>
+      <Value Profile="(Default)">00:01:00</Value>
     </Setting>
   </Settings>
 </SettingsFile>

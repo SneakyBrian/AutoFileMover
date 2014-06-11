@@ -15,17 +15,18 @@
 
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding OldFilePath}" Margin="5"/>
-            <TextBlock Text="{Binding SourceFileHash}" Margin="5"/>
+            <TextBlock Text="{Binding SourceFileHash}" Margin="5" FontSize="8"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding FilePath}" Margin="5"/>
-            <TextBlock Text="{Binding DestinationFileHash}" Margin="5"/>
+            <TextBlock Text="{Binding DestinationFileHash}" Margin="5" FontSize="8"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding State}" Margin="5"/>
             <TextBlock Text="{Binding TriesText}" Margin="5"/>
+            <TextBlock Text="{Binding SecondsUntilRetryText}" Margin="5" Visibility="{Binding Path=RetryWaiting, Converter={StaticResource BoolToVis}}" />
         </StackPanel>
 
         <ProgressBar Value="{Binding Percentage, Mode=OneWay}" Height="20" Margin="5" Visibility="{Binding Path=InProgress, Converter={StaticResource BoolToVis}}" />

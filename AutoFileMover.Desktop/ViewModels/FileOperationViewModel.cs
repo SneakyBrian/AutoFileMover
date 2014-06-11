@@ -67,6 +67,17 @@ namespace AutoFileMover.Desktop.ViewModels
             get { return _destinationFileHash.Value; }
         }
 
+        private ObservableAsPropertyHelper<bool> _retryWaiting;
+        public bool RetryWaiting
+        {
+            get { return _retryWaiting.Value; }
+        }
+
+        private ObservableAsPropertyHelper<string> _secondsUntilRetryText;
+        public string SecondsUntilRetryText
+        {
+            get { return _secondsUntilRetryText.Value; }
+        }
 
         public FileOperationViewModel(string filePath, IEngine engine)
         {
@@ -141,6 +152,35 @@ namespace AutoFileMover.Desktop.ViewModels
                                                 .Select(e => e.EventArgs.Hash)
                                                 .StartWith(string.Empty)
                                                 .ToProperty(this, vm => vm.SourceFileHash);
+
+            //retry waiting
+            _retryWaiting = Observable.Merge(Observable.FromEventPattern<EventHandler<FileRetryEventArgs>, FileRetryEventArgs>(h => engine.FileRetryWaiting += h, h => engine.FileRetryWaiting -= h)
+                                                .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                                                .Select(_ => true),
+                                             Observable.FromEventPattern<EventHandler<FileTryEventArgs>, FileTryEventArgs>(h => engine.FileRetrying += h, h => engine.FileRetrying -= h)
+                                                .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                                                .Select(_ => false))
+                                           .StartWith(false)
+                                           .ToProperty(this, vm => vm.RetryWaiting);
+
+            //seconds until retry - set as empty at first
+            _secondsUntilRetryText = Observable.Empty<string>().ToProperty(this, vm => vm.SecondsUntilRetryText);
+
+            var retryDelaySeconds = Observable.FromEventPattern<EventHandler<FileRetryEventArgs>, FileRetryEventArgs>(h => engine.FileRetryWaiting += h, h => engine.FileRetryWaiting -= h)
+                                                .Where(e => e.EventArgs.OldFilePath == OldFilePath)
+                                                .Select(e => e.EventArgs.RetryDelay.TotalSeconds);
+
+            retryDelaySeconds.Subscribe(s => {
+
+                //seconds until retry
+                _secondsUntilRetryText = Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(1))
+                                        .Select(x => s - x)
+                                        .TakeWhile(x => x > 0)
+                                        .StartWith(s)
+                                        .Select(x => string.Format("Retrying in {0} seconds...", x))
+                                        .ToProperty(this, vm => vm.SecondsUntilRetryText);
+                    
+            });
 
         }
     }
